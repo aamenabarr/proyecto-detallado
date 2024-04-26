@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj",
+      "projectUniqueName": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj",
       "projectName": "Fire-Emblem-View",
-      "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj",
+      "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj",
       "packagesPath": "C:\\Users\\aamen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem-View\\obj\\",
+      "outputPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\aamen\\AppData\\Roaming\\NuGet\\NuGet.Config"

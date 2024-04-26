@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj",
+      "projectUniqueName": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj",
       "projectName": "Fire-Emblem",
-      "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj",
+      "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj",
       "packagesPath": "C:\\Users\\aamen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem\\obj\\",
+      "outputPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\aamen\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -51,8 +51,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
-              "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj"
+            "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
+              "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj"
             }
           }
         }

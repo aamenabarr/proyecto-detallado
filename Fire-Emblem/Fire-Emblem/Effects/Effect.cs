@@ -1,6 +1,3 @@
-using System.ComponentModel.Design.Serialization;
-using Fire_Emblem_View;
-
 namespace Fire_Emblem;
 
 public class Effect

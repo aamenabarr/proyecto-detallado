@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WuxH4/+Psx9UQalRbAnso+nyB6ZQACX3VWPyy9rB2BWIpsiAg6FysNzzCSBV8nxJ8ZyR/FkPKL57WyWPQi4t+w==",
+  "dgSpecHash": "A+qSCKfpxzybQ9N5l/4IiTrvkfw/XhFbAxhuTCd5G6AGqb5tTzDCkFpH2RqayUwqgiNuVEEvigxgkaaeiLPlHg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\Fire-Emblem\\Fire-Emblem.Tests\\Fire-Emblem.Tests.csproj",
+  "projectFilePath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\Proyecto\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem.Tests\\Fire-Emblem.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aamen\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\aamen\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
