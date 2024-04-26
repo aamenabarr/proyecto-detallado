@@ -2,16 +2,14 @@ namespace Fire_Emblem;
 
 public class UseWeapon : Condition
 {
-    private Unit _unit;
     private string _weapon;
 
-    public UseWeapon(Unit unit, string weapon)
+    public UseWeapon(Unit unit, string weapon) : base(unit)
     {
-        _unit = unit;
         _weapon = weapon;
     }
     
-    public bool IsMet()
+    public override bool IsMet()
     {
         return _unit.Weapon == _weapon;
     }

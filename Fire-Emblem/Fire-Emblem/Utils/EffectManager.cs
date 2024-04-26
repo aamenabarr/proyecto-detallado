@@ -4,15 +4,10 @@ namespace Fire_Emblem;
 
 public class EffectManager
 {
-    private View _view;
+    public View View;
     public List<Effect> Effects = new List<Effect>();
     private List<AuxMessage> _messages = new List<AuxMessage>();
-
-    public EffectManager(View view)
-    {
-        _view = view;
-    }
-
+    
     public void AddUniqueMessage(Type type, string message, bool isAttacker)
     {
         if (message.Contains('+') || message.Contains('-'))
@@ -60,7 +55,7 @@ public class EffectManager
             else
             {
                 effect.IsActive = true;
-                effect.AddAlterStatMessages();
+                effect.AddAlterStatMessage();
             }
         }
         AddMessages();
@@ -88,7 +83,7 @@ public class EffectManager
     private void PrintMessages()
     {
         foreach (var auxMessage in OrderedMessages())
-            _view.WriteLine(auxMessage.Message);
+            View.WriteLine(auxMessage.Message);
         _messages.Clear();
     }
     
@@ -99,18 +94,17 @@ public class EffectManager
                 effect.ResetFollowUpEffect();
     }
 
-    private IOrderedEnumerable<Effect> OrderedEffects()
+    private List<Effect> OrderedEffects()
     {
-        return Effects.OrderBy(s =>
+        return Effects.OrderBy(e =>
         {
-            var unit = s.Unit;
-            var isAttacker = unit.IsAttacker ? 0 : 1;
-            var typeOrder = GetTypeOrder(s.GetType());
+            var isAttacker = e.Unit.IsAttacker ? 0 : 1;
+            var typeOrder = GetTypeOrder(e.GetType());
             return (isAttacker, typeOrder);
-        });
+        }).ToList();
     }
     
-    private IOrderedEnumerable<AuxMessage> OrderedMessages()
+    private List<AuxMessage> OrderedMessages()
     {
         return _messages.OrderBy(s =>
         {
@@ -119,7 +113,7 @@ public class EffectManager
             var statOrder = GetStatOrder(s.Message);
             var whenAppliesOrder = GetWhenAppliesOrder(s.Message);
             return (isAttacker, typeOrder, whenAppliesOrder, statOrder);
-        });
+        }).ToList();
     }
 
     private int GetTypeOrder(Type type)
@@ -128,7 +122,7 @@ public class EffectManager
         if (type == typeof(Penalty)) return 2;
         if (type == typeof(NeutralizeBonus)) return 3;
         if (type == typeof(NeutralizePenalty)) return 4;
-        return 5;
+        return 0;
     }
 
     private int GetStatOrder(string message)
@@ -137,7 +131,7 @@ public class EffectManager
         if (message.Contains("Spd")) return 2;
         if (message.Contains("Def")) return 3;
         if (message.Contains("Res")) return 4;
-        return 5;
+        return 0;
     }
     
     private int GetWhenAppliesOrder(string message)

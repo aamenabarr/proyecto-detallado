@@ -1,6 +1,13 @@
 namespace Fire_Emblem;
 
-public interface Condition
+public abstract class Condition
 {
-    bool IsMet();
+    protected Unit _unit;
+
+    protected Condition(Unit unit)
+    {
+        _unit = unit;
+    }
+    
+    public abstract bool IsMet();
 }

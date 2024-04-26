@@ -3,8 +3,9 @@ namespace Fire_Emblem;
 public class AuxMessage
 {
     public string Message;
-    public Type Type;
     public bool IsAttacker;
+    public Type Type;
+    
     public AuxMessage(Type type, string message, bool isAttacker)
     {
         Type = type;

@@ -2,23 +2,27 @@ namespace Fire_Emblem;
 
 public class Effect
 {
-    public Unit Unit;
-    private string _stat;
-    private int _value;
-    public bool IsActive;
+    public string Stat;
+    public int Value;
+    public bool IsActive = false;
     public bool InFirstAttack = false;
     public bool InFollowUp = false;
-    private string _condition = "";
+    public Unit Unit;
     public List<string> Messages = new List<string>();
     
     protected Effect(Unit unit, string stat, int value)
     {
         Unit = unit;
-        _stat = stat;
-        _value = value;
+        Stat = stat;
+        Value = value;
     }
     
-    protected Effect(Unit unit, string stat) : this(unit, stat, 0) { }
+    protected Effect(Unit unit, string stat) : this(unit, stat, 0) {}
+    
+    public void AddToManager()
+    {
+        Unit.EffectManager.Effects.Add(this);
+    }
 
     public virtual void Apply()
     {
@@ -27,42 +31,34 @@ public class Effect
     
     public virtual void Reset() {}
 
-    private void SetCondition()
-    {
-        if (InFirstAttack) _condition = " en su primer ataque";
-        if (InFollowUp) _condition = " en su Follow-Up";
-    }
-
     protected void AlterStat()
     {
-        switch (_stat)
+        switch (Stat)
         {
             case "Hp":
-                Unit.Hp += _value;
+                Unit.Hp += Value;
                 break;
             case "Atk":
-                Unit.Atk += _value;
+                Unit.Atk += Value;
                 break;
             case "Spd":
-                Unit.Spd += _value;
+                Unit.Spd += Value;
                 break;
             case "Def":
-                Unit.Def += _value;
+                Unit.Def += Value;
                 break;
             case "Res":
-                Unit.Res += _value;
+                Unit.Res += Value;
                 break;
         }
-        if (!InFollowUp) AddAlterStatMessages();
     }
-
-    public void AddAlterStatMessages()
+    
+    protected void Neutralize(IEnumerable<Effect> effects)
     {
-        var sign = (_value > 0) ? "+" : "";
-        if (_value != 0 && IsActive && _stat != "Hp")
+        foreach (var effect in effects)
         {
-            SetCondition();
-            Messages.Add($"{Unit.Name} obtiene {_stat}{sign}{_value}{_condition}");
+            if (Stat == null | effect.Stat == Stat)
+                effect.Reset();
         }
     }
 
@@ -71,9 +67,9 @@ public class Effect
         if (IsActive && !InFollowUp)
         {
             IsActive = false;
-            _value *= -1;
+            Value *= -1;
             AlterStat();
-            _value *= -1;
+            Value *= -1;
         }
         else if (InFollowUp) IsActive = false;
     }
@@ -81,59 +77,40 @@ public class Effect
     public void ResetFollowUpEffect()
     {
         IsActive = false;
-        _value *= -1;
+        Value *= -1;
         AlterStat();
-        _value *= -1;
+        Value *= -1;
     }
 
-    public void AddEffect()
+    protected List<T> GetEffects<T>() where T : Effect
     {
-        Unit.EffectManager.Effects.Add(this);
-    }
-
-    protected void Neutralize(string type)
-    {
-        switch (type)
-        {
-            case "bonus":
-                var bonusEffects = Unit.Skills
-                    .Concat(Unit.Rival.Skills)
-                    .SelectMany(skill => skill.Effects)
-                    .OfType<Bonus>()
-                    .Where(effect => effect.Unit == Unit);
-                ResetEffects(bonusEffects);
-                AddNeutralizeMessages(type);
-                break;
-
-            case "penalty":
-                var penaltyEffects = Unit.Skills
-                    .Concat(Unit.Rival.Skills)
-                    .SelectMany(skill => skill.Effects)
-                    .OfType<Penalty>()
-                    .Where(effect => effect.Unit == Unit);
-                ResetEffects(penaltyEffects);
-                AddNeutralizeMessages(type);
-                break;
-        }
+        return Unit.Skills
+            .Concat(Unit.Rival.Skills)
+            .SelectMany(skill => skill.Effects)
+            .OfType<T>()
+            .Where(effect => effect.Unit == Unit).ToList();
     }
     
-    private void ResetEffects(IEnumerable<Effect> effects)
+    public void AddAlterStatMessage()
     {
-        foreach (var effect in effects)
+        var sign = (Value > 0) ? "+" : "";
+        if (Value != 0 && IsActive &&  Stat != "Hp")
         {
-            if (_stat == null | effect._stat == _stat)
-                effect.Reset();
+            var condition = "";
+            if (InFirstAttack) condition = " en su primer ataque";
+            if (InFollowUp) condition = " en su Follow-Up";
+            Messages.Add($"{Unit.Name} obtiene {Stat}{sign}{Value}{condition}");
         }
     }
 
-    private void AddNeutralizeMessages(string type)
+    protected void AddNeutralizeMessages(string type)
     {
-        if (_stat == null)
+        if (Stat == null)
         {
             foreach (var stat in new string[] { "Atk", "Spd", "Def", "Res" })
                 Messages.Add($"Los {type} de {stat} de {Unit.Name} fueron neutralizados");
         }
         else
-            Messages.Add($"Los {type} de {_stat} de {Unit.Name} fueron neutralizados");
+            Messages.Add($"Los {type} de {Stat} de {Unit.Name} fueron neutralizados");
     }
 }

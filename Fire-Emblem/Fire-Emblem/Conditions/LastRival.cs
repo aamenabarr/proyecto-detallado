@@ -2,14 +2,9 @@ namespace Fire_Emblem;
 
 public class LastRival : Condition
 {
-    private Unit _unit;
-
-    public LastRival(Unit unit)
-    {
-        _unit = unit;
-    }
+    public LastRival(Unit unit) : base(unit){}
     
-    public bool IsMet()
+    public override bool IsMet()
     {
         return _unit.LastRival == _unit.Rival;
     }

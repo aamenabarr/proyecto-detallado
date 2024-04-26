@@ -4,22 +4,20 @@ namespace Fire_Emblem;
 
 public class Battle
 {
-    private readonly View _view;
     private int _round;
+    private View _view;
     private Player _currentAttacker;
     private Player _currentDefender;
     private Unit _unit;
     private Unit _rival;
-    private EffectManager _effectManager;
+    private EffectManager _effectManager = new EffectManager();
 
     public Battle(Player player1, Player player2, View view)
     {
         _currentAttacker = player1;
         _currentDefender = player2;
         _view = view;
-        _effectManager = new EffectManager(_view);
-        _currentAttacker.ApplyBaseEffects(_effectManager);
-        _currentDefender.ApplyBaseEffects(_effectManager);
+        _effectManager.View = view;
     }
 
     public void Start()
@@ -53,18 +51,18 @@ public class Battle
         HandleEndOfRound();
     }
 
-    private void HandleEndOfGame(Exception exception)
-    {
-        PrintRoundInfo();
-        _view.WriteLine(exception.Message == "Player 1 sin unidades" ? "Player 2 ganó" : "Player 1 ganó");
-    }
-
     private void HandleEndOfRound()
     {
         PrintRoundInfo();
         SaveRoundInfo();
         ResetStats();
         SwitchPlayers();
+    }
+    
+    private void HandleEndOfGame(Exception exception)
+    {
+        PrintRoundInfo();
+        _view.WriteLine(exception.Message == "Player 1 sin unidades" ? "Player 2 ganó" : "Player 1 ganó");
     }
 
     private void SwitchPlayers()
@@ -79,8 +77,8 @@ public class Battle
 
     private void ChoiceUnits()
     {
-        _currentAttacker.ChoiceUnit();
-        _currentDefender.ChoiceUnit();
+        _currentAttacker.ChoiceUnit(_view);
+        _currentDefender.ChoiceUnit(_view);
         SetUnits();
         SetRoundInfo();
     }
@@ -89,6 +87,16 @@ public class Battle
     {
         _unit = _currentAttacker.Unit;
         _rival = _currentDefender.Unit;
+        _unit.EffectManager = _effectManager;
+        _rival.EffectManager = _effectManager;
+    }
+    
+    private void SetRoundInfo()
+    {
+        _unit.IsAttacker = true;
+        _rival.IsAttacker = false;
+        _unit.Rival = _rival;
+        _rival.Rival = _unit;
     }
 
     private void StartAttacks()
@@ -106,10 +114,8 @@ public class Battle
 
     private void ApplySkills()
     {
-        _unit.SetSkillsEffects();
-        _rival.SetSkillsEffects();
-        _unit.ApplySkills();
-        _rival.ApplySkills();
+        _unit.SetSkills();
+        _rival.SetSkills();
         _effectManager.ApplyEffects();
     }
 
@@ -160,16 +166,11 @@ public class Battle
         _rival.LastRival = _unit;
     }
 
-    private void SetRoundInfo()
-    {
-        _unit.IsAttacker = true;
-        _unit.Rival = _rival;
-        _rival.Rival = _unit;
-    }
-
     private void ResetStats()
     {
         _unit.IsAttacker = false;
+        _unit.InFirstRound = false;
+        _rival.InFirstRound = false;
         _effectManager.ResetFollowUpEffects();
         _unit.ResetStats();
         _rival.ResetStats();

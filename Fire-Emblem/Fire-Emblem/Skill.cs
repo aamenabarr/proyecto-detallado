@@ -1,41 +1,42 @@
-using Fire_Emblem_View;
-
 namespace Fire_Emblem;
 
 public class Skill
 {
-    public string Name { get; }
-    public string Description { get; }
+    public string Name;
+    public string Description;
     public Unit Unit;
-    public List<Effect> Effects = new List<Effect>();
-    public List<Effect> BaseEffects = new List<Effect>();
     public List<Condition> Conditions = new List<Condition>();
+    public List<Effect> Effects = new List<Effect>();
 
-    public Skill(AuxSkill skill, View view)
+    public Skill(AuxSkill skill)
     {
         Name = skill.Name;
         Description = skill.Description;
     }
 
-    public void SetConditionsAndEffects()
+    public void SetSkill()
     {
-        SetBonusConditionsAndEffects();
-        SetPenaltyConditionsAndEffects();
-        SetNeutralizeBonusConditionsAndEffects();
-        SetNeutralizePenaltyConditionsAndEffects();
-        SetHybridConditionsAndEffects();
+        SetAlterBaseStats();
+        SetBonus();
+        SetPenalty();
+        SetNeutralizeBonus();
+        SetNeutralizePenalty();
+        SetHybrid();
+        AddEffectsToManager();
     }
 
-    public void SetAlterBaseStats()
+    private void SetAlterBaseStats()
     {
         switch (Name)
         {
             case "HP +15":
-                BaseEffects.Add(new AlterBaseStats(Unit, "Hp", 15));
+                Conditions.Add(new InFirstRound(Unit));
+                Effects.Add(new AlterBaseStats(Unit, "Hp", 15));
                 break;  
         }
     }
-    private void SetBonusConditionsAndEffects()
+    
+    private void SetBonus()
     {
         switch (Name)
         {
@@ -54,7 +55,7 @@ public class Skill
                 break;
             case "Ignis":
                 var effect = new Bonus(Unit, "Atk", Unit.Atk / 2);
-                Conditions.Add(new InFirstAttack(new List<Effect>() { effect }));
+                effect.InFirstAttack = true;
                 Effects.Add(effect);
                 break;
             case "Perceptive":
@@ -217,7 +218,7 @@ public class Skill
         }
     }
 
-    private void SetPenaltyConditionsAndEffects()
+    private void SetPenalty()
     {
         switch (Name)
         {
@@ -245,7 +246,8 @@ public class Skill
             case "Luna":
                 var effect1 = new Penalty(Unit.Rival, "Def", -Unit.Rival.Def / 2);
                 var effect2 = new Penalty(Unit.Rival, "Res", -Unit.Rival.Res / 2);
-                Conditions.Add(new InFirstAttack(new List<Effect>() { effect1, effect2 }));
+                effect1.InFirstAttack = true;
+                effect2.InFirstAttack = true;
                 Effects.Add(effect1);
                 Effects.Add(effect2);
                 break;
@@ -261,7 +263,7 @@ public class Skill
         }
     }
 
-    private void SetNeutralizeBonusConditionsAndEffects()
+    private void SetNeutralizeBonus()
     {
         switch (Name)
         {
@@ -271,7 +273,7 @@ public class Skill
         }
     }
     
-    private void SetNeutralizePenaltyConditionsAndEffects()
+    private void SetNeutralizePenalty()
     {
         switch (Name)
         {
@@ -281,7 +283,7 @@ public class Skill
         }
     }
     
-    private void SetHybridConditionsAndEffects()
+    private void SetHybrid()
     {
         switch (Name)
         {
@@ -298,7 +300,7 @@ public class Skill
             case "Sandstorm":
                 var w = Unit.InitialDef / 2 + Unit.InitialDef - Unit.InitialAtk;
                 Effect effect = (w > 0) ? new Bonus(Unit, "Atk", w) : new Penalty(Unit, "Atk", w);
-                Conditions.Add(new InFollowUp(new List<Effect>() { effect }));
+                effect.InFollowUp = true;
                 Effects.Add(effect);
                 break;
             case "Sword Agility":
@@ -445,20 +447,13 @@ public class Skill
         }
     }
 
-    public void Apply()
+    private void AddEffectsToManager()
     {
         if (ConditionsAreMet())
         {
             foreach (var effect in Effects)
-                effect.AddEffect();
+                effect.AddToManager();
         }
-    }
-    
-    public void ApplyBaseEffects()
-    {
-        SetAlterBaseStats();
-        foreach (var effect in BaseEffects)
-            effect.AddEffect();
     }
 
     private bool ConditionsAreMet()
@@ -469,7 +464,7 @@ public class Skill
         return true;
     }
 
-    public void ResetStats()
+    public void Reset()
     {
         foreach (var effect in Effects)
             effect.Reset();

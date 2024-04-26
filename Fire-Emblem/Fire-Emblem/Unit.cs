@@ -13,18 +13,20 @@ public class Unit
     public int Spd;
     public int Def;
     public int Res;
-    public double Wtb;
-    public List<Skill> Skills;
-    public Unit LastRival;
-    public Unit Rival;
-    public bool IsAttacker = false;
     public int InitialHp;
     public int InitialAtk;
     public int InitialSpd;
     public int InitialDef;
     public int InitialRes;
-    private readonly View _view;
+    public double Wtb;
+    public bool IsAttacker = false;
+    public bool InFirstRound = true;
+    public List<Skill> Skills;
+    public Unit LastRival;
+    public Unit Rival;
+    private View _view;
     public EffectManager EffectManager;
+    private Utils _utils = new Utils();
 
     public Unit(AuxUnit unit, List<Skill> skills, View view)
     {
@@ -32,16 +34,16 @@ public class Unit
         Weapon = unit.Weapon;
         Gender = unit.Gender;
         DeathQuote = unit.DeathQuote;
-        Hp = Int(unit.HP);
-        Atk = Int(unit.Atk);
-        Spd = Int(unit.Spd);
-        Def = Int(unit.Def);
-        Res = Int(unit.Res);
-        InitialHp = Int(unit.HP);
-        InitialAtk = Int(unit.Atk);
-        InitialSpd = Int(unit.Spd);
-        InitialDef = Int(unit.Def);
-        InitialRes = Int(unit.Res);
+        Hp = _utils.Int(unit.HP);
+        Atk = _utils.Int(unit.Atk);
+        Spd = _utils.Int(unit.Spd);
+        Def = _utils.Int(unit.Def);
+        Res = _utils.Int(unit.Res);
+        InitialHp = _utils.Int(unit.HP);
+        InitialAtk = _utils.Int(unit.Atk);
+        InitialSpd = _utils.Int(unit.Spd);
+        InitialDef = _utils.Int(unit.Def);
+        InitialRes = _utils.Int(unit.Res);
         Skills = skills;
         _view = view;
     }
@@ -86,28 +88,17 @@ public class Unit
                             $"con respecto a {rival.Name} ({rival.Weapon})");
         return hasAdvantage;
     }
-    
-    private static int Int(string stat)
-    {
-        return Convert.ToInt32(stat);
-    }
 
-    public void SetSkillsEffects()
+    public void SetSkills()
     {
         foreach (var skill in Skills)
-            skill.SetConditionsAndEffects();
-    }
-
-    public void ApplySkills()
-    {
-        foreach (var skill in Skills)
-            skill.Apply();
+            skill.SetSkill();
     }
 
     public void ResetStats()
     {
         foreach (var skill in Skills)
-            skill.ResetStats();
+            skill.Reset();
     }
 
     public void ResetFirstAttackEffects()

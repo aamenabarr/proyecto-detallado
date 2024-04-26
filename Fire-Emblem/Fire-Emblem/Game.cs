@@ -1,70 +1,61 @@
 ﻿using Fire_Emblem_View;
-using System.Text.Json;
 
 namespace Fire_Emblem;
 
 public class Game
 {
-    private readonly View _view;
-    private readonly string _teamsFolder;
-    private List<AuxUnit>? _units;
-    private List<AuxSkill>? _skills;
-    private Battle? _battle;
-    private readonly Team _team1 = new Team();
-    private readonly Team _team2 = new Team();
+    private string _teamsFolder;
+    private View _view;
+    private Utils _utils = new Utils();
+    private List<AuxUnit> _units;
+    private List<AuxSkill> _skills;
+    private Battle _battle;
+    private Team _team1 = new Team();
+    private Team _team2 = new Team();
     
     public Game(View view, string teamsFolder)
     {
         _view = view;
         _teamsFolder = teamsFolder;
-        LoadJsonFiles();
+        LoadJsonData();
     }
 
-    private void LoadJsonFiles()
+    private void LoadJsonData()
     {
-        _units = LoadFromJsonFile<AuxUnit>("characters.json");
-        _skills = LoadFromJsonFile<AuxSkill>("skills.json");
+        _units = _utils.LoadFromJsonFile<AuxUnit>("characters.json");
+        _skills = _utils.LoadFromJsonFile<AuxSkill>("skills.json");
     }
 
     public void Play()
     {
         _view.WriteLine("Elige un archivo para cargar los equipos");
         
-        var files = Directory.GetFiles(_teamsFolder);
-        for (var i = 0; i < files.Length; i++)
-            _view.WriteLine($"{i}: {Path.GetFileName(files[i])}");
+        var files = _utils.GetFiles(_teamsFolder);
+        PrintTeamOptions(files);
 
-        var input = Convert.ToInt32(_view.ReadLine());
-        var teamsFile = ReadTeamsFile(files[input]);
-        PopulateTeams(teamsFile);
+        var input = _utils.Int(_view.ReadLine());
+        var teamFile = _utils.ReadFile(files[input]);
+        PopulateTeams(teamFile);
 
-        if (_team1.IsValid() && _team2.IsValid())
+        if (AreValidTeams())
         {
-            _battle = new Battle(
-                new Player(1, _team1, _view), 
-                new Player(2, _team2, _view),
-                _view);
+            _battle = CreateBattle();
             _battle.Start();
         }
         else
             _view.WriteLine($"Archivo de equipos no válido");
     }
-    
-    private static List<T>? LoadFromJsonFile<T>(string filePath)
+
+    private void PrintTeamOptions(string[] files)
     {
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<List<T>>(json);
+        for (var i = 0; i < files.Length; i++)
+            _view.WriteLine($"{i}: {Path.GetFileName(files[i])}");
     }
 
-    private string[] ReadTeamsFile(string teamsFile)
-    {
-        return File.ReadAllLines(teamsFile);
-    }
-
-    private void PopulateTeams(IEnumerable<string> teamsFile)
+    private void PopulateTeams(string[] teamFile)
     {
         var team = 0;
-        foreach (var line in teamsFile)
+        foreach (var line in teamFile)
         {
             if (line.StartsWith("Player"))
             {
@@ -80,26 +71,52 @@ public class Game
     {
         var unit = line.Trim(')').Split('(');
         var name = unit[0].Trim();
-        var skills = unit.Length == 2
+        var skills = HasSkills(unit)
             ? CreateSkills(unit[1].Split(','))
-            : CreateSkills(["None"]);
+            : new List<Skill>();
         return (name, skills);
+    }
+
+    private bool HasSkills(string[] unit)
+    {
+        return unit.Length == 2;
+    }
+    
+    private List<Skill> CreateSkills(string[] skills)
+    {
+        return skills
+            .Select(name =>
+            {
+                var auxSkill = _skills.FirstOrDefault(s => s.Name == name);
+                return new Skill(auxSkill);
+            })
+            .ToList();
     }
     
     private Unit CreateUnit(string name, List<Skill> skills)
     {
-        var auxUnit = _units?.FirstOrDefault(u => u.Name == name);
-        return new Unit(auxUnit ?? new AuxUnit(), skills, _view);
+        var auxUnit = _units.FirstOrDefault(u => u.Name == name);
+        var unit = new Unit(auxUnit, skills, _view);
+        SetSkillsUnit(unit);
+        return unit;
     }
-    
-    private List<Skill> CreateSkills(IEnumerable<string> skillNames)
+
+    private void SetSkillsUnit(Unit unit)
     {
-        return skillNames
-            .Select(skillName =>
-            {
-                var auxSkill = _skills?.FirstOrDefault(s => s.Name == skillName);
-                return new Skill(auxSkill ?? new AuxSkill(), _view);
-            })
-            .ToList();
+        foreach (var skill in unit.Skills)
+            skill.Unit = unit;
+    }
+
+    private bool AreValidTeams()
+    {
+        return _team1.IsValid() && _team2.IsValid();
+    }
+
+    private Battle CreateBattle()
+    {
+        return new Battle(
+            new Player(1, _team1), 
+            new Player(2, _team2),
+            _view);
     }
 }

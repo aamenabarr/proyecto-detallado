@@ -2,14 +2,9 @@ namespace Fire_Emblem;
 
 public class StartsAttack : Condition
 {
-    private Unit _unit;
-
-    public StartsAttack(Unit unit)
-    {
-        _unit = unit;
-    }
+    public StartsAttack(Unit unit) : base(unit){}
     
-    public bool IsMet()
+    public override bool IsMet()
     {
         return _unit.IsAttacker;
     }

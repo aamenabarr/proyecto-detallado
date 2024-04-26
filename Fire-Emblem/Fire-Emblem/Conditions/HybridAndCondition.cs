@@ -4,11 +4,11 @@ public class HybridAndCondition : Condition
 {
     private List<Condition> _conditions;
 
-    public HybridAndCondition(List<Condition> conditions)
+    public HybridAndCondition(List<Condition> conditions) : base(null)
     {
         _conditions = conditions;
     }
-    public bool IsMet()
+    public override bool IsMet()
     {
         foreach (var condition in _conditions)
             if (!condition.IsMet())

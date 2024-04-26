@@ -4,44 +4,34 @@ namespace Fire_Emblem;
 
 public class Player
 {
-    public readonly Team Team;
-    public readonly int Id;
-    public Unit? Unit;
-    private readonly View _view;
+    public int Id;
+    public Team Team;
+    public Unit Unit;
+    private Utils _utils = new Utils();
 
-    public Player(int id, Team team, View view)
+    public Player(int id, Team team)
     {
         Id = id;
         Team = team;
-        _view = view;
     }
 
-    public void ChoiceUnit()
+    public void ChoiceUnit(View view)
     {
-        _view.WriteLine($"Player {Id} selecciona una opción");
+        view.WriteLine($"Player {Id} selecciona una opción");
+        PrintUnitOptions(view);
+        var input = _utils.Int(view.ReadLine());
+        Unit = Team.Units[input];
+    }
+
+    private void PrintUnitOptions(View view)
+    {
         for (var i = 0; i < Team.Units.Count; i++)
-            _view.WriteLine($"{i}: {Team.Units[i].Name}");
-        Unit = Team.Units[Convert.ToInt32(_view.ReadLine())];
-        Unit.IsAttacker = false;
-    }
-
-    public void ApplyBaseEffects(EffectManager effectManager)
-    {
-        foreach (var unit in Team.Units)
-        {
-            unit.EffectManager = effectManager;
-            foreach (var skill in unit.Skills)
-            {
-                skill.Unit = unit;
-                skill.ApplyBaseEffects();
-            }
-        }
+            view.WriteLine($"{i}: {Team.Units[i].Name}");
     }
 
     public void UpdateTeam()
     {
-        if (Unit == null || Unit.Hp != 0)
-            return;
+        if (Unit.Hp != 0) return;
         Team.Units.Remove(Unit);
         CheckExceptions();
     }

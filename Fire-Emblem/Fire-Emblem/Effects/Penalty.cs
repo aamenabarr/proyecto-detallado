@@ -8,10 +8,16 @@ public class Penalty : Effect
     {
         base.Apply();
         AlterStat();
+        AddMessage();
     }
     
     public override void Reset()
     {
         ResetStat();
+    }
+    
+    private void AddMessage()
+    {
+        if (!InFollowUp) AddAlterStatMessage();
     }
 }

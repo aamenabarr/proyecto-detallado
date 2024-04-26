@@ -22,7 +22,7 @@ public class Team
               unit.Skills.Count > 2));
     }
 
-    private static bool HasDuplicates<T>(IReadOnlyCollection<T> collection, Func<T, string> getProperty)
+    private bool HasDuplicates<T>(List<T> collection, Func<T, string> getProperty)
     {
         return collection.Select(getProperty).Distinct().Count() != collection.Count;
     }
