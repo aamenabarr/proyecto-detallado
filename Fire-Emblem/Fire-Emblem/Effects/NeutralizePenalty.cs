@@ -8,13 +8,6 @@ public class NeutralizePenalty : Effect
     
     public override void Apply()
     {
-        base.Apply();
-        Neutralize(GetEffects<Penalty>());
-        AddMessage("penalty");
-    }
-    
-    private void AddMessage(string type)
-    {
-        AddNeutralizeMessages(type);
+        NeutralizeEffect("Penalty");
     }
 }

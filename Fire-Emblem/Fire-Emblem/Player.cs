@@ -5,9 +5,8 @@ namespace Fire_Emblem;
 public class Player
 {
     public int Id;
-    public Team Team;
     public Unit Unit;
-    private Utils _utils = new Utils();
+    private Team Team;
 
     public Player(int id, Team team)
     {
@@ -19,25 +18,25 @@ public class Player
     {
         view.WriteLine($"Player {Id} selecciona una opción");
         PrintUnitOptions(view);
-        var input = _utils.Int(view.ReadLine());
-        Unit = Team.Units[input];
+        var input = Utils.Int(view.ReadLine());
+        Unit = Team.GetUnit(input);
     }
 
     private void PrintUnitOptions(View view)
     {
-        for (var i = 0; i < Team.Units.Count; i++)
-            view.WriteLine($"{i}: {Team.Units[i].Name}");
+        for (var i = 0; i < Team.Length(); i++)
+            view.WriteLine($"{i}: {Team.GetUnit(i).Name}");
     }
 
     public void UpdateTeam()
     {
         if (Unit.Hp != 0) return;
-        Team.Units.Remove(Unit);
+        Team.RemoveUnit(Unit);
         CheckExceptions();
     }
 
     private void CheckExceptions()
     {
-        throw Team.Units.Count == 0 ? new EndOfGame($"Player {Id} sin unidades") : new EndOfRound();
+        throw Team.Length() == 0 ? new EndOfGame($"Player {Id} sin unidades") : new EndOfRound();
     }
 }

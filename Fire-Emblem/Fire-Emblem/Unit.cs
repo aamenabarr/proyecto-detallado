@@ -13,38 +13,35 @@ public class Unit
     public int Spd;
     public int Def;
     public int Res;
-    public int InitialHp;
-    public int InitialAtk;
-    public int InitialSpd;
-    public int InitialDef;
-    public int InitialRes;
     public double Wtb;
+    public string[] Skills;
     public bool IsAttacker = false;
     public bool InFirstRound = true;
-    public List<Skill> Skills;
-    public Unit LastRival;
+    public bool InFirstAttack = true;
+    public bool InFollowUp = false;
     public Unit Rival;
+    public Unit LastRival;
+    public StatsManager StatsManager;
+    public Dictionary<string, int> InitialStats;
     private View _view;
-    public EffectManager EffectManager;
-    private Utils _utils = new Utils();
 
-    public Unit(AuxUnit unit, List<Skill> skills, View view)
+    public Unit(AuxUnit unit, string[] skills, View view)
     {
         Name = unit.Name;
         Weapon = unit.Weapon;
         Gender = unit.Gender;
         DeathQuote = unit.DeathQuote;
-        Hp = _utils.Int(unit.HP);
-        Atk = _utils.Int(unit.Atk);
-        Spd = _utils.Int(unit.Spd);
-        Def = _utils.Int(unit.Def);
-        Res = _utils.Int(unit.Res);
-        InitialHp = _utils.Int(unit.HP);
-        InitialAtk = _utils.Int(unit.Atk);
-        InitialSpd = _utils.Int(unit.Spd);
-        InitialDef = _utils.Int(unit.Def);
-        InitialRes = _utils.Int(unit.Res);
+        Hp = Utils.Int(unit.HP);
+        Atk = Utils.Int(unit.Atk);
+        Spd = Utils.Int(unit.Spd);
+        Def = Utils.Int(unit.Def);
+        Res = Utils.Int(unit.Res);
         Skills = skills;
+        StatsManager = new StatsManager(view, this);
+        InitialStats = new()
+        {
+            {"Hp", Hp}, {"Atk", Atk}, {"Spd", Spd}, {"Def", Def}, {"Res", Res}
+        };
         _view = view;
     }
     
@@ -89,22 +86,50 @@ public class Unit
         return hasAdvantage;
     }
 
-    public void SetSkills()
+    public void ApplySkills()
     {
-        foreach (var skill in Skills)
-            skill.SetSkill();
+        foreach (var skillName in Skills)
+        {
+            var skill = new Skill(skillName, this);
+            skill.Apply();
+        }
     }
 
+    public void AlterStats()
+    {
+        foreach (var effect in SetAlterEffects())
+            StatsManager.AlterUnitStats(effect);
+    }
+
+    private List<string> SetAlterEffects()
+    {
+        var effects = new List<string>();
+        if (InFirstRound) effects.Add("AlterBaseStats");
+        effects.Add($"Bonus");
+        effects.Add($"Penalty");
+        var state = "";
+        if (InFirstAttack) state = "InFirstAttack";
+        if (InFollowUp) state = "InFollowUp";
+        effects.Add($"Bonus{state}");
+        effects.Add($"Penalty{state}");
+        return effects;
+    }
+
+    public void PrintSkillsMessages()
+    {
+        StatsManager.PrintMessages();
+    }
+    
     public void ResetStats()
     {
-        foreach (var skill in Skills)
-            skill.Reset();
+        Atk = InitialStats["Atk"];
+        Spd = InitialStats["Spd"];
+        Def = InitialStats["Def"];
+        Res = InitialStats["Res"];
     }
 
-    public void ResetFirstAttackEffects()
+    public void ResetStatsManager()
     {
-        foreach (var skill in Skills)
-        foreach (var effect in skill.Effects)
-            if (effect.InFirstAttack) effect.Reset();
+        StatsManager.ResetStatsDictionary();
     }
 }

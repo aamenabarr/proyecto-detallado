@@ -6,7 +6,6 @@ public class AlterBaseStats : Effect
     
     public override void Apply()
     {
-        base.Apply();
         AlterStat();
     }
 }

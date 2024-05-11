@@ -10,14 +10,12 @@ public class Battle
     private Player _currentDefender;
     private Unit _unit;
     private Unit _rival;
-    private EffectManager _effectManager = new EffectManager();
 
     public Battle(Player player1, Player player2, View view)
     {
         _currentAttacker = player1;
         _currentDefender = player2;
         _view = view;
-        _effectManager.View = view;
     }
 
     public void Start()
@@ -43,38 +41,14 @@ public class Battle
     private void Round()
     {
         ChoiceUnits();
-        _view.WriteLine($"Round {_round}: {_unit.Name} (Player {_currentAttacker.Id}) comienza");
+        PrintStartOfRound();
         WeaponsTriangle();
         ApplySkills();
         StartAttacks();
         FollowUp();
         HandleEndOfRound();
     }
-
-    private void HandleEndOfRound()
-    {
-        PrintRoundInfo();
-        SaveRoundInfo();
-        ResetStats();
-        SwitchPlayers();
-    }
     
-    private void HandleEndOfGame(Exception exception)
-    {
-        PrintRoundInfo();
-        _view.WriteLine(exception.Message == "Player 1 sin unidades" ? "Player 2 ganó" : "Player 1 ganó");
-    }
-
-    private void SwitchPlayers()
-    {
-        (_currentAttacker, _currentDefender) = (_currentDefender, _currentAttacker);
-    }
-    
-    private void SwitchUnits()
-    {
-        (_unit, _rival) = (_rival, _unit);
-    }
-
     private void ChoiceUnits()
     {
         _currentAttacker.ChoiceUnit(_view);
@@ -87,8 +61,6 @@ public class Battle
     {
         _unit = _currentAttacker.Unit;
         _rival = _currentDefender.Unit;
-        _unit.EffectManager = _effectManager;
-        _rival.EffectManager = _effectManager;
     }
     
     private void SetRoundInfo()
@@ -99,26 +71,11 @@ public class Battle
         _rival.Rival = _unit;
     }
 
-    private void StartAttacks()
+    private void PrintStartOfRound()
     {
-        Attack(_currentDefender);
-        Attack(_currentAttacker);
+        _view.WriteLine($"Round {_round}: {_unit.Name} (Player {_currentAttacker.Id}) comienza");
     }
-
-    private void Attack(Player defender)
-    {
-        _unit.Attack(_rival);
-        defender.UpdateTeam();
-        SwitchUnits();
-    }
-
-    private void ApplySkills()
-    {
-        _unit.SetSkills();
-        _rival.SetSkills();
-        _effectManager.ApplyEffects();
-    }
-
+    
     private void WeaponsTriangle()
     {
         if (_unit.HasAdvantage(_rival))
@@ -138,11 +95,62 @@ public class Battle
             _rival.Wtb = 1;
         }
     }
+    
+    private void ApplySkills()
+    {
+        _unit.ApplySkills();
+        _rival.ApplySkills();
+        _unit.PrintSkillsMessages();
+        _rival.PrintSkillsMessages();
+    }
+    
+    private void StartAttacks()
+    {
+        SetFirstAttackInfo();
+        AlterStats();
+        Attack(_currentDefender);
+        Attack(_currentAttacker);
+        ResetStats();
+    }
+    
+    private void SetFirstAttackInfo()
+    {
+        _unit.InFirstAttack = true;
+        _rival.InFirstAttack = true;
+        _unit.InFollowUp = false;
+        _rival.InFollowUp = false;
+    }
 
+    private void AlterStats()
+    {
+        _unit.AlterStats();
+        _rival.AlterStats();
+    }
+    
+    private void ResetStats()
+    {
+        _unit.InFirstRound = false;
+        _rival.InFirstRound = false;
+        _unit.ResetStats();
+        _rival.ResetStats();
+    }
+
+    private void Attack(Player defender)
+    {
+        _unit.Attack(_rival);
+        defender.UpdateTeam();
+        SwitchUnits();
+    }
+    
+    private void SwitchUnits()
+    {
+        (_unit, _rival) = (_rival, _unit);
+    }
+    
     private void FollowUp()
     {
-        ResetFirstAttackEffects();
-        _effectManager.ApplyFollowUpEffects();
+        SetFollowUpInfo();
+        AlterStats();
         if (_unit.CanDoFollowUp(_rival))
             Attack(_currentDefender);
         else if (_rival.CanDoFollowUp(_unit))
@@ -152,9 +160,27 @@ public class Battle
         }
         else
             _view.WriteLine("Ninguna unidad puede hacer un follow up");
+        ResetStats();
+    }
+
+    private void SetFollowUpInfo()
+    {
+        _unit.InFirstAttack = false;
+        _rival.InFirstAttack = false;
+        _unit.InFollowUp = true;
+        _rival.InFollowUp = true;
     }
     
-    private void PrintRoundInfo()
+    private void HandleEndOfRound()
+    {
+        PrintEndOfRoundInfo();
+        SaveRoundInfo();
+        ResetStats();
+        ResetStatsManagers();
+        SwitchPlayers();
+    }
+    
+    private void PrintEndOfRoundInfo()
     {
         _view.WriteLine($"{_currentAttacker.Unit.Name} ({_currentAttacker.Unit.Hp}) :" +
                         $" {_currentDefender.Unit.Name} ({_currentDefender.Unit.Hp})");
@@ -166,20 +192,20 @@ public class Battle
         _rival.LastRival = _unit;
     }
 
-    private void ResetStats()
+    private void ResetStatsManagers()
     {
-        _unit.IsAttacker = false;
-        _unit.InFirstRound = false;
-        _rival.InFirstRound = false;
-        _effectManager.ResetFollowUpEffects();
-        _unit.ResetStats();
-        _rival.ResetStats();
-        _effectManager.Effects.Clear();
+        _unit.ResetStatsManager();
+        _rival.ResetStatsManager();
     }
 
-    private void ResetFirstAttackEffects()
+    private void SwitchPlayers()
     {
-        _unit.ResetFirstAttackEffects();
-        _rival.ResetFirstAttackEffects();
+        (_currentAttacker, _currentDefender) = (_currentDefender, _currentAttacker);
+    }
+    
+    private void HandleEndOfGame(Exception exception)
+    {
+        PrintEndOfRoundInfo();
+        _view.WriteLine(exception.Message == "Player 1 sin unidades" ? "Player 2 ganó" : "Player 1 ganó");
     }
 }

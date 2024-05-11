@@ -8,13 +8,6 @@ public class NeutralizeBonus : Effect
 
     public override void Apply()
     {
-        base.Apply();
-        Neutralize(GetEffects<Bonus>());
-        AddMessage("bonus");
-    }
-    
-    public void AddMessage(string type)
-    {
-        AddNeutralizeMessages(type);
+        NeutralizeEffect("Bonus");
     }
 }

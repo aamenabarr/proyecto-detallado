@@ -2,7 +2,7 @@ namespace Fire_Emblem;
 
 public class Team
 {
-    public List<Unit> Units = new List<Unit>();
+    private List<Unit> _units = new();
 
     public bool IsValid()
     {
@@ -11,19 +11,45 @@ public class Team
 
     private bool HasValidUnits()
     {
-        return !(HasDuplicates(Units, unit => unit.Name) || 
-                 Units.Count == 0 || Units.Count > 3);
+        return !(HasDuplicatedUnits() || _units.Count == 0 || _units.Count > 3);
+    }
+    
+    private bool HasDuplicatedUnits()
+    {
+        return _units.Select(unit => unit.Name).Distinct().Count() != _units.Count;
     }
     
     private bool HasValidSkills()
     {
-        return Units.All(unit =>
-            !(HasDuplicates(unit.Skills, skill => skill.Name) ||
-              unit.Skills.Count > 2));
+        return _units.All(unit => !(HasDuplicatedSkills(unit.Skills) || unit.Skills.Length > 2));
+    }
+    
+    private bool HasDuplicatedSkills(string[] skills)
+    {
+        HashSet<string> set = new HashSet<string>();
+        foreach (string skill in skills)
+            if (!set.Add(skill))
+                return true;
+        return false;
     }
 
-    private bool HasDuplicates<T>(List<T> collection, Func<T, string> getProperty)
+    public int Length()
     {
-        return collection.Select(getProperty).Distinct().Count() != collection.Count;
+        return _units.Count();
+    }
+
+    public Unit GetUnit(int id)
+    {
+        return _units[id];
+    }
+
+    public void RemoveUnit(Unit unit)
+    {
+        _units.Remove(unit);
+    }
+
+    public void AddUnit(Unit unit)
+    {
+        _units.Add(unit);
     }
 }

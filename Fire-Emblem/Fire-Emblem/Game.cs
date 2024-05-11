@@ -6,35 +6,26 @@ public class Game
 {
     private string _teamsFolder;
     private View _view;
-    private Utils _utils = new Utils();
-    private List<AuxUnit> _units;
-    private List<AuxSkill> _skills;
     private Battle _battle;
-    private Team _team1 = new Team();
-    private Team _team2 = new Team();
+    private Units _units = new();
+    private Team _team1 = new();
+    private Team _team2 = new();
     
     public Game(View view, string teamsFolder)
     {
         _view = view;
         _teamsFolder = teamsFolder;
-        LoadJsonData();
-    }
-
-    private void LoadJsonData()
-    {
-        _units = _utils.LoadFromJsonFile<AuxUnit>("characters.json");
-        _skills = _utils.LoadFromJsonFile<AuxSkill>("skills.json");
     }
 
     public void Play()
     {
         _view.WriteLine("Elige un archivo para cargar los equipos");
         
-        var files = _utils.GetFiles(_teamsFolder);
+        var files = Utils.GetFiles(_teamsFolder);
         PrintTeamOptions(files);
 
-        var input = _utils.Int(_view.ReadLine());
-        var teamFile = _utils.ReadFile(files[input]);
+        var input = Utils.Int(_view.ReadLine());
+        var teamFile = Utils.ReadFile(files[input]);
         PopulateTeams(teamFile);
 
         if (AreValidTeams())
@@ -63,48 +54,30 @@ public class Game
                 continue;
             }
             var (unitName, unitSkills) = GetLineInfo(line);
-            (team == 1 ? _team1 : _team2).Units.Add(CreateUnit(unitName, unitSkills));
+            (team == 1 ? _team1 : _team2).AddUnit(CreateUnit(unitName, unitSkills));
         }
     }
 
-    private (string, List<Skill>) GetLineInfo(string line)
+    private (string, string[]) GetLineInfo(string line)
     {
         var unit = line.Trim(')').Split('(');
         var name = unit[0].Trim();
         var skills = HasSkills(unit)
-            ? CreateSkills(unit[1].Split(','))
-            : new List<Skill>();
+            ? unit[1].Split(',')
+            : new string[1];
         return (name, skills);
     }
-
+    
     private bool HasSkills(string[] unit)
     {
         return unit.Length == 2;
     }
     
-    private List<Skill> CreateSkills(string[] skills)
+    private Unit CreateUnit(string name, string[] skills)
     {
-        return skills
-            .Select(name =>
-            {
-                var auxSkill = _skills.FirstOrDefault(s => s.Name == name);
-                return new Skill(auxSkill);
-            })
-            .ToList();
-    }
-    
-    private Unit CreateUnit(string name, List<Skill> skills)
-    {
-        var auxUnit = _units.FirstOrDefault(u => u.Name == name);
+        var auxUnit = _units.GetUnit(name);
         var unit = new Unit(auxUnit, skills, _view);
-        SetSkillsUnit(unit);
         return unit;
-    }
-
-    private void SetSkillsUnit(Unit unit)
-    {
-        foreach (var skill in unit.Skills)
-            skill.Unit = unit;
     }
 
     private bool AreValidTeams()

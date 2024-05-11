@@ -6,18 +6,6 @@ public class Penalty : Effect
     
     public override void Apply()
     {
-        base.Apply();
         AlterStat();
-        AddMessage();
-    }
-    
-    public override void Reset()
-    {
-        ResetStat();
-    }
-    
-    private void AddMessage()
-    {
-        if (!InFollowUp) AddAlterStatMessage();
     }
 }
