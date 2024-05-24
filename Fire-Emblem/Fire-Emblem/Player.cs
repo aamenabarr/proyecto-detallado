@@ -14,7 +14,7 @@ public class Player
         Team = team;
     }
 
-    public void ChoiceUnit(View view)
+    public void ChooseUnit(View view)
     {
         view.WriteLine($"Player {Id} selecciona una opción");
         PrintUnitOptions(view);

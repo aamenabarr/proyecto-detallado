@@ -40,7 +40,7 @@ public class Battle
     
     private void Round()
     {
-        ChoiceUnits();
+        ChooseUnits();
         PrintStartOfRound();
         WeaponsTriangle();
         ApplySkills();
@@ -49,10 +49,10 @@ public class Battle
         HandleEndOfRound();
     }
     
-    private void ChoiceUnits()
+    private void ChooseUnits()
     {
-        _currentAttacker.ChoiceUnit(_view);
-        _currentDefender.ChoiceUnit(_view);
+        _currentAttacker.ChooseUnit(_view);
+        _currentDefender.ChooseUnit(_view);
         SetUnits();
         SetRoundInfo();
     }
@@ -108,6 +108,7 @@ public class Battle
     {
         SetFirstAttackInfo();
         AlterStats();
+        AlterDamage();
         Attack(_currentDefender);
         Attack(_currentAttacker);
         ResetStats();
@@ -127,10 +128,16 @@ public class Battle
         _rival.AlterStats();
     }
     
+    private void AlterDamage()
+    {
+        _unit.AlterDamage();
+        _rival.AlterDamage();
+    }
+    
     private void ResetStats()
     {
-        _unit.InFirstRound = false;
-        _rival.InFirstRound = false;
+        _unit.InFirstCombat = false;
+        _rival.InFirstCombat = false;
         _unit.ResetStats();
         _rival.ResetStats();
     }
@@ -151,6 +158,7 @@ public class Battle
     {
         SetFollowUpInfo();
         AlterStats();
+        AlterDamage();
         if (_unit.CanDoFollowUp(_rival))
             Attack(_currentDefender);
         else if (_rival.CanDoFollowUp(_unit))
@@ -176,7 +184,7 @@ public class Battle
         PrintEndOfRoundInfo();
         SaveRoundInfo();
         ResetStats();
-        ResetStatsManagers();
+        ResetManagers();
         SwitchPlayers();
     }
     
@@ -192,10 +200,10 @@ public class Battle
         _rival.LastRival = _unit;
     }
 
-    private void ResetStatsManagers()
+    private void ResetManagers()
     {
-        _unit.ResetStatsManager();
-        _rival.ResetStatsManager();
+        _unit.ResetManagers();
+        _rival.ResetManagers();
     }
 
     private void SwitchPlayers()

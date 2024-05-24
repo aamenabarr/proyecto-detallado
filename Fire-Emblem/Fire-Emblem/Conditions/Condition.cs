@@ -8,6 +8,8 @@ public abstract class Condition
     {
         _unit = unit;
     }
+
+    protected Condition() : this(null) {}
     
     public abstract bool IsMet();
 }

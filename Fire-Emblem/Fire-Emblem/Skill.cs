@@ -21,6 +21,9 @@ public class Skill
         SetPenalty();
         SetNeutralizeBonus();
         SetNeutralizePenalty();
+        SetExtraDamage();
+        SetPercentageDamageReduction();
+        SetAbsolutDamageReduction();
         SetHybrid();
     }
 
@@ -29,7 +32,7 @@ public class Skill
         switch (_name)
         {
             case "HP +15":
-                _conditions.Add(new InFirstRound(_unit));
+                _conditions.Add(new InFirstCombat(_unit));
                 _effects.Add(new AlterBaseStats(_unit, "Hp", 15));
                 break;
         }
@@ -279,6 +282,79 @@ public class Skill
         }
     }
     
+    private void SetExtraDamage()
+    {
+        switch (_name)
+        {
+            case "Back at You":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new ExtraDamage(_unit, (_unit.InitialStats["Hp"] - _unit.Hp) / 2));
+                break;
+            case "Lunar Brace":
+                _conditions.Add(new StartsAttack(_unit));
+                _conditions.Add(new TypeOfAttack(_unit, "Physical"));
+                _effects.Add(new ExtraDamage(_unit, _unit.Rival.Def * 30 / 100));
+                break;
+            case "Bravery":
+                _effects.Add(new ExtraDamage(_unit, 5));
+                break;
+        }
+    }
+
+    private void SetPercentageDamageReduction()
+    {
+        switch (_name)
+        {
+            case "Dragon Wall":
+                _conditions.Add(new StatsComparison(_unit.Res, ">", _unit.Rival.Res));
+                _effects.Add(new PercentageDamageReduction(_unit, Math.Min((_unit.Res - _unit.Rival.Res) * 4, 40)));
+                break;
+            case "Dodge":
+                _conditions.Add(new StatsComparison(_unit.Spd, ">", _unit.Rival.Spd));
+                _effects.Add(new PercentageDamageReduction(_unit, Math.Min((_unit.Spd - _unit.Rival.Spd) * 4, 40)));
+                break;
+            case "Golden Lotus":
+                _conditions.Add(new TypeOfAttack(_unit.Rival, "Physical"));
+                _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 50));
+                break;
+        }
+    }
+    
+    private void SetAbsolutDamageReduction()
+    {
+        switch (_name)
+        {
+            case "Gentility":
+                _effects.Add(new AbsolutDamageReduction(_unit, -5));
+                break;
+            case "Bow Guard":
+                _conditions.Add(new UseWeapon(_unit.Rival, "Bow"));
+                _effects.Add(new AbsolutDamageReduction(_unit, -5));
+                break;
+            case "Arms Shield":
+                _conditions.Add(new HasWeaponAdvantage(_unit));
+                _effects.Add(new AbsolutDamageReduction(_unit, -7));
+                break;
+            case "Axe Guard":
+                _conditions.Add(new UseWeapon(_unit.Rival, "Axe"));
+                _effects.Add(new AbsolutDamageReduction(_unit, -5));
+                break;
+            case "Magic Guard":
+                _conditions.Add(new UseWeapon(_unit.Rival, "Magic"));
+                _effects.Add(new AbsolutDamageReduction(_unit, -5));
+                break;
+            case "Lance Guard":
+                _conditions.Add(new UseWeapon(_unit.Rival, "Lance"));
+                _effects.Add(new AbsolutDamageReduction(_unit, -5));
+                break;
+            case "Sympathetic":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _conditions.Add(new HpRange(_unit, "<=", 50, "%"));
+                _effects.Add(new AbsolutDamageReduction(_unit, -5));
+                break;
+        }
+    }
+    
     private void SetHybrid()
     {
         switch (_name)
@@ -437,6 +513,184 @@ public class Skill
                 _effects.Add(new Penalty(_unit.Rival, "Res", -5));
                 _effects.Add(new NeutralizePenalty(_unit));
                 _effects.Add(new NeutralizeBonus(_unit.Rival));
+                break;
+            case "Bushido":
+                _effects.Add(new ExtraDamage(_unit, 7));
+                _effects.Add(new ConditionalEffect(
+                    new StatsComparison(_unit.Spd, ">", _unit.Rival.Spd), 
+                    new List<Effect>{ new PercentageDamageReduction(_unit, Math.Min((_unit.Spd - _unit.Rival.Spd) * 4, 40)) }));
+
+                break;
+            case "Moon-Twin Wing":
+                _effects.Add(new ConditionalEffect(
+                    new HpRange(_unit, ">=", 25, "%"), 
+                    new List<Effect>
+                    {
+                        new Penalty(_unit.Rival, "Atk", -5),
+                        new Penalty(_unit.Rival, "Spd", -5)
+                    }));
+                _effects.Add(new ConditionalEffect(
+                    new StatsComparison(_unit.Spd, ">", _unit.Rival.Spd), 
+                    new List<Effect>{ new PercentageDamageReduction(_unit, Math.Min((_unit.Spd - _unit.Rival.Spd) * 4, 40)) }));
+                break;
+            case "Blue Skies":
+                _effects.Add(new AbsolutDamageReduction(_unit, -5));
+                _effects.Add(new ExtraDamage(_unit, 5));
+                break;
+            case "Aegis Shield":
+                _effects.Add(new Bonus(_unit, "Def", 6));
+                _effects.Add(new Bonus(_unit, "Res", 3));
+                _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 50));
+                break;
+            case "Remote Sparrow":
+                _conditions.Add(new StartsAttack(_unit));
+                _effects.Add(new Bonus(_unit, "Atk", 7));
+                _effects.Add(new Bonus(_unit, "Spd", 7));
+                _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 30));
+                break;
+            case "Remote Mirror":
+                _conditions.Add(new StartsAttack(_unit));
+                _effects.Add(new Bonus(_unit, "Atk", 7));
+                _effects.Add(new Bonus(_unit, "Res", 10));
+                _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 30));
+                break;
+            case "Remote Sturdy":
+                _conditions.Add(new StartsAttack(_unit));
+                _effects.Add(new Bonus(_unit, "Atk", 7));
+                _effects.Add(new Bonus(_unit, "Def", 10));
+                _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 30));
+                break;
+            case "Fierce Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Atk", 8));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Darting Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Spd", 8));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Steady Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Def", 8));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Warding Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Res", 8));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Kestrel Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Atk", 6));
+                _effects.Add(new Bonus(_unit, "Spd", 6));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Sturdy Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Atk", 6));
+                _effects.Add(new Bonus(_unit, "Def", 6));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Mirror Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Atk", 6));
+                _effects.Add(new Bonus(_unit, "Res", 6));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Steady Posture":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Spd", 6));
+                _effects.Add(new Bonus(_unit, "Def", 6));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Swift Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Spd", 6));
+                _effects.Add(new Bonus(_unit, "Res", 6));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Bracing Stance":
+                _conditions.Add(new StartsAttack(_unit.Rival));
+                _effects.Add(new Bonus(_unit, "Def", 6));
+                _effects.Add(new Bonus(_unit, "Res", 6));
+                _effects.Add(new PercentageDamageReductionInFollowUp(_unit, 10));
+                break;
+            case "Poetic Justice":
+                _effects.Add(new Penalty(_unit.Rival, "Spd", -4));
+                _effects.Add(new ExtraDamage(_unit, _unit.Rival.Atk * 15 / 100));
+                break;
+            case "Laguz Friend":
+                _effects.Add(new PercentageDamageReduction(_unit, 50));
+                _effects.Add(new NeutralizeBonus(_unit, "Def"));
+                _effects.Add(new NeutralizeBonus(_unit, "Res"));
+                _effects.Add(new Penalty(_unit, "Def", -(_unit.Def / 2)));
+                _effects.Add(new Penalty(_unit, "Res", -(_unit.Res / 2)));
+                break;
+            case "Chivalry":
+                _conditions.Add(new StartsAttack(_unit));
+                _conditions.Add(new HpRange(_unit.Rival, ">=", 100, "%"));
+                _effects.Add(new ExtraDamage(_unit, 2));
+                _effects.Add(new AbsolutDamageReduction(_unit, -2));
+                break;
+            case "Dragon's Wrath":
+                _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 25));
+                _effects.Add(new ConditionalEffect(
+                    new StatsComparison(_unit.Atk, ">", _unit.Rival.Res), 
+                    new List<Effect>{ new ExtraDamage(_unit, (_unit.Atk - _unit.Rival.Res) * 25 / 100) }));
+                break;
+            case "Prescience":
+                _effects.Add(new Penalty(_unit.Rival, "Atk", -5));
+                _effects.Add(new Penalty(_unit.Rival, "Res", -5));
+                _effects.Add(new ConditionalEffect(
+                    new HybridOrCondition(new List<Condition>()
+                    { 
+                        new StartsAttack(_unit), 
+                        new UseWeapon(_unit.Rival, "Magic"), 
+                        new UseWeapon(_unit.Rival, "Bow")
+                    }), 
+                    new List<Effect>{ new PercentageDamageReductionInFirstAttack(_unit, 30) }));
+                
+                break;
+            case "Extra Chivalry":
+                _effects.Add(new ConditionalEffect(
+                    new HpRange(_unit.Rival, ">=", 50, "%"),
+                    new List<Effect>
+                    {
+                        new Penalty(_unit.Rival, "Atk", -5),
+                        new Penalty(_unit.Rival, "Spd", -5),
+                        new Penalty(_unit.Rival, "Def", -5)
+                        
+                    }));
+                _effects.Add(new PercentageDamageReduction(_unit, (_unit.Rival.Hp * 50) / _unit.Rival.InitialStats["Hp"])); 
+                break;
+            case "Guard Bearing":
+                _effects.Add(new Penalty(_unit.Rival, "Spd", -4));
+                _effects.Add(new Penalty(_unit.Rival, "Def", -4));
+                _conditions.Add(new HybridOrCondition(new List<Condition>
+                {
+                    new HybridAndCondition(new List<Condition>
+                    {
+                        new StartsAttack(_unit),
+                        new InFirstCombat(_unit)
+                    }),
+                    new HybridAndCondition(new List<Condition>()
+                    {
+                        new StartsAttack(_unit.Rival),
+                        new InFirstCombat(_unit.Rival)
+                    }),
+                }));
+                _effects.Add(new PercentageDamageReduction(_unit, 60));
+                _effects.Add(new PercentageDamageReduction(_unit, 30));
+                break;
+            case "Divine Recreation":
+                _conditions.Add(new HpRange(_unit.Rival, ">=", 50, "%"));
+                _effects.Add(new Penalty(_unit.Rival, "Atk", -4));
+                _effects.Add(new Penalty(_unit.Rival, "Spd", -4));
+                _effects.Add(new Penalty(_unit.Rival, "Def", -4));
+                _effects.Add(new Penalty(_unit.Rival, "Res", -4));
+                _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 30));
+                _effects.Add(new ExtraDamage(_unit, 0));
                 break;
         }
     }

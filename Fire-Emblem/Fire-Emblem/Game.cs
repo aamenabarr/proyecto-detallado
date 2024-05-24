@@ -19,13 +19,7 @@ public class Game
 
     public void Play()
     {
-        _view.WriteLine("Elige un archivo para cargar los equipos");
-        
-        var files = Utils.GetFiles(_teamsFolder);
-        PrintTeamOptions(files);
-
-        var input = Utils.Int(_view.ReadLine());
-        var teamFile = Utils.ReadFile(files[input]);
+        var teamFile = ChooseTeamFile();
         PopulateTeams(teamFile);
 
         if (AreValidTeams())
@@ -35,6 +29,17 @@ public class Game
         }
         else
             _view.WriteLine($"Archivo de equipos no válido");
+    }
+
+    private string[] ChooseTeamFile()
+    {
+        _view.WriteLine("Elige un archivo para cargar los equipos");
+        
+        var files = Utils.GetFiles(_teamsFolder);
+        PrintTeamOptions(files);
+
+        var input = Utils.Int(_view.ReadLine());
+        return Utils.ReadFile(files[input]);
     }
 
     private void PrintTeamOptions(string[] files)

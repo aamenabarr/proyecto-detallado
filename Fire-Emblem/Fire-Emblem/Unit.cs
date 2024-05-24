@@ -13,15 +13,18 @@ public class Unit
     public int Spd;
     public int Def;
     public int Res;
+    public double Dmg = 0;
     public double Wtb;
     public string[] Skills;
+    public bool HasWeaponAdvantage = false;
     public bool IsAttacker = false;
-    public bool InFirstRound = true;
+    public bool InFirstCombat = true;
     public bool InFirstAttack = true;
     public bool InFollowUp = false;
     public Unit Rival;
     public Unit LastRival;
     public StatsManager StatsManager;
+    public DamageManager DamageManager;
     public Dictionary<string, int> InitialStats;
     private View _view;
 
@@ -38,6 +41,7 @@ public class Unit
         Res = Utils.Int(unit.Res);
         Skills = skills;
         StatsManager = new StatsManager(view, this);
+        DamageManager = new DamageManager(view, this);
         InitialStats = new()
         {
             {"Hp", Hp}, {"Atk", Atk}, {"Spd", Spd}, {"Def", Def}, {"Res", Res}
@@ -47,7 +51,7 @@ public class Unit
     
     public void Attack(Unit rival)
     {
-        var damage = Math.Max(0, Damage(rival));
+        var damage = Math.Max(0, Damage(rival) + (int)Math.Floor(Dmg));
         _view.WriteLine($"{Name} ataca a {rival.Name} con {damage} de daño");
         rival.ReduceHp(damage);
     }
@@ -57,10 +61,10 @@ public class Unit
         return rival.Weapon == "Magic" ? Res : Def;
     }
 
-    private int Damage(Unit rival)
+    public int Damage(Unit rival)
     {
         var attack = (int)Math.Floor(Atk * Wtb);
-        return (attack - rival.Defense(this));
+        return attack - rival.Defense(this);
     }
 
     private void ReduceHp(int damage)
@@ -83,6 +87,7 @@ public class Unit
         if (hasAdvantage)
             _view.WriteLine($"{Name} ({Weapon}) tiene ventaja " +
                             $"con respecto a {rival.Name} ({rival.Weapon})");
+        HasWeaponAdvantage = hasAdvantage;
         return hasAdvantage;
     }
 
@@ -104,9 +109,9 @@ public class Unit
     private List<string> SetAlterEffects()
     {
         var effects = new List<string>();
-        if (InFirstRound) effects.Add("AlterBaseStats");
-        effects.Add($"Bonus");
-        effects.Add($"Penalty");
+        if (InFirstCombat) effects.Add("AlterBaseStats");
+        effects.Add("Bonus");
+        effects.Add("Penalty");
         var state = "";
         if (InFirstAttack) state = "InFirstAttack";
         if (InFollowUp) state = "InFollowUp";
@@ -114,10 +119,31 @@ public class Unit
         effects.Add($"Penalty{state}");
         return effects;
     }
+    
+    public void AlterDamage()
+    {
+        foreach (var effect in SetDamageEffects())
+            DamageManager.AlterUnitDamage(effect);
+    }
+    
+    private List<string> SetDamageEffects()
+    {
+        var effects = new List<string>();
+        effects.Add("ExtraDamage");
+        effects.Add("PercentageDamageReduction");
+        var state = "";
+        if (InFirstAttack) state = "InFirstAttack";
+        if (InFollowUp) state = "InFollowUp";
+        effects.Add($"ExtraDamage{state}");
+        effects.Add($"PercentageDamageReduction{state}");
+        effects.Add("AbsolutDamageReduction");
+        return effects;
+    }
 
     public void PrintSkillsMessages()
     {
         StatsManager.PrintMessages();
+        DamageManager.PrintMessages();
     }
     
     public void ResetStats()
@@ -126,10 +152,12 @@ public class Unit
         Spd = InitialStats["Spd"];
         Def = InitialStats["Def"];
         Res = InitialStats["Res"];
+        Dmg = 0;
     }
 
-    public void ResetStatsManager()
+    public void ResetManagers()
     {
         StatsManager.ResetStatsDictionary();
+        DamageManager.ResetDamageDictionary();
     }
 }

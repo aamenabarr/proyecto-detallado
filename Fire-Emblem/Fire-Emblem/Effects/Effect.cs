@@ -14,6 +14,10 @@ public class Effect
     }
     
     protected Effect(Unit unit, string stat) : this(unit, stat, 0) {}
+
+    protected Effect(Unit unit, int value) : this(unit, "", value) {}
+    
+    protected Effect() : this(null, "", 0) {}
     
     public virtual void Apply() {}
 
@@ -25,5 +29,10 @@ public class Effect
     protected void NeutralizeEffect(string type)
     {
         _unit.StatsManager.NeutralizeEffect(type, _stat);
+    }
+
+    protected void AlterDamage()
+    {
+        _unit.DamageManager.AlterDamageDictionary(GetType().Name, _value);
     }
 }
