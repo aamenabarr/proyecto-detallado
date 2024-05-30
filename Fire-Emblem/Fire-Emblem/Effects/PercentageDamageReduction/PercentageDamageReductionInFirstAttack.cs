@@ -6,6 +6,6 @@ public class PercentageDamageReductionInFirstAttack : Effect
     
     public override void Apply()
     {
-        AlterDamage();
+        AlterDamage(Value);
     }
 }

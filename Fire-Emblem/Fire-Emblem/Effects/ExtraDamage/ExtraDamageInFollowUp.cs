@@ -2,10 +2,15 @@ namespace Fire_Emblem;
 
 public class ExtraDamageInFollowUp : Effect
 {
-    public ExtraDamageInFollowUp(Unit unit, int value) : base(unit, value) {}
+    public ExtraDamageInFollowUp(Unit unit, string stat) : base(unit, stat) {}
     
     public override void Apply()
     {
-        AlterDamage();
+        AlterDamage(GetExtraDamage());
+    }
+
+    private int GetExtraDamage()
+    {
+        return Utils.GetUnitStat(Unit, Stat);
     }
 }

@@ -6,11 +6,13 @@ public class Skill
     private Unit _unit;
     private List<Condition> _conditions = new();
     private List<Effect> _effects = new();
+    private SkillsManager _skillsManager;
 
-    public Skill(string name, Unit unit)
+    public Skill(string name, Unit unit, SkillsManager skillsManager)
     {
         _name = name;
         _unit = unit;
+        _skillsManager = skillsManager;
         SetSkill();
     }
 
@@ -25,6 +27,7 @@ public class Skill
         SetPercentageDamageReduction();
         SetAbsolutDamageReduction();
         SetHybrid();
+        AddSkillToSkillsManager();
     }
 
     private void SetAlterBaseStats()
@@ -293,7 +296,7 @@ public class Skill
             case "Lunar Brace":
                 _conditions.Add(new StartsAttack(_unit));
                 _conditions.Add(new TypeOfAttack(_unit, "Physical"));
-                _effects.Add(new ExtraDamage(_unit, _unit.Rival.Def * 30 / 100));
+                _effects.Add(new ExtraDamage(_unit, "Def", 30));
                 break;
             case "Bravery":
                 _effects.Add(new ExtraDamage(_unit, 5));
@@ -306,12 +309,12 @@ public class Skill
         switch (_name)
         {
             case "Dragon Wall":
-                _conditions.Add(new StatsComparison(_unit.Res, ">", _unit.Rival.Res));
-                _effects.Add(new PercentageDamageReduction(_unit, Math.Min((_unit.Res - _unit.Rival.Res) * 4, 40)));
+                _conditions.Add(new StatsComparison(_unit, "Res", ">", _unit.Rival, "Res"));
+                _effects.Add(new PercentageDamageReduction(_unit, "Res"));
                 break;
             case "Dodge":
-                _conditions.Add(new StatsComparison(_unit.Spd, ">", _unit.Rival.Spd));
-                _effects.Add(new PercentageDamageReduction(_unit, Math.Min((_unit.Spd - _unit.Rival.Spd) * 4, 40)));
+                _conditions.Add(new StatsComparison(_unit, "Spd", ">", _unit.Rival, "Spd"));
+                _effects.Add(new PercentageDamageReduction(_unit, "Spd"));
                 break;
             case "Golden Lotus":
                 _conditions.Add(new TypeOfAttack(_unit.Rival, "Physical"));
@@ -517,9 +520,8 @@ public class Skill
             case "Bushido":
                 _effects.Add(new ExtraDamage(_unit, 7));
                 _effects.Add(new ConditionalEffect(
-                    new StatsComparison(_unit.Spd, ">", _unit.Rival.Spd), 
-                    new List<Effect>{ new PercentageDamageReduction(_unit, Math.Min((_unit.Spd - _unit.Rival.Spd) * 4, 40)) }));
-
+                    new StatsComparison(_unit, "Spd", ">", _unit.Rival, "Spd"), 
+                    new List<Effect>{ new PercentageDamageReduction(_unit, "Spd") }));
                 break;
             case "Moon-Twin Wing":
                 _effects.Add(new ConditionalEffect(
@@ -530,8 +532,12 @@ public class Skill
                         new Penalty(_unit.Rival, "Spd", -5)
                     }));
                 _effects.Add(new ConditionalEffect(
-                    new StatsComparison(_unit.Spd, ">", _unit.Rival.Spd), 
-                    new List<Effect>{ new PercentageDamageReduction(_unit, Math.Min((_unit.Spd - _unit.Rival.Spd) * 4, 40)) }));
+                    new HybridAndCondition(new List<Condition>()
+                    {
+                        new HpRange(_unit, ">=", 25, "%"),
+                        new StatsComparison(_unit, "Spd", ">", _unit.Rival, "Spd")
+                    }),
+                    new List<Effect>{ new PercentageDamageReduction(_unit, "Spd") }));
                 break;
             case "Blue Skies":
                 _effects.Add(new AbsolutDamageReduction(_unit, -5));
@@ -618,7 +624,7 @@ public class Skill
                 break;
             case "Poetic Justice":
                 _effects.Add(new Penalty(_unit.Rival, "Spd", -4));
-                _effects.Add(new ExtraDamage(_unit, _unit.Rival.Atk * 15 / 100));
+                _effects.Add(new ExtraDamage(_unit, "Atk", 15));
                 break;
             case "Laguz Friend":
                 _effects.Add(new PercentageDamageReduction(_unit, 50));
@@ -636,8 +642,8 @@ public class Skill
             case "Dragon's Wrath":
                 _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 25));
                 _effects.Add(new ConditionalEffect(
-                    new StatsComparison(_unit.Atk, ">", _unit.Rival.Res), 
-                    new List<Effect>{ new ExtraDamage(_unit, (_unit.Atk - _unit.Rival.Res) * 25 / 100) }));
+                    new StatsComparison(_unit, "Atk", ">", _unit.Rival, "Res"), 
+                    new List<Effect>{ new ExtraDamageInFirstAttack(_unit, "Atk", "Res", 25) }));
                 break;
             case "Prescience":
                 _effects.Add(new Penalty(_unit.Rival, "Atk", -5));
@@ -667,46 +673,50 @@ public class Skill
             case "Guard Bearing":
                 _effects.Add(new Penalty(_unit.Rival, "Spd", -4));
                 _effects.Add(new Penalty(_unit.Rival, "Def", -4));
-                _conditions.Add(new HybridOrCondition(new List<Condition>
-                {
-                    new HybridAndCondition(new List<Condition>
+                _effects.Add(new ConditionalElseEffect(
+                    new HybridOrCondition(new List<Condition>
                     {
-                        new StartsAttack(_unit),
-                        new InFirstCombat(_unit)
+                        new HybridAndCondition(new List<Condition>
+                        {
+                            new InFirstCombat(_unit, "Attacker")
+                        }),
+                        new HybridAndCondition(new List<Condition>()
+                        {
+                            new InFirstCombat(_unit, "Defender")
+                        }),
                     }),
-                    new HybridAndCondition(new List<Condition>()
-                    {
-                        new StartsAttack(_unit.Rival),
-                        new InFirstCombat(_unit.Rival)
-                    }),
-                }));
-                _effects.Add(new PercentageDamageReduction(_unit, 60));
-                _effects.Add(new PercentageDamageReduction(_unit, 30));
+                    new List<Effect>{ new PercentageDamageReduction(_unit, 60) },
+                    new List<Effect>{ new PercentageDamageReduction(_unit, 30) }
+                    ));
                 break;
             case "Divine Recreation":
-                _conditions.Add(new HpRange(_unit.Rival, ">=", 50, "%"));
-                _effects.Add(new Penalty(_unit.Rival, "Atk", -4));
-                _effects.Add(new Penalty(_unit.Rival, "Spd", -4));
-                _effects.Add(new Penalty(_unit.Rival, "Def", -4));
-                _effects.Add(new Penalty(_unit.Rival, "Res", -4));
-                _effects.Add(new PercentageDamageReductionInFirstAttack(_unit, 30));
-                _effects.Add(new ExtraDamage(_unit, 0));
+                _effects.Add(new ConditionalEffect(
+                    new HpRange(_unit.Rival, ">=", 50, "%"),
+                    new List<Effect>
+                    {
+                        new Penalty(_unit.Rival, "Atk", -4),
+                        new Penalty(_unit.Rival, "Spd", -4),
+                        new Penalty(_unit.Rival, "Def", -4),
+                        new Penalty(_unit.Rival, "Res", -4)
+                    }
+                ));
+                _effects.Add(new ConditionalEffect(
+                    new HpRange(_unit.Rival, ">=", 50, "%"),
+                    new List<Effect> { new PercentageDamageReductionInFirstAttack(_unit, 30) }
+                ));
+                _effects.Add(new ConditionalEffect(
+                    new HpRange(_unit.Rival, ">=", 50, "%"),
+                    _unit.IsAttacker ? 
+                        new List<Effect> { new ExtraDamageInFollowUp(_unit, "Dmg") } :
+                        new List<Effect> { new ExtraDamageInFirstAttack(_unit, "Dmg") }
+                ));
                 break;
         }
     }
 
-    public void Apply()
+    private void AddSkillToSkillsManager()
     {
-        if (ConditionsAreMet())
-            foreach (var effect in _effects)
-                effect.Apply();
-    }
-
-    private bool ConditionsAreMet()
-    {
-        foreach (var condition in _conditions)
-            if (!condition.IsMet())
-                return false;
-        return true;
+        foreach (var effect in _effects)
+            _skillsManager.Add(_conditions, effect);
     }
 }

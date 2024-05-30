@@ -21,6 +21,8 @@ public class Unit
     public bool InFirstCombat = true;
     public bool InFirstAttack = true;
     public bool InFollowUp = false;
+    public int FirstAttackerCombat = 0;
+    public int FirstDefenderCombat = 0;
     public Unit Rival;
     public Unit LastRival;
     public StatsManager StatsManager;
@@ -51,7 +53,7 @@ public class Unit
     
     public void Attack(Unit rival)
     {
-        var damage = Math.Max(0, Damage(rival) + (int)Math.Floor(Dmg));
+        var damage = Math.Max(0, Math.Max(0, Damage(rival)) + (int)Math.Floor(Dmg));
         _view.WriteLine($"{Name} ataca a {rival.Name} con {damage} de daño");
         rival.ReduceHp(damage);
     }
@@ -91,13 +93,10 @@ public class Unit
         return hasAdvantage;
     }
 
-    public void ApplySkills()
+    public void CreateSkills(SkillsManager skillsManager)
     {
         foreach (var skillName in Skills)
-        {
-            var skill = new Skill(skillName, this);
-            skill.Apply();
-        }
+            new Skill(skillName, this, skillsManager);
     }
 
     public void AlterStats()
@@ -112,18 +111,25 @@ public class Unit
         if (InFirstCombat) effects.Add("AlterBaseStats");
         effects.Add("Bonus");
         effects.Add("Penalty");
-        var state = "";
-        if (InFirstAttack) state = "InFirstAttack";
-        if (InFollowUp) state = "InFollowUp";
+        var state= SetState();
         effects.Add($"Bonus{state}");
         effects.Add($"Penalty{state}");
         return effects;
+    }
+
+    private string SetState()
+    {
+        var state = "";
+        if (InFirstAttack) state = "InFirstAttack";
+        if (InFollowUp) state = "InFollowUp";
+        return state;
     }
     
     public void AlterDamage()
     {
         foreach (var effect in SetDamageEffects())
             DamageManager.AlterUnitDamage(effect);
+        DamageManager.ReduceDamagePercentage(SetState());
     }
     
     private List<string> SetDamageEffects()
@@ -131,9 +137,7 @@ public class Unit
         var effects = new List<string>();
         effects.Add("ExtraDamage");
         effects.Add("PercentageDamageReduction");
-        var state = "";
-        if (InFirstAttack) state = "InFirstAttack";
-        if (InFollowUp) state = "InFollowUp";
+        var state = SetState();
         effects.Add($"ExtraDamage{state}");
         effects.Add($"PercentageDamageReduction{state}");
         effects.Add("AbsolutDamageReduction");
@@ -159,5 +163,13 @@ public class Unit
     {
         StatsManager.ResetStatsDictionary();
         DamageManager.ResetDamageDictionary();
+    }
+
+    public void SetFirstCombatInfo()
+    {
+        if (FirstAttackerCombat == 0) FirstAttackerCombat = IsAttacker ? 1 : 0;
+        else FirstAttackerCombat = 2;
+        if (FirstDefenderCombat == 0) FirstDefenderCombat = IsAttacker ? 0 : 1;
+        else FirstDefenderCombat = 2;
     }
 }

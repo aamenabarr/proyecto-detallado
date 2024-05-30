@@ -2,37 +2,42 @@ namespace Fire_Emblem;
 
 public class Effect
 {
-    private string _stat;
-    private int _value;
-    private Unit _unit;
+    protected string Stat;
+    protected int Value;
+    public Unit Unit;
     
     protected Effect(Unit unit, string stat, int value)
     {
-        _unit = unit;
-        _stat = stat;
-        _value = value;
+        Unit = unit;
+        Stat = stat;
+        Value = value;
     }
     
     protected Effect(Unit unit, string stat) : this(unit, stat, 0) {}
 
     protected Effect(Unit unit, int value) : this(unit, "", value) {}
     
-    protected Effect() : this(null, "", 0) {}
+    protected Effect(Unit unit) : this(unit, "", 0) {}
     
     public virtual void Apply() {}
 
     protected void AlterStat()
     {
-        _unit.StatsManager.AlterStatsDictionary(GetType().Name, _stat, _value);
+        Unit.StatsManager.AlterStatsDictionary(GetType().Name, Stat, Value);
     }
 
     protected void NeutralizeEffect(string type)
     {
-        _unit.StatsManager.NeutralizeEffect(type, _stat);
+        Unit.StatsManager.NeutralizeEffect(type, Stat);
     }
 
-    protected void AlterDamage()
+    protected void AlterDamage(int value)
     {
-        _unit.DamageManager.AlterDamageDictionary(GetType().Name, _value);
+        Unit.DamageManager.AlterDamageDictionary(GetType().Name, value);
+    }
+
+    public virtual string GetTypeName()
+    {
+        return GetType().Name;
     }
 }

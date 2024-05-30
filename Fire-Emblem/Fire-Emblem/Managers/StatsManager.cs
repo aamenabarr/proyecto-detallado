@@ -138,4 +138,15 @@ public class StatsManager
             _statsDictionary[effect][stat][1] = false;
         }
     }
+
+    public int Get(string stat)
+    {
+        var bonusIsNeutralized = (bool)_statsDictionary["Bonus"][stat][1];
+        var penaltyIsNeutralized = (bool)_statsDictionary["Penalty"][stat][1];
+        
+        var bonus = bonusIsNeutralized ? 0 : (int)_statsDictionary["Bonus"][stat][0];
+        var penalty = penaltyIsNeutralized ? 0 : (int)_statsDictionary["Penalty"][stat][0];
+        
+        return bonus + penalty;
+    }
 }

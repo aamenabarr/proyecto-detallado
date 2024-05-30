@@ -2,20 +2,26 @@ namespace Fire_Emblem;
 
 public class StatsComparison : Condition
 {
-    private int _value1;
-    private int _value2;
+    private Unit _unit1;
+    private Unit _unit2;
+    private string _stat1;
+    private string _stat2;
     private string _symbol;
 
-    public StatsComparison(int value1, string symbol, int value2)
+    public StatsComparison(Unit unit1, string stat1, string symbol, Unit unit2, string stat2)
     {
-        _value1 = value1; 
-        _value2 = value2;
+        _unit1 = unit1; 
+        _unit2 = unit2;
+        _stat1 = stat1; 
+        _stat2 = stat2;
         _symbol = symbol;
     }
     
     public override bool IsMet()
     {
-        if (_symbol == ">") return _value1 > _value2;
-        return _value1 < _value2;
+        var value1 = Utils.GetUnitStat(_unit1, _stat1);
+        var value2 = Utils.GetUnitStat(_unit2, _stat2);
+        if (_symbol == ">") return value1 > value2;
+        return value1 < value2;
     }
 }

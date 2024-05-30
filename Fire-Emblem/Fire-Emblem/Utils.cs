@@ -24,4 +24,17 @@ public static class Utils
     {
         return Convert.ToInt32(value);
     }
+    
+    public static int GetUnitStat(Unit unit, string stat)
+    {
+        switch (stat)
+        {
+            case "Atk": return unit.Atk + unit.StatsManager.Get("Atk");
+            case "Spd": return unit.Spd + unit.StatsManager.Get("Spd");
+            case "Def": return unit.Def + unit.StatsManager.Get("Def");
+            case "Res": return unit.Res + unit.StatsManager.Get("Res");
+            case "Dmg": return unit.DamageManager.GetDamageReduction();
+        }
+        return 0;
+    }
 }

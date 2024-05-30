@@ -10,6 +10,7 @@ public class Battle
     private Player _currentDefender;
     private Unit _unit;
     private Unit _rival;
+    private SkillsManager _skillsManager = new();
 
     public Battle(Player player1, Player player2, View view)
     {
@@ -67,6 +68,8 @@ public class Battle
     {
         _unit.IsAttacker = true;
         _rival.IsAttacker = false;
+        _unit.SetFirstCombatInfo();
+        _rival.SetFirstCombatInfo();
         _unit.Rival = _rival;
         _rival.Rival = _unit;
     }
@@ -98,8 +101,9 @@ public class Battle
     
     private void ApplySkills()
     {
-        _unit.ApplySkills();
-        _rival.ApplySkills();
+        _unit.CreateSkills(_skillsManager);
+        _rival.CreateSkills(_skillsManager);
+        _skillsManager.ApplySkills();
         _unit.PrintSkillsMessages();
         _rival.PrintSkillsMessages();
     }
@@ -202,6 +206,7 @@ public class Battle
 
     private void ResetManagers()
     {
+        _skillsManager.Reset();
         _unit.ResetManagers();
         _rival.ResetManagers();
     }
