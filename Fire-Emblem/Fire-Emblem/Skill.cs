@@ -6,13 +6,11 @@ public class Skill
     private Unit _unit;
     private List<Condition> _conditions = new();
     private List<Effect> _effects = new();
-    private SkillsManager _skillsManager;
 
-    public Skill(string name, Unit unit, SkillsManager skillsManager)
+    public Skill(string name, Unit unit)
     {
         _name = name;
         _unit = unit;
-        _skillsManager = skillsManager;
         SetSkill();
     }
 
@@ -27,7 +25,6 @@ public class Skill
         SetPercentageDamageReduction();
         SetAbsolutDamageReduction();
         SetHybrid();
-        AddSkillToSkillsManager();
     }
 
     private void SetAlterBaseStats()
@@ -714,9 +711,13 @@ public class Skill
         }
     }
 
-    private void AddSkillToSkillsManager()
+    public List<Effect> GetEffects()
     {
-        foreach (var effect in _effects)
-            _skillsManager.Add(_conditions, effect);
+        return _effects;
+    }
+    
+    public List<Condition> GetConditions()
+    {
+        return _conditions;
     }
 }

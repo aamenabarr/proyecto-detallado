@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fire-Emblem.Tests", "Fire-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fire-Emblem-View", "Fire-Emblem-View\Fire-Emblem-View.csproj", "{012820CA-C5EF-40A0-BF5C-FE1386D770E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fire-Emblem-Controller", "Fire-Emblem-Controller\Fire-Emblem-Controller.csproj", "{021D8C83-23FD-4249-87BB-1F5CB2B9C43B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{012820CA-C5EF-40A0-BF5C-FE1386D770E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{012820CA-C5EF-40A0-BF5C-FE1386D770E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{012820CA-C5EF-40A0-BF5C-FE1386D770E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{021D8C83-23FD-4249-87BB-1F5CB2B9C43B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{021D8C83-23FD-4249-87BB-1F5CB2B9C43B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{021D8C83-23FD-4249-87BB-1F5CB2B9C43B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{021D8C83-23FD-4249-87BB-1F5CB2B9C43B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -9,6 +9,7 @@
       "Fire-Emblem.Tests/1.0.0": {
         "dependencies": {
           "Fire-Emblem": "1.0.0",
+          "Fire-Emblem-Controller": "1.0.0",
           "Fire-Emblem-View": "1.0.0",
           "Microsoft.NET.Test.Sdk": "17.8.0",
           "coverlet.collector": "6.0.0",
@@ -1030,6 +1031,15 @@
           "Fire-Emblem.dll": {}
         }
       },
+      "Fire-Emblem-Controller/1.0.0": {
+        "dependencies": {
+          "Fire-Emblem": "1.0.0",
+          "Fire-Emblem-View": "1.0.0"
+        },
+        "runtime": {
+          "Fire-Emblem-Controller.dll": {}
+        }
+      },
       "Fire-Emblem-View/1.0.0": {
         "runtime": {
           "Fire-Emblem-View.dll": {}
@@ -1667,6 +1677,11 @@
       "hashPath": "xunit.runner.visualstudio.2.5.3.nupkg.sha512"
     },
     "Fire-Emblem/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Fire-Emblem-Controller/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

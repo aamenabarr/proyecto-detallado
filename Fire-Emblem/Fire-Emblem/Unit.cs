@@ -93,12 +93,6 @@ public class Unit
         return hasAdvantage;
     }
 
-    public void CreateSkills(SkillsManager skillsManager)
-    {
-        foreach (var skillName in Skills)
-            new Skill(skillName, this, skillsManager);
-    }
-
     public void AlterStats()
     {
         foreach (var effect in SetAlterEffects())
