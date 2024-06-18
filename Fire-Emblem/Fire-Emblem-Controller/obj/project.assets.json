@@ -51,11 +51,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\amenabar\\Downloads\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj",
+      "projectUniqueName": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj",
       "projectName": "Fire-Emblem-Controller",
-      "projectPath": "C:\\Users\\amenabar\\Downloads\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj",
+      "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj",
       "packagesPath": "C:\\Users\\amenabar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\amenabar\\Downloads\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem-Controller\\obj\\",
+      "outputPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\amenabar\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -70,11 +70,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\amenabar\\Downloads\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
-              "projectPath": "C:\\Users\\amenabar\\Downloads\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj"
+            "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
+              "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj"
             },
-            "C:\\Users\\amenabar\\Downloads\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj": {
-              "projectPath": "C:\\Users\\amenabar\\Downloads\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj"
+            "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj": {
+              "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj"
             }
           }
         }

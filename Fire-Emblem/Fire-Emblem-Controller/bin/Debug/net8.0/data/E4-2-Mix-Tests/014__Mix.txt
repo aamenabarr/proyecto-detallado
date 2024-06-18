@@ -195,7 +195,7 @@ Eirika es inmune a los efectos que garantizan su follow up
 Chrom no podrá contraatacar
 Chrom tiene 2 efecto(s) que neutraliza(n) su follow up activo(s)
 Eirika ataca a Chrom con 15 de daño
-Ninguna unidad puede hacer un follow up
+Eirika no puede hacer un follow up
 Eirika (52) : Chrom (40)
 Player 2 selecciona una opción
 0: Chrom

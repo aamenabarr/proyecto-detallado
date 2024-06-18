@@ -61,8 +61,8 @@ Elige un archivo para cargar los equipos
 59: 059__Hybrid_Wyvern_Flight.txt
 60: 060__Hybrid_Wyvern_Flight.txt
 61: 061__Hybrid_Wyvern_Flight.txt
-62: 062__Offensive_Null_Follow-Up_Mjölnir.txt
-INPUT: 57
+62: 062__Offensive_Null_Follow-Up_Mjolnir.txt
+INPUT: 51
 Player 1 selecciona una opción
 0: Veronica
 1: Sigurd
@@ -73,10 +73,10 @@ Player 2 selecciona una opción
 INPUT: 0
 Round 1: Veronica (Player 1) comienza
 Ninguna unidad tiene ventaja con respecto a la otra
-Los penalty de Atk de Edelgard fueron neutralizados
-Los penalty de Spd de Edelgard fueron neutralizados
-Los penalty de Def de Edelgard fueron neutralizados
-Los penalty de Res de Edelgard fueron neutralizados
+Los bonus de Atk de Veronica fueron neutralizados
+Los bonus de Spd de Veronica fueron neutralizados
+Los bonus de Def de Veronica fueron neutralizados
+Los bonus de Res de Veronica fueron neutralizados
 Edelgard tiene 1 efecto(s) que garantiza(n) su follow up activo(s)
 Veronica ataca a Edelgard con 18 de daño
 Edelgard ataca a Veronica con 46 de daño
@@ -105,10 +105,10 @@ Player 2 selecciona una opción
 INPUT: 0
 Round 3: Dimitri (Player 1) comienza
 Edelgard (Axe) tiene ventaja con respecto a Dimitri (Lance)
-Los penalty de Atk de Edelgard fueron neutralizados
-Los penalty de Spd de Edelgard fueron neutralizados
-Los penalty de Def de Edelgard fueron neutralizados
-Los penalty de Res de Edelgard fueron neutralizados
+Los bonus de Atk de Dimitri fueron neutralizados
+Los bonus de Spd de Dimitri fueron neutralizados
+Los bonus de Def de Dimitri fueron neutralizados
+Los bonus de Res de Dimitri fueron neutralizados
 Edelgard tiene 1 efecto(s) que garantiza(n) su follow up activo(s)
 Dimitri ataca a Edelgard con 3 de daño
 Edelgard ataca a Dimitri con 39 de daño

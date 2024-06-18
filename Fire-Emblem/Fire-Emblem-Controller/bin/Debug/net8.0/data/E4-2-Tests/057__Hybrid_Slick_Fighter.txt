@@ -61,30 +61,68 @@ Elige un archivo para cargar los equipos
 59: 059__Hybrid_Wyvern_Flight.txt
 60: 060__Hybrid_Wyvern_Flight.txt
 61: 061__Hybrid_Wyvern_Flight.txt
-62: 062__Offensive_Null_Follow-Up_Mjölnir.txt
-INPUT: 62
+62: 062__Offensive_Null_Follow-Up_Mjolnir.txt
+INPUT: 57
 Player 1 selecciona una opción
-0: Eirika
+0: Veronica
+1: Sigurd
+2: Dimitri
 INPUT: 0
 Player 2 selecciona una opción
-0: Chrom
+0: Edelgard
 INPUT: 0
-Round 1: Eirika (Player 1) comienza
+Round 1: Veronica (Player 1) comienza
 Ninguna unidad tiene ventaja con respecto a la otra
-Chrom es inmune a los efectos que neutralizan su follow up
-Eirika ataca a Chrom con 15 de daño
-Chrom ataca a Eirika con 32 de daño
-Eirika ataca a Chrom con 15 de daño
-Eirika (20) : Chrom (25)
+Los penalty de Atk de Edelgard fueron neutralizados
+Los penalty de Spd de Edelgard fueron neutralizados
+Los penalty de Def de Edelgard fueron neutralizados
+Los penalty de Res de Edelgard fueron neutralizados
+Edelgard tiene 1 efecto(s) que garantiza(n) su follow up activo(s)
+Veronica ataca a Edelgard con 18 de daño
+Edelgard ataca a Veronica con 46 de daño
+Veronica ataca a Edelgard con 18 de daño
+Edelgard ataca a Veronica con 46 de daño
+Veronica (0) : Edelgard (23)
 Player 2 selecciona una opción
-0: Chrom
+0: Edelgard
 INPUT: 0
 Player 1 selecciona una opción
-0: Eirika
+0: Sigurd
+1: Dimitri
 INPUT: 0
-Round 2: Chrom (Player 2) comienza
-Ninguna unidad tiene ventaja con respecto a la otra
-Chrom es inmune a los efectos que neutralizan su follow up
-Chrom ataca a Eirika con 32 de daño
-Chrom (25) : Eirika (0)
+Round 2: Edelgard (Player 2) comienza
+Edelgard (Axe) tiene ventaja con respecto a Sigurd (Lance)
+Edelgard ataca a Sigurd con 39 de daño
+Sigurd ataca a Edelgard con 3 de daño
+Sigurd ataca a Edelgard con 3 de daño
+Edelgard (17) : Sigurd (15)
+Player 1 selecciona una opción
+0: Sigurd
+1: Dimitri
+INPUT: 1
+Player 2 selecciona una opción
+0: Edelgard
+INPUT: 0
+Round 3: Dimitri (Player 1) comienza
+Edelgard (Axe) tiene ventaja con respecto a Dimitri (Lance)
+Los penalty de Atk de Edelgard fueron neutralizados
+Los penalty de Spd de Edelgard fueron neutralizados
+Los penalty de Def de Edelgard fueron neutralizados
+Los penalty de Res de Edelgard fueron neutralizados
+Edelgard tiene 1 efecto(s) que garantiza(n) su follow up activo(s)
+Dimitri ataca a Edelgard con 3 de daño
+Edelgard ataca a Dimitri con 39 de daño
+Dimitri ataca a Edelgard con 3 de daño
+Edelgard ataca a Dimitri con 39 de daño
+Dimitri (0) : Edelgard (11)
+Player 2 selecciona una opción
+0: Edelgard
+INPUT: 0
+Player 1 selecciona una opción
+0: Sigurd
+INPUT: 0
+Round 4: Edelgard (Player 2) comienza
+Edelgard (Axe) tiene ventaja con respecto a Sigurd (Lance)
+Edelgard ataca a Sigurd con 39 de daño
+Edelgard (11) : Sigurd (0)
 Player 2 ganó

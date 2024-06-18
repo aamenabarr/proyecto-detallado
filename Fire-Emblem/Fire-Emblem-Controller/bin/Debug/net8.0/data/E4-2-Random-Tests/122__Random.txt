@@ -258,7 +258,7 @@ Tiki no podrá contraatacar
 Tiki tiene 2 efecto(s) que neutraliza(n) su follow up activo(s)
 Tiki es inmune a los efectos que neutralizan su follow up
 Shez ataca a Tiki con 6 de daño
-Ninguna unidad puede hacer un follow up
+Shez no puede hacer un follow up
 Shez (51) : Tiki (53)
 Player 2 selecciona una opción
 0: Ike
@@ -305,7 +305,7 @@ Tiki no podrá contraatacar
 Tiki tiene 2 efecto(s) que neutraliza(n) su follow up activo(s)
 Tiki es inmune a los efectos que neutralizan su follow up
 Shez ataca a Tiki con 6 de daño
-Ninguna unidad puede hacer un follow up
+Shez no puede hacer un follow up
 Shez (24) : Tiki (47)
 Player 2 selecciona una opción
 0: Ike

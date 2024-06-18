@@ -42,12 +42,12 @@ Elige un archivo para cargar los equipos
 40: 040__In_Combat_Healing_Sol.txt
 41: 041__In_Combat_Healing_Sol.txt
 42: 042__In_Combat_Healing_Solar_Brace.txt
-43: 043__Null_Counter_Hlidskjálf.txt
-44: 044__Null_Counter_Hlidskjálf.txt
-45: 045__Null_Counter_Hlidskjálf.txt
-46: 046__Null_Counter_Hlidskjálf.txt
-47: 047__Null_Counter_Hlidskjálf.txt
-48: 048__Null_Counter_Hlidskjálf.txt
+43: 043__Null_Counter_Hlidskjalf.txt
+44: 044__Null_Counter_Hlidskjalf.txt
+45: 045__Null_Counter_Hlidskjalf.txt
+46: 046__Null_Counter_Hlidskjalf.txt
+47: 047__Null_Counter_Hlidskjalf.txt
+48: 048__Null_Counter_Hlidskjalf.txt
 49: 049__Null_Counter_Surprise_Attack.txt
 50: 050__Null_Counter_Surprise_Attack.txt
 51: 051__Null_Counter_Surprise_Attack.txt
@@ -65,76 +65,89 @@ Elige un archivo para cargar los equipos
 63: 063__Null_Counter_Disrupt_Null_C-Disrupt.txt
 64: 064__Null_Counter_Disrupt_Null_C-Disrupt.txt
 65: 065__Null_Counter_Disrupt_Null_C-Disrupt.txt
-INPUT: 47
+INPUT: 45
 Player 1 selecciona una opción
-0: Lucina
-1: Alm
-2: Robin
-INPUT: 1
+0: Ephraim
+1: Marth
+2: Camilla
+INPUT: 0
 Player 2 selecciona una opción
-0: Lucina
+0: Alm
 1: Robin
 2: Celica
 INPUT: 0
-Round 1: Alm (Player 1) comienza
+Round 1: Ephraim (Player 1) comienza
 Ninguna unidad tiene ventaja con respecto a la otra
-Alm ataca a Lucina con 26 de daño
-Lucina ataca a Alm con 24 de daño
+Ephraim ataca a Alm con 30 de daño
+Alm ataca a Ephraim con 18 de daño
+Alm ataca a Ephraim con 18 de daño
+Ephraim (21) : Alm (24)
+Player 2 selecciona una opción
+0: Alm
+1: Robin
+2: Celica
+INPUT: 0
+Player 1 selecciona una opción
+0: Ephraim
+1: Marth
+2: Camilla
+INPUT: 0
+Round 2: Alm (Player 2) comienza
+Ninguna unidad tiene ventaja con respecto a la otra
+Alm ataca a Ephraim con 18 de daño
+Ephraim ataca a Alm con 30 de daño
+Alm (0) : Ephraim (3)
+Player 1 selecciona una opción
+0: Ephraim
+1: Marth
+2: Camilla
+INPUT: 0
+Player 2 selecciona una opción
+0: Robin
+1: Celica
+INPUT: 0
+Round 3: Ephraim (Player 1) comienza
+Ninguna unidad tiene ventaja con respecto a la otra
+Ephraim ataca a Robin con 26 de daño
+Robin ataca a Ephraim con 31 de daño
+Ephraim (0) : Robin (28)
+Player 2 selecciona una opción
+0: Robin
+1: Celica
+INPUT: 0
+Player 1 selecciona una opción
+0: Marth
+1: Camilla
+INPUT: 0
+Round 4: Robin (Player 2) comienza
+Ninguna unidad tiene ventaja con respecto a la otra
+Robin ataca a Marth con 22 de daño
+Marth ataca a Robin con 22 de daño
+Marth ataca a Robin con 22 de daño
+Robin (0) : Marth (32)
+Player 1 selecciona una opción
+0: Marth
+1: Camilla
+INPUT: 0
+Player 2 selecciona una opción
+0: Celica
+INPUT: 0
+Round 5: Marth (Player 1) comienza
+Ninguna unidad tiene ventaja con respecto a la otra
+Marth ataca a Celica con 34 de daño
+Celica ataca a Marth con 26 de daño
 Ninguna unidad puede hacer un follow up
-Alm (30) : Lucina (25)
+Marth (6) : Celica (20)
 Player 2 selecciona una opción
-0: Lucina
-1: Robin
-2: Celica
-INPUT: 2
-Player 1 selecciona una opción
-0: Lucina
-1: Alm
-2: Robin
-INPUT: 2
-Round 2: Celica (Player 2) comienza
-Ninguna unidad tiene ventaja con respecto a la otra
-Robin no podrá contraatacar
-Celica ataca a Robin con 28 de daño
-Celica ataca a Robin con 28 de daño
-Celica (54) : Robin (0)
-Player 1 selecciona una opción
-0: Lucina
-1: Alm
-INPUT: 1
-Player 2 selecciona una opción
-0: Lucina
-1: Robin
-2: Celica
-INPUT: 2
-Round 3: Alm (Player 1) comienza
-Ninguna unidad tiene ventaja con respecto a la otra
-Alm ataca a Celica con 34 de daño
-Celica ataca a Alm con 31 de daño
-Alm (0) : Celica (20)
-Player 2 selecciona una opción
-0: Lucina
-1: Robin
-2: Celica
-INPUT: 2
-Player 1 selecciona una opción
-0: Lucina
+0: Celica
 INPUT: 0
-Round 4: Celica (Player 2) comienza
-Ninguna unidad tiene ventaja con respecto a la otra
-Celica ataca a Lucina con 32 de daño
-Lucina ataca a Celica con 32 de daño
-Celica (0) : Lucina (19)
 Player 1 selecciona una opción
-0: Lucina
-INPUT: 0
-Player 2 selecciona una opción
-0: Lucina
-1: Robin
+0: Marth
+1: Camilla
 INPUT: 1
-Round 5: Lucina (Player 1) comienza
+Round 6: Celica (Player 2) comienza
 Ninguna unidad tiene ventaja con respecto a la otra
-Lucina ataca a Robin con 20 de daño
-Robin ataca a Lucina con 28 de daño
-Lucina (0) : Robin (34)
-Player 2 ganó
+Celica ataca a Camilla con 10 de daño
+Camilla ataca a Celica con 31 de daño
+Celica (0) : Camilla (39)
+Player 1 ganó

@@ -61,7 +61,7 @@ Elige un archivo para cargar los equipos
 59: 059__Hybrid_Wyvern_Flight.txt
 60: 060__Hybrid_Wyvern_Flight.txt
 61: 061__Hybrid_Wyvern_Flight.txt
-62: 062__Offensive_Null_Follow-Up_Mjölnir.txt
+62: 062__Offensive_Null_Follow-Up_Mjolnir.txt
 INPUT: 50
 Player 1 selecciona una opción
 0: Veronica

@@ -42,12 +42,12 @@ Elige un archivo para cargar los equipos
 40: 040__In_Combat_Healing_Sol.txt
 41: 041__In_Combat_Healing_Sol.txt
 42: 042__In_Combat_Healing_Solar_Brace.txt
-43: 043__Null_Counter_Hlidskjálf.txt
-44: 044__Null_Counter_Hlidskjálf.txt
-45: 045__Null_Counter_Hlidskjálf.txt
-46: 046__Null_Counter_Hlidskjálf.txt
-47: 047__Null_Counter_Hlidskjálf.txt
-48: 048__Null_Counter_Hlidskjálf.txt
+43: 043__Null_Counter_Hlidskjalf.txt
+44: 044__Null_Counter_Hlidskjalf.txt
+45: 045__Null_Counter_Hlidskjalf.txt
+46: 046__Null_Counter_Hlidskjalf.txt
+47: 047__Null_Counter_Hlidskjalf.txt
+48: 048__Null_Counter_Hlidskjalf.txt
 49: 049__Null_Counter_Surprise_Attack.txt
 50: 050__Null_Counter_Surprise_Attack.txt
 51: 051__Null_Counter_Surprise_Attack.txt
@@ -65,120 +65,76 @@ Elige un archivo para cargar los equipos
 63: 063__Null_Counter_Disrupt_Null_C-Disrupt.txt
 64: 064__Null_Counter_Disrupt_Null_C-Disrupt.txt
 65: 065__Null_Counter_Disrupt_Null_C-Disrupt.txt
-INPUT: 44
+INPUT: 47
 Player 1 selecciona una opción
-0: Ephraim
-1: Marth
-2: Camilla
+0: Lucina
+1: Alm
+2: Robin
 INPUT: 1
 Player 2 selecciona una opción
-0: Hector
-1: Sigurd
-2: Shez
-INPUT: 2
-Round 1: Marth (Player 1) comienza
+0: Lucina
+1: Robin
+2: Celica
+INPUT: 0
+Round 1: Alm (Player 1) comienza
 Ninguna unidad tiene ventaja con respecto a la otra
-Marth ataca a Shez con 24 de daño
-Shez ataca a Marth con 16 de daño
+Alm ataca a Lucina con 26 de daño
+Lucina ataca a Alm con 24 de daño
 Ninguna unidad puede hacer un follow up
-Marth (38) : Shez (27)
+Alm (30) : Lucina (25)
 Player 2 selecciona una opción
-0: Hector
-1: Sigurd
-2: Shez
-INPUT: 1
-Player 1 selecciona una opción
-0: Ephraim
-1: Marth
-2: Camilla
-INPUT: 0
-Round 2: Sigurd (Player 2) comienza
-Ninguna unidad tiene ventaja con respecto a la otra
-Sigurd ataca a Ephraim con 23 de daño
-Ephraim ataca a Sigurd con 19 de daño
-Ephraim ataca a Sigurd con 19 de daño
-Sigurd (16) : Ephraim (34)
-Player 1 selecciona una opción
-0: Ephraim
-1: Marth
-2: Camilla
+0: Lucina
+1: Robin
+2: Celica
 INPUT: 2
-Player 2 selecciona una opción
-0: Hector
-1: Sigurd
-2: Shez
-INPUT: 0
-Round 3: Camilla (Player 1) comienza
+Player 1 selecciona una opción
+0: Lucina
+1: Alm
+2: Robin
+INPUT: 2
+Round 2: Celica (Player 2) comienza
 Ninguna unidad tiene ventaja con respecto a la otra
-Camilla ataca a Hector con 7 de daño
-Hector ataca a Camilla con 23 de daño
-Hector ataca a Camilla con 23 de daño
-Camilla (3) : Hector (54)
-Player 2 selecciona una opción
-0: Hector
-1: Sigurd
-2: Shez
-INPUT: 0
+Robin no podrá contraatacar
+Celica ataca a Robin con 28 de daño
+Celica ataca a Robin con 28 de daño
+Celica (54) : Robin (0)
 Player 1 selecciona una opción
-0: Ephraim
-1: Marth
-2: Camilla
-INPUT: 1
-Round 4: Hector (Player 2) comienza
-Marth (Sword) tiene ventaja con respecto a Hector (Axe)
-Hector ataca a Marth con 10 de daño
-Marth ataca a Hector con 22 de daño
-Marth ataca a Hector con 22 de daño
-Hector (10) : Marth (28)
-Player 1 selecciona una opción
-0: Ephraim
-1: Marth
-2: Camilla
+0: Lucina
+1: Alm
 INPUT: 1
 Player 2 selecciona una opción
-0: Hector
-1: Sigurd
-2: Shez
-INPUT: 1
-Round 5: Marth (Player 1) comienza
-Sigurd (Lance) tiene ventaja con respecto a Marth (Sword)
-Marth ataca a Sigurd con 2 de daño
-Sigurd ataca a Marth con 37 de daño
-Marth (0) : Sigurd (14)
-Player 2 selecciona una opción
-0: Hector
-1: Sigurd
-2: Shez
-INPUT: 0
-Player 1 selecciona una opción
-0: Ephraim
-1: Camilla
-INPUT: 0
-Round 6: Hector (Player 2) comienza
-Hector (Axe) tiene ventaja con respecto a Ephraim (Lance)
-Hector ataca a Ephraim con 36 de daño
-Hector (10) : Ephraim (0)
-Player 1 selecciona una opción
-0: Camilla
-INPUT: 0
-Player 2 selecciona una opción
-0: Hector
-1: Sigurd
-2: Shez
-INPUT: 1
-Round 7: Camilla (Player 1) comienza
-Camilla (Axe) tiene ventaja con respecto a Sigurd (Lance)
-Camilla ataca a Sigurd con 23 de daño
-Camilla (3) : Sigurd (0)
-Player 2 selecciona una opción
-0: Hector
-1: Shez
-INPUT: 0
-Player 1 selecciona una opción
-0: Camilla
-INPUT: 0
-Round 8: Hector (Player 2) comienza
+0: Lucina
+1: Robin
+2: Celica
+INPUT: 2
+Round 3: Alm (Player 1) comienza
 Ninguna unidad tiene ventaja con respecto a la otra
-Hector ataca a Camilla con 23 de daño
-Hector (10) : Camilla (0)
+Alm ataca a Celica con 34 de daño
+Celica ataca a Alm con 31 de daño
+Alm (0) : Celica (20)
+Player 2 selecciona una opción
+0: Lucina
+1: Robin
+2: Celica
+INPUT: 2
+Player 1 selecciona una opción
+0: Lucina
+INPUT: 0
+Round 4: Celica (Player 2) comienza
+Ninguna unidad tiene ventaja con respecto a la otra
+Celica ataca a Lucina con 32 de daño
+Lucina ataca a Celica con 32 de daño
+Celica (0) : Lucina (19)
+Player 1 selecciona una opción
+0: Lucina
+INPUT: 0
+Player 2 selecciona una opción
+0: Lucina
+1: Robin
+INPUT: 1
+Round 5: Lucina (Player 1) comienza
+Ninguna unidad tiene ventaja con respecto a la otra
+Lucina ataca a Robin con 20 de daño
+Robin ataca a Lucina con 28 de daño
+Lucina (0) : Robin (34)
 Player 2 ganó
