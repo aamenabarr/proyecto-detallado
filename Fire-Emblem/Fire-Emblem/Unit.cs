@@ -1,6 +1,4 @@
-﻿using Fire_Emblem_View;
-
-namespace Fire_Emblem;
+﻿namespace Fire_Emblem;
 
 public class Unit
 {
@@ -28,9 +26,8 @@ public class Unit
     public StatsManager StatsManager;
     public DamageManager DamageManager;
     public Dictionary<string, int> InitialStats;
-    private View _view;
 
-    public Unit(AuxUnit unit, string[] skills, View view)
+    public Unit(AuxUnit unit, string[] skills)
     {
         Name = unit.Name;
         Weapon = unit.Weapon;
@@ -42,58 +39,12 @@ public class Unit
         Def = Utils.Int(unit.Def);
         Res = Utils.Int(unit.Res);
         Skills = skills;
-        StatsManager = new StatsManager(view, this);
-        DamageManager = new DamageManager(view, this);
+        StatsManager = new StatsManager(this);
+        DamageManager = new DamageManager(this);
         InitialStats = new()
         {
             {"Hp", Hp}, {"Atk", Atk}, {"Spd", Spd}, {"Def", Def}, {"Res", Res}
         };
-        _view = view;
-    }
-    
-    public void Attack(Unit rival)
-    {
-        var damage = Math.Max(0, Math.Max(0, Damage(rival)) + (int)Math.Floor(Dmg));
-        _view.WriteLine($"{Name} ataca a {rival.Name} con {damage} de daño");
-        rival.ReduceHp(damage);
-    }
-
-    private int Defense(Unit rival)
-    {
-        return rival.Weapon == "Magic" ? Res : Def;
-    }
-
-    public int Damage(Unit rival)
-    {
-        var attack = (int)Math.Floor(Atk * Wtb);
-        return attack - rival.Defense(this);
-    }
-
-    private void ReduceHp(int damage)
-    {
-        Hp = Math.Max(0, Hp - damage);
-    }
-
-    public bool CanDoFollowUp(Unit rival)
-    {
-        var rivalSpeed = (rival.Spd);
-        return (Spd - rivalSpeed) >= 5;
-    }
-
-    public bool HasAdvantage(Unit rival)
-    {
-        var sword = "Sword";
-        var axe = "Axe";
-        var lance = "Lance";
-        var rivalWeapon = rival.Weapon;
-        var hasAdvantage = ((Weapon == sword && rivalWeapon == axe) ||
-                (Weapon == lance && rivalWeapon == sword) ||
-                (Weapon == axe && rivalWeapon == lance));
-        if (hasAdvantage)
-            _view.WriteLine($"{Name} ({Weapon}) tiene ventaja " +
-                            $"con respecto a {rival.Name} ({rival.Weapon})");
-        HasWeaponAdvantage = hasAdvantage;
-        return hasAdvantage;
     }
 
     public void AlterStats()
@@ -139,12 +90,6 @@ public class Unit
         effects.Add($"PercentageDamageReduction{state}");
         effects.Add("AbsolutDamageReduction");
         return effects;
-    }
-
-    public void PrintSkillsMessages()
-    {
-        StatsManager.PrintMessages();
-        DamageManager.PrintMessages();
     }
     
     public void ResetStats()

@@ -82,7 +82,7 @@ public class Game
     private Unit CreateUnit(string name, string[] skills)
     {
         var auxUnit = _units.GetUnit(name);
-        var unit = new Unit(auxUnit, skills, _view);
+        var unit = new Unit(auxUnit, skills);
         return unit;
     }
 

@@ -4,7 +4,7 @@ namespace Fire_Emblem;
 
 public static class Utils
 {
-    public static List<T> LoadFromJsonFile<T>(string path)
+    public static List<T>? LoadFromJsonFile<T>(string path)
     {
         var json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<T>>(json);

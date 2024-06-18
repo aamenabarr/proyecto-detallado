@@ -71,15 +71,11 @@ C:\Users\amenabar\Downloads\Fire-Emblem\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\bin\Debug\net8.0\Fire-Emblem.deps.json
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\bin\Debug\net8.0\Fire-Emblem.dll
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\bin\Debug\net8.0\Fire-Emblem.pdb
-C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\bin\Debug\net8.0\Fire-Emblem-View.dll
-C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\bin\Debug\net8.0\Fire-Emblem-View.pdb
-C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emblem.csproj.AssemblyReference.cache
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emblem.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emblem.AssemblyInfoInputs.cache
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emblem.AssemblyInfo.cs
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emblem.csproj.CoreCompileInputs.cache
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emblem.sourcelink.json
-C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emb.55254202.Up2Date
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emblem.dll
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\refint\Fire-Emblem.dll
 C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem\obj\Debug\net8.0\Fire-Emblem.pdb

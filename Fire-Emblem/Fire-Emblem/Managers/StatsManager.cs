@@ -1,5 +1,4 @@
 using System.Collections;
-using Fire_Emblem_View;
 
 namespace Fire_Emblem;
 
@@ -14,20 +13,11 @@ public class StatsManager
         "PenaltyInFirstAttack", 
         "PenaltyInFollowUp"
     };
-    private string[] _stats = { 
-        "Hp",
-        "Atk", 
-        "Spd", 
-        "Def", 
-        "Res"
-    };
-    private Dictionary<string, Dictionary<string, ArrayList>> _statsDictionary = new();
-    private View _view;
     private Unit _unit;
+    public Dictionary<string, Dictionary<string, ArrayList>> StatsDictionary = new();
 
-    public StatsManager(View view, Unit unit)
+    public StatsManager(Unit unit)
     {
-        _view = view;
         _unit = unit;
         InitializeStatsDictionary();
     }
@@ -37,21 +27,21 @@ public class StatsManager
         foreach (var effect in _effects)
         {
             var dictionary = new Dictionary<string, ArrayList>();
-            foreach (var stat in _stats)
+            foreach (var stat in Stats.AllStats)
             {
                 var statInfo = new ArrayList();
                 statInfo.Add(0);
                 statInfo.Add(false);
                 dictionary.Add(stat, statInfo);
             }
-            _statsDictionary.Add(effect, dictionary);
+            StatsDictionary.Add(effect, dictionary);
         }
     }
 
     public void AlterStatsDictionary(string effect, string stat, int value)
     {
-        var oldValue = (int)_statsDictionary[effect][stat][0];
-        _statsDictionary[effect][stat][0] = oldValue + value;
+        var oldValue = (int)StatsDictionary[effect][stat][0];
+        StatsDictionary[effect][stat][0] = oldValue + value;
     }
     
     public void NeutralizeEffect(string type, string stat)
@@ -59,17 +49,17 @@ public class StatsManager
         foreach (var effect in _effects)
             if (effect.Contains(type))
             {
-                if (stat == null)
-                    foreach (var statName in _stats)
-                        _statsDictionary[effect][statName][1] = true;
+                if (stat == "")
+                    foreach (var statName in Stats.AllStats)
+                        StatsDictionary[effect][statName][1] = true;
                 else
-                    _statsDictionary[effect][stat][1] = true;
+                    StatsDictionary[effect][stat][1] = true;
             }
     }
     
     public void AlterUnitStats(string effect)
     {
-        foreach (var (stat, statInfo) in _statsDictionary[effect])
+        foreach (var (stat, statInfo) in StatsDictionary[effect])
         {
             var value = (int)statInfo[0];
             var neutralized = (bool)statInfo[1];
@@ -99,53 +89,24 @@ public class StatsManager
                 break;
         }
     }
-
-    public void PrintMessages()
-    {
-        PrintAlterStatMessages("Bonus", "+");
-        PrintAlterStatMessages("BonusInFirstAttack", "+" , " en su primer ataque");
-        PrintAlterStatMessages("BonusInFollowUp", "+", " en su Follow-Up");
-        PrintAlterStatMessages("Penalty", "");
-        PrintAlterStatMessages("PenaltyInFirstAttack", "", " en su primer ataque");
-        PrintAlterStatMessages("PenaltyInFollowUp", "", " en su Follow-Up");
-        PrintNeutralizeEffects("Bonus");
-        PrintNeutralizeEffects("Penalty");
-    }
-
-    private void PrintAlterStatMessages(string effect, string sign, string extraMessage = "")
-    {
-        foreach (var (stat, statInfo) in _statsDictionary[effect])
-        {
-            var value = (int)statInfo[0];
-            if (value != 0)
-                _view.WriteLine($"{_unit.Name} obtiene {stat}{sign}{value}{extraMessage}");
-        }
-    }
-
-    private void PrintNeutralizeEffects(string effect)
-    {
-        foreach (var stat in _stats)
-            if ((bool)_statsDictionary[effect][stat][1] && stat != "Hp")
-                _view.WriteLine($"Los {effect.ToLower()} de {stat} de {_unit.Name} fueron neutralizados");
-    }
     
     public void ResetStatsDictionary()
     {
         foreach (var effect in _effects)
-        foreach (var stat in _stats)
+        foreach (var stat in Stats.AllStats)
         {
-            _statsDictionary[effect][stat][0] = 0;
-            _statsDictionary[effect][stat][1] = false;
+            StatsDictionary[effect][stat][0] = 0;
+            StatsDictionary[effect][stat][1] = false;
         }
     }
 
     public int Get(string stat)
     {
-        var bonusIsNeutralized = (bool)_statsDictionary["Bonus"][stat][1];
-        var penaltyIsNeutralized = (bool)_statsDictionary["Penalty"][stat][1];
+        var bonusIsNeutralized = (bool)StatsDictionary["Bonus"][stat][1];
+        var penaltyIsNeutralized = (bool)StatsDictionary["Penalty"][stat][1];
         
-        var bonus = bonusIsNeutralized ? 0 : (int)_statsDictionary["Bonus"][stat][0];
-        var penalty = penaltyIsNeutralized ? 0 : (int)_statsDictionary["Penalty"][stat][0];
+        var bonus = bonusIsNeutralized ? 0 : (int)StatsDictionary["Bonus"][stat][0];
+        var penalty = penaltyIsNeutralized ? 0 : (int)StatsDictionary["Penalty"][stat][0];
         
         return bonus + penalty;
     }

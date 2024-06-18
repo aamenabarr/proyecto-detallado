@@ -28,14 +28,15 @@ public class Battle
             {
                 Round();
             }
-            catch (EndOfRound)
+            catch (FireEmblemException exception)
             {
-                HandleEndOfRound();
-            }
-            catch (EndOfGame exception)
-            {
-                HandleEndOfGame(exception);
-                return;
+                if (exception is EndOfRound)
+                    HandleEndOfRound();
+                else if (exception is EndOfGame)
+                {
+                    HandleEndOfGame(exception);
+                    return;
+                }
             }
         }
     }
@@ -55,8 +56,22 @@ public class Battle
     
     private void ChooseUnits()
     {
-        _currentAttacker.ChooseUnit(_view);
-        _currentDefender.ChooseUnit(_view);
+        ChooseUnit(_currentAttacker);
+        ChooseUnit(_currentDefender);
+    }
+    
+    private void ChooseUnit(Player player)
+    {
+        _view.WriteLine($"Player {player.Id} selecciona una opción");
+        PrintUnitOptions(player);
+        var input = Utils.Int(_view.ReadLine());
+        player.Unit = player.Team.GetUnit(input);
+    }
+
+    private void PrintUnitOptions(Player player)
+    {
+        for (var i = 0; i < player.Team.Length(); i++)
+            _view.WriteLine($"{i}: {player.Team.GetUnit(i).Name}");
     }
     
     private void SetUnits()
@@ -82,13 +97,17 @@ public class Battle
     
     private void WeaponsTriangle()
     {
-        if (_unit.HasAdvantage(_rival))
+        if (AttackUtils.HasAdvantage(_unit, _rival))
         {
+            _view.WriteLine($"{_unit.Name} ({_unit.Weapon}) tiene ventaja " +
+                           $"con respecto a {_rival.Name} ({_rival.Weapon})");
             _unit.Wtb = 1.2;
             _rival.Wtb = 0.8;
         }
-        else if (_rival.HasAdvantage(_unit))
+        else if (AttackUtils.HasAdvantage(_rival, _unit))
         {
+            _view.WriteLine($"{_rival.Name} ({_rival.Weapon}) tiene ventaja " +
+                            $"con respecto a {_unit.Name} ({_unit.Weapon})");
             _unit.Wtb = 0.8;
             _rival.Wtb = 1.2;
         }
@@ -105,8 +124,8 @@ public class Battle
         CreateSkills(_unit);
         CreateSkills(_rival);
         _skillsManager.ApplySkills();
-        _unit.PrintSkillsMessages();
-        _rival.PrintSkillsMessages();
+        EffectsPrinter.PrintMessages(_view, _unit);
+        EffectsPrinter.PrintMessages(_view, _rival);
     }
     
     private void CreateSkills(Unit unit)
@@ -164,7 +183,8 @@ public class Battle
 
     private void Attack(Player defender)
     {
-        _unit.Attack(_rival);
+        var damage = AttackUtils.Attack(_unit, _rival);
+        _view.WriteLine($"{_unit.Name} ataca a {_rival.Name} con {damage} de daño");
         defender.UpdateTeam();
         SwitchUnits();
     }
@@ -179,9 +199,9 @@ public class Battle
         SetFollowUpInfo();
         AlterStats();
         AlterDamage();
-        if (_unit.CanDoFollowUp(_rival))
+        if (AttackUtils.CanDoFollowUp(_unit, _rival))
             Attack(_currentDefender);
-        else if (_rival.CanDoFollowUp(_unit))
+        else if (AttackUtils.CanDoFollowUp(_rival, _unit))
         {
             SwitchUnits();
             Attack(_currentAttacker);

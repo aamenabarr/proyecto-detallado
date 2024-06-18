@@ -138,11 +138,7 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {
-              "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
-                "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
