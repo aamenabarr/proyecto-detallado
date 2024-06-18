@@ -16,12 +16,14 @@ public class Team
     
     private bool HasDuplicatedUnits()
     {
-        return _units.Select(unit => unit.Name).Distinct().Count() != _units.Count;
+        var lengthNoDuplicatedUnits = _units.Select(unit => unit.Name).Distinct().Count();
+        return lengthNoDuplicatedUnits != _units.Count;
     }
     
     private bool HasValidSkills()
     {
-        return _units.All(unit => !(HasDuplicatedSkills(unit.Skills) || unit.Skills.Length > 2));
+        return _units.All(unit => 
+            !HasDuplicatedSkills(unit.Skills) && unit.Skills.Length <= 2);
     }
     
     private bool HasDuplicatedSkills(string[] skills)

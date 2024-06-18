@@ -22,7 +22,8 @@ public class ExtraDamageInFirstAttack : Effect
 
     private int GetExtraDamage()
     {
-        if (_percentage != 0) return (Utils.GetUnitStat(Unit, _stat1) - Utils.GetUnitStat(Unit.Rival, _stat2)) * _percentage / 100;
+        if (_percentage != 0)
+            return (Utils.GetUnitStat(Unit, _stat1) - Utils.GetUnitStat(Unit.Rival, _stat2)) * _percentage / 100;
         return Utils.GetUnitStat(Unit, Stat);
     }
 }

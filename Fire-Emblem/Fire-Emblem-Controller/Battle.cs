@@ -43,6 +43,8 @@ public class Battle
     private void Round()
     {
         ChooseUnits();
+        SetUnits();
+        SetRoundInfo();
         PrintStartOfRound();
         WeaponsTriangle();
         ApplySkills();
@@ -55,8 +57,6 @@ public class Battle
     {
         _currentAttacker.ChooseUnit(_view);
         _currentDefender.ChooseUnit(_view);
-        SetUnits();
-        SetRoundInfo();
     }
     
     private void SetUnits()
@@ -120,8 +120,8 @@ public class Battle
     
     private void AddSkillToSkillsManager(Skill skill)
     {
-        foreach (var effect in skill.GetEffects())
-            _skillsManager.Add(skill.GetConditions(), effect);
+        foreach (var effect in skill.Effects)
+            _skillsManager.Add(skill.Conditions, effect);
     }
     
     private void StartAttacks()

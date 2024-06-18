@@ -82,10 +82,13 @@ public class Unit
 
     public bool HasAdvantage(Unit rival)
     {
+        var sword = "Sword";
+        var axe = "Axe";
+        var lance = "Lance";
         var rivalWeapon = rival.Weapon;
-        var hasAdvantage = ((Weapon == "Sword" && rivalWeapon == "Axe") ||
-                (Weapon == "Lance" && rivalWeapon == "Sword") ||
-                (Weapon == "Axe" && rivalWeapon == "Lance"));
+        var hasAdvantage = ((Weapon == sword && rivalWeapon == axe) ||
+                (Weapon == lance && rivalWeapon == sword) ||
+                (Weapon == axe && rivalWeapon == lance));
         if (hasAdvantage)
             _view.WriteLine($"{Name} ({Weapon}) tiene ventaja " +
                             $"con respecto a {rival.Name} ({rival.Weapon})");

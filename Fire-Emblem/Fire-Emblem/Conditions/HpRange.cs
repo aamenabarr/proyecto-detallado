@@ -15,7 +15,9 @@ public class HpRange : Condition
     
     public override bool IsMet()
     {
-        var comparisonValue = _mode == "%" ? Math.Round((double)_unit.InitialStats["Hp"] * _value / 100, MidpointRounding.AwayFromZero) : _value;
+        var comparisonValue = _mode == "%" ? 
+            Math.Round((double)_unit.InitialStats["Hp"] * _value / 100, MidpointRounding.AwayFromZero) 
+            : _value;
         return _symbol == ">=" ? _unit.Hp >= comparisonValue : _unit.Hp <= comparisonValue;
     }
 }
