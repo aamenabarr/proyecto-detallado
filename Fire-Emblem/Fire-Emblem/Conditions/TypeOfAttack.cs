@@ -11,6 +11,6 @@ public class TypeOfAttack : Condition
     
     public override bool IsMet()
     {
-        return _attack == "Physical" ? _unit.Weapon != "Magic" : _unit.Weapon == "Magic";
+        return _attack == "Physical" ? Unit.Weapon != "Magic" : Unit.Weapon == "Magic";
     }
 }

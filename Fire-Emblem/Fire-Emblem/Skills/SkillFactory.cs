@@ -15,7 +15,7 @@ public static class SkillFactory
         SetHybrid(skill);
     }
 
-    public static void SetAlterBaseStats(Skill skill)
+    private static void SetAlterBaseStats(Skill skill)
     {
         switch (skill.Name)
         {
@@ -26,7 +26,7 @@ public static class SkillFactory
         }
     }
     
-    public static void SetBonus(Skill skill)
+    private static void SetBonus(Skill skill)
     {
         switch (skill.Name)
         {
@@ -67,8 +67,12 @@ public static class SkillFactory
                 break;
             case "Wrath":
                 var max_bonus = 30;
-                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, Math.Min(max_bonus, skill.Unit.InitialStats[Stats.Hp] - skill.Unit.Hp)));
-                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, Math.Min(max_bonus, skill.Unit.InitialStats[Stats.Hp] - skill.Unit.Hp)));
+                skill.Effects.Add(
+                    new Bonus(skill.Unit, Stats.Atk, 
+                        Math.Min(max_bonus, skill.Unit.InitialStats[Stats.Hp] - skill.Unit.Hp)));
+                skill.Effects.Add(
+                    new Bonus(skill.Unit, Stats.Spd, 
+                        Math.Min(max_bonus, skill.Unit.InitialStats[Stats.Hp] - skill.Unit.Hp)));
                 break;
             case "Resolve":
                 skill.Conditions.Add(new HpRange(skill.Unit, "<=", 75, "%"));
@@ -208,7 +212,7 @@ public static class SkillFactory
         }
     }
 
-    public static void SetPenalty(Skill skill)
+    private static void SetPenalty(Skill skill)
     {
         switch (skill.Name)
         {
@@ -251,7 +255,7 @@ public static class SkillFactory
         }
     }
 
-    public static void SetNeutralizeBonus(Skill skill)
+    private static void SetNeutralizeBonus(Skill skill)
     {
         switch (skill.Name)
         {
@@ -261,7 +265,7 @@ public static class SkillFactory
         }
     }
     
-    public static void SetNeutralizePenalty(Skill skill)
+    private static void SetNeutralizePenalty(Skill skill)
     {
         switch (skill.Name)
         {
@@ -271,13 +275,14 @@ public static class SkillFactory
         }
     }
     
-    public static void SetExtraDamage(Skill skill)
+    private static void SetExtraDamage(Skill skill)
     {
         switch (skill.Name)
         {
             case "Back at You":
-                skill.Conditions.Add(new StartsAttack(skill.Unit.Rival));
-                skill.Effects.Add(new ExtraDamage(skill.Unit, (skill.Unit.InitialStats[Stats.Hp] - skill.Unit.Hp) / 2));
+                skill.Conditions.Add(new StartsAttack(skill.Unit.Rival)); 
+                skill.Effects.Add(
+                    new ExtraDamage(skill.Unit, (skill.Unit.InitialStats[Stats.Hp] - skill.Unit.Hp) / 2));
                 break;
             case "Lunar Brace":
                 skill.Conditions.Add(new StartsAttack(skill.Unit));
@@ -290,7 +295,7 @@ public static class SkillFactory
         }
     }
 
-    public static void SetPercentageDamageReduction(Skill skill)
+    private static void SetPercentageDamageReduction(Skill skill)
     {
         switch (skill.Name)
         {
@@ -309,7 +314,7 @@ public static class SkillFactory
         }
     }
     
-    public static void SetAbsolutDamageReduction(Skill skill)
+    private static void SetAbsolutDamageReduction(Skill skill)
     {
         switch (skill.Name)
         {
@@ -343,8 +348,61 @@ public static class SkillFactory
                 break;
         }
     }
+
+    private static void SetHealing(Skill skill)
+    {
+        switch (skill.Name)
+        {
+            case "Sol":
+                skill.Effects.Add(new Healing(skill.Unit, 25, "%"));
+                break;
+            case "Nosferatu":
+                skill.Conditions.Add(new TypeOfAttack(skill.Unit, Weapons.Magic));
+                skill.Effects.Add(new Healing(skill.Unit, 50, "%"));
+                break;
+            case "Solar Brace":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new Healing(skill.Unit, 50, "%"));
+                break;
+        }
+    }
     
-    public static void SetHybrid(Skill skill)
+    private static void SetCounterAttackDenial(Skill skill)
+    {
+        switch (skill.Name)
+        {
+            case "Windsweep":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Conditions.Add(new UseWeapon(skill.Unit, Weapons.Sword));
+                skill.Conditions.Add(new UseWeapon(skill.Unit.Rival, Weapons.Sword));
+                skill.Effects.Add(new CounterAttackDenial(skill.Unit.Rival));
+                break;
+            case "Surprise Attack":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Conditions.Add(new UseWeapon(skill.Unit, Weapons.Bow));
+                skill.Conditions.Add(new UseWeapon(skill.Unit.Rival, Weapons.Bow));
+                skill.Effects.Add(new CounterAttackDenial(skill.Unit.Rival));
+                break;
+            case "Hliðskjálf":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Conditions.Add(new TypeOfAttack(skill.Unit, Weapons.Magic));
+                skill.Conditions.Add(new UseWeapon(skill.Unit.Rival, Weapons.Magic));
+                skill.Effects.Add(new CounterAttackDenial(skill.Unit.Rival));
+                break;
+        }
+    }
+    
+    private static void SetDenialOfCounterAttackDenial(Skill skill)
+    {
+        switch (skill.Name)
+        {
+            case "Null C-Disrupt":
+                skill.Effects.Add(new DenialOfCounterAttackDenial(skill.Unit));
+                break;
+        }
+    }
+    
+    private static void SetHybrid(Skill skill)
     {
         switch (skill.Name)
         {
@@ -698,6 +756,125 @@ public static class SkillFactory
                         new List<Effect> { new ExtraDamageInFollowUp(skill.Unit, "Dmg") } :
                         new List<Effect> { new ExtraDamageInFirstAttack(skill.Unit, "Dmg") }
                 ));
+                break;
+            case "Laws of Sacae":
+                skill.Effects.Add(new ConditionalEffect(
+                    new StartsAttack(skill.Unit),
+                    new List<Effect>
+                    {
+                        new Bonus(skill.Unit, Stats.Atk, 6),
+                        new Bonus(skill.Unit, Stats.Spd, 6),
+                        new Bonus(skill.Unit, Stats.Def, 6),
+                        new Bonus(skill.Unit, Stats.Res, 6)
+                    }));
+                skill.Effects.Add(new ConditionalEffect(
+                    new HybridAndCondition(new List<Condition>()
+                    {
+                        new HybridOrCondition(new List<Condition>()
+                        { 
+                            new UseWeapon(skill.Unit.Rival, Weapons.Sword), 
+                            new UseWeapon(skill.Unit.Rival, Weapons.Lance), 
+                            new UseWeapon(skill.Unit.Rival, Weapons.Axe)
+                        }),
+                        new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd + 5)
+                    }),
+                    new List<Effect>{ new CounterAttackDenial(skill.Unit.Rival) }));
+                break;
+            case "Eclipse Brace":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new ExtraDamage(skill.Unit, Stats.Def, 30));
+                skill.Effects.Add(new Healing(skill.Unit, 50, "%"));
+                break;
+            case "Resonance":
+                skill.Conditions.Add(new TypeOfAttack(skill.Unit, Weapons.Magic));
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 2));
+                skill.Effects.Add(new Healing(skill.Unit, -1));
+                skill.Effects.Add(new ExtraDamage(skill.Unit, 3));
+                break;
+            case "Flare":
+                skill.Conditions.Add(new TypeOfAttack(skill.Unit, Weapons.Magic));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Res, -skill.Unit.Rival.Res * 2 / 10));
+                skill.Effects.Add(new Healing(skill.Unit, 50, "%"));
+                break;
+            case "Fury":
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, 4));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, 4));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Def, 4));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Res, 4));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, -8));
+                break;
+            case "Mystic Boost":
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -5));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, 10));
+                break;
+            case "Atk/Spd Push":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, 7));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, 7));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, -5, true));
+                break;
+            case "Atk/Def Push":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, 7));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Def, 7));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, -5, true));
+                break;
+            case "Atk/Res Push":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, 7));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Res, 7));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, -5, true));
+                break;
+            case "Spd/Def Push":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, 7));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Def, 7));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, -5, true));
+                break;
+            case "Spd/Res Push":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, 7));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Res, 7));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, -5, true));
+                break;
+            case "Def/Res Push":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Def, 7));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Res, 7));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, -5, true));
+                break;
+            case "True Dragon Wall":
+                var maxReductionInFirstAttack = 60;
+                var maxReductionInFollowUp = 40;
+                skill.Effects.Add(new ConditionalEffect(
+                    new StatsComparison(skill.Unit, Stats.Res, ">", skill.Unit.Rival, Stats.Res),
+                    new List<Effect> { new PercentageDamageReductionInFirstAttack(skill.Unit, 
+                        Math.Min(maxReductionInFirstAttack, 6 * (skill.Unit.Res - skill.Unit.Rival.Res))),
+                        new PercentageDamageReductionInFollowUp(skill.Unit, 
+                            Math.Min(maxReductionInFollowUp, 4 * (skill.Unit.Res - skill.Unit.Rival.Res)))
+                    }));
+                skill.Effects.Add(new ConditionalEffect(
+                    new AlliesCondition(skill.Unit, new TypeOfAttack(skill.Unit, Weapons.Magic)),
+                    new List<Effect> { new Healing(skill.Unit, 7) }));
+                break;
+            case "Scendscale":
+                skill.Effects.Add(new ExtraDamage(skill.Unit, skill.Unit.Atk * 25 / 100));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, -7, true));
+                break;
+            case "Mastermind":
+                skill.Effects.Add(new ConditionalEffect(
+                    new HpRange(skill.Unit, ">=", 2),
+                    new List<Effect> { new Healing(skill.Unit, -1) }));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StartsAttack(skill.Unit),
+                    new List<Effect>
+                    {
+                        new Bonus(skill.Unit, Stats.Atk, 9),
+                        new Bonus(skill.Unit, Stats.Spd, 9),
+                        new ExtraDamage(skill.Unit, 80)
+                    }));
+                break;
+            case "Bewitching Tome":
                 break;
         }
     }

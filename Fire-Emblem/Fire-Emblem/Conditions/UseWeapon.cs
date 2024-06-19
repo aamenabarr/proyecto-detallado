@@ -11,6 +11,6 @@ public class UseWeapon : Condition
     
     public override bool IsMet()
     {
-        return _unit.Weapon == _weapon;
+        return Unit.Weapon == _weapon;
     }
 }

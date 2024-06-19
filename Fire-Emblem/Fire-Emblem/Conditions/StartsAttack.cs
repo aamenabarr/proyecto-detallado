@@ -6,6 +6,6 @@ public class StartsAttack : Condition
     
     public override bool IsMet()
     {
-        return _unit.IsAttacker;
+        return Unit.IsAttacker;
     }
 }

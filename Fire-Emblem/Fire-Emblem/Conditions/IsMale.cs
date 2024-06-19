@@ -6,6 +6,6 @@ public class IsMale : Condition
     
     public override bool IsMet()
     {
-        return _unit.Gender == "Male";
+        return Unit.Gender == "Male";
     }
 }

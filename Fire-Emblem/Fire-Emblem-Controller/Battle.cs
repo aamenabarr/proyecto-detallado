@@ -84,6 +84,8 @@ public class Battle
     {
         _unit.IsAttacker = true;
         _rival.IsAttacker = false;
+        _unit.HasAttacked = false;
+        _rival.HasAttacked = false;
         _unit.SetFirstCombatInfo();
         _rival.SetFirstCombatInfo();
         _unit.Rival = _rival;
@@ -124,8 +126,7 @@ public class Battle
         CreateSkills(_unit);
         CreateSkills(_rival);
         _skillsManager.ApplySkills();
-        EffectsPrinter.PrintMessages(_view, _unit);
-        EffectsPrinter.PrintMessages(_view, _rival);
+        PrintEffectsMessages();
     }
     
     private void CreateSkills(Unit unit)
@@ -139,8 +140,14 @@ public class Battle
     
     private void AddSkillToSkillsManager(Skill skill)
     {
-        foreach (var effect in skill.Effects)
-            _skillsManager.Add(skill.Conditions, effect);
+        foreach (var effect in skill.Effects.Get())
+            _skillsManager.Add(skill.Conditions.Get(), effect);
+    }
+
+    private void PrintEffectsMessages()
+    {
+        EffectsPrinter.PrintMessages(_view, _unit);
+        EffectsPrinter.PrintMessages(_view, _rival);
     }
     
     private void StartAttacks()
@@ -183,9 +190,13 @@ public class Battle
 
     private void Attack(Player defender)
     {
-        var damage = AttackUtils.Attack(_unit, _rival);
-        _view.WriteLine($"{_unit.Name} ataca a {_rival.Name} con {damage} de daño");
-        defender.UpdateTeam();
+        if (!_unit.CounterAttackDenial)
+        {
+            _unit.HasAttacked = true;
+            var damage = AttackUtils.Attack(_unit, _rival);
+            _view.WriteLine($"{_unit.Name} ataca a {_rival.Name} con {damage} de daño");
+            defender.UpdateTeam();
+        }
         SwitchUnits();
     }
     
@@ -211,6 +222,19 @@ public class Battle
         ResetStats();
     }
 
+    private void ApplyAfterCombatEffects()
+    {
+        PrintAfterCombatMessages();
+        _unit.StatsManager.AlterUnitStats("HealingAfterCombat", true);
+        _rival.StatsManager.AlterUnitStats("HealingAfterCombat",true);
+    }
+
+    private void PrintAfterCombatMessages()
+    {
+        EffectsPrinter.PrintAfterCombatMessages(_view, _unit);
+        EffectsPrinter.PrintAfterCombatMessages(_view, _rival);
+    }
+
     private void SetFollowUpInfo()
     {
         _unit.InFirstAttack = false;
@@ -221,6 +245,7 @@ public class Battle
     
     private void HandleEndOfRound()
     {
+        ApplyAfterCombatEffects();
         PrintEndOfRoundInfo();
         SaveRoundInfo();
         ResetStats();
@@ -254,6 +279,7 @@ public class Battle
     
     private void HandleEndOfGame(Exception exception)
     {
+        ApplyAfterCombatEffects();
         PrintEndOfRoundInfo();
         _view.WriteLine(exception.Message == "Player 1 sin unidades" ? "Player 2 ganó" : "Player 1 ganó");
     }

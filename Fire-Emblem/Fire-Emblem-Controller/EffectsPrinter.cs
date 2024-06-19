@@ -21,7 +21,8 @@ public static class EffectsPrinter
         PrintPercentageDamageReductionMessages(view, unit, "PercentageDamageReduction", "de los ataques");
         PrintPercentageDamageReductionMessages(view, unit, 
             "PercentageDamageReductionInFirstAttack", "del primer ataque");
-        PrintPercentageDamageReductionMessages(view, unit, "PercentageDamageReductionInFollowUp", "del Follow-Up");
+        PrintPercentageDamageReductionMessages(view, unit, 
+            "PercentageDamageReductionInFollowUp", "del Follow-Up");
         PrintAbsolutDamageReductionMessages(view, unit);
     }
 
@@ -38,7 +39,7 @@ public static class EffectsPrinter
     private static void PrintNeutralizeEffects(View view, Unit unit, string effect)
     {
         foreach (var stat in Stats.AllStats)
-            if ((bool)unit.StatsManager.StatsDictionary[effect][stat][1] && stat != "Hp")
+            if ((bool)unit.StatsManager.StatsDictionary[effect][stat][1] && stat != Stats.Hp)
                 view.WriteLine($"Los {effect.ToLower()} de {stat} de {unit.Name} fueron neutralizados");
     }
     
@@ -61,5 +62,21 @@ public static class EffectsPrinter
         var value = unit.DamageManager.DamageDictionary["AbsolutDamageReduction"];
         if (value != 0)
             view.WriteLine($"{unit.Name} recibirá {value} daño en cada ataque");
+    }
+
+    public static void PrintAfterCombatMessages(View view, Unit unit)
+    {
+        foreach (var (stat, statInfo) in unit.StatsManager.StatsDictionary["HealingAfterCombat"])
+        {
+            var value = (int)statInfo[0];
+            var hasAttackedCondition = (bool)statInfo[1];
+            if (!hasAttackedCondition || (hasAttackedCondition && unit.HasAttacked))
+            {
+                if (value > 0 && unit.Hp > 0)
+                    view.WriteLine($"{unit.Name} recupera {value} HP despues del combate");
+                else if (value < 0 && unit.Hp > 0)
+                    view.WriteLine($"{unit.Name} recibe {-value} de daño despues del combate");
+            }
+        }
     }
 }

@@ -21,7 +21,10 @@ public class StatsComparison : Condition
     {
         var value1 = Utils.GetUnitStat(_unit1, _stat1);
         var value2 = Utils.GetUnitStat(_unit2, _stat2);
-        if (_symbol == ">") return value1 > value2;
+        if (_symbol == ">") 
+            return value1 > value2;
+        if (_symbol == ">=")
+            return value1 >= value2;
         return value1 < value2;
     }
 }

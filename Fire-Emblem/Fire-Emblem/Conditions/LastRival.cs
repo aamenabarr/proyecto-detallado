@@ -6,6 +6,6 @@ public class LastRival : Condition
     
     public override bool IsMet()
     {
-        return _unit.LastRival == _unit.Rival;
+        return Unit.LastRival == Unit.Rival;
     }
 }

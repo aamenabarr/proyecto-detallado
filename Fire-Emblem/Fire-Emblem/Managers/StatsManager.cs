@@ -11,7 +11,9 @@ public class StatsManager
         "BonusInFollowUp", 
         "Penalty", 
         "PenaltyInFirstAttack", 
-        "PenaltyInFollowUp"
+        "PenaltyInFollowUp",
+        "Healing",
+        "HealingAfterCombat"
     };
     private Unit _unit;
     public Dictionary<string, Dictionary<string, ArrayList>> StatsDictionary = new();
@@ -57,23 +59,29 @@ public class StatsManager
             }
     }
     
-    public void AlterUnitStats(string effect)
+    public void AlterUnitStats(string effect, bool afterCombat = false)
     {
         foreach (var (stat, statInfo) in StatsDictionary[effect])
         {
             var value = (int)statInfo[0];
             var neutralized = (bool)statInfo[1];
-            if (!neutralized)
-               AlterUnitStat(stat, value);
+            if (!neutralized || (neutralized && afterCombat && _unit.HasAttacked))
+               AlterUnitStat(stat, value, afterCombat);
         }
     }
     
-    private void AlterUnitStat(string stat, int value)
+    private void AlterUnitStat(string stat, int value, bool afterCombat)
     {
         switch (stat)
         {
             case "Hp":
-                _unit.Hp += value;
+                if (afterCombat)
+                {
+                    if (_unit.Hp > 0 && value != 0)
+                        _unit.Hp = Math.Min(_unit.InitialStats["Hp"], _unit.Hp + value);
+                }
+                else
+                    _unit.Hp += value;
                 break;
             case "Atk":
                 _unit.Atk += value;

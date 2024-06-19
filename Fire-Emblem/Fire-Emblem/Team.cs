@@ -42,7 +42,9 @@ public class Team
 
     public Unit GetUnit(int id)
     {
-        return _units[id];
+        var unit = _units[id];
+        unit.SetTeam(this);
+        return unit;
     }
 
     public void RemoveUnit(Unit unit)

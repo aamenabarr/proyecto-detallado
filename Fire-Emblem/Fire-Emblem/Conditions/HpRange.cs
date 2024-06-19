@@ -6,7 +6,7 @@ public class HpRange : Condition
     private int _value;
     private string _mode;
 
-    public HpRange(Unit unit, string symbol, int value, string mode = null) : base(unit)
+    public HpRange(Unit unit, string symbol, int value, string mode = "") : base(unit)
     {
         _symbol = symbol;
         _value = value;
@@ -16,8 +16,8 @@ public class HpRange : Condition
     public override bool IsMet()
     {
         var comparisonValue = _mode == "%" ? 
-            Math.Round((double)_unit.InitialStats["Hp"] * _value / 100, MidpointRounding.AwayFromZero) 
+            Math.Round((double)Unit.InitialStats["Hp"] * _value / 100, MidpointRounding.AwayFromZero) 
             : _value;
-        return _symbol == ">=" ? _unit.Hp >= comparisonValue : _unit.Hp <= comparisonValue;
+        return _symbol == ">=" ? Unit.Hp >= comparisonValue : Unit.Hp <= comparisonValue;
     }
 }

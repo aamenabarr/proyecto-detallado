@@ -19,8 +19,11 @@ public class Unit
     public bool InFirstCombat = true;
     public bool InFirstAttack = true;
     public bool InFollowUp = false;
+    public bool CounterAttackDenial = false;
+    public bool HasAttacked = false;
     public int FirstAttackerCombat = 0;
     public int FirstDefenderCombat = 0;
+    public Team Team;
     public Unit Rival;
     public Unit LastRival;
     public StatsManager StatsManager;
@@ -63,6 +66,11 @@ public class Unit
         effects.Add($"Bonus{state}");
         effects.Add($"Penalty{state}");
         return effects;
+    }
+
+    public void SetTeam(Team team)
+    {
+        Team = team;
     }
 
     private string SetState()

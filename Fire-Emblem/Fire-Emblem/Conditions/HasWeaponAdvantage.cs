@@ -6,6 +6,6 @@ public class HasWeaponAdvantage : Condition
     
     public override bool IsMet()
     {
-        return _unit.HasWeaponAdvantage;
+        return Unit.HasWeaponAdvantage;
     }
 }

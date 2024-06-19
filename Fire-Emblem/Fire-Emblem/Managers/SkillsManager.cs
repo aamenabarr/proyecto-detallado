@@ -35,7 +35,9 @@ public class SkillsManager
         "PercentageDamageReductionInFollowUp",
         "AbsolutDamageReduction",
         "ExtraDamageInFirstAttack",
-        "ExtraDamageInFollowUp"
+        "ExtraDamageInFollowUp",
+        "Healing",
+        "HealingAfterCombat"
     };
     
     private void ApplyEffects()

@@ -2,11 +2,11 @@ namespace Fire_Emblem;
 
 public abstract class Condition
 {
-    protected Unit _unit;
+    public Unit Unit;
 
     protected Condition(Unit unit)
     {
-        _unit = unit;
+        Unit = unit;
     }
 
     protected Condition() : this(null) {}

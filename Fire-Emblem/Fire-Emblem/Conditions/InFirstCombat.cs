@@ -12,9 +12,9 @@ public class InFirstCombat : Condition
     
     public override bool IsMet()
     {
-        if (_role == "") return _unit.InFirstCombat;
-        if (_role == "Attacker" && _unit.FirstAttackerCombat == 1) return true;
-        if (_role == "Defender" && _unit.FirstDefenderCombat == 1) return true;
+        if (_role == "") return Unit.InFirstCombat;
+        if (_role == "Attacker" && Unit.FirstAttackerCombat == 1) return true;
+        if (_role == "Defender" && Unit.FirstDefenderCombat == 1) return true;
         return false;
     }
 }
