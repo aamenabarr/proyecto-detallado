@@ -78,7 +78,7 @@ public class StatsManager
                 if (afterCombat)
                 {
                     if (_unit.Hp > 0 && value != 0)
-                        _unit.Hp = Math.Min(_unit.InitialStats["Hp"], _unit.Hp + value);
+                        _unit.Hp = Math.Max(1, Math.Min(_unit.InitialStats["Hp"], _unit.Hp + value));
                 }
                 else
                     _unit.Hp += value;
