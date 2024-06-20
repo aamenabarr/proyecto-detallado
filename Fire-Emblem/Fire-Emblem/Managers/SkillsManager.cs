@@ -37,6 +37,8 @@ public class SkillsManager
         "ExtraDamageInFirstAttack",
         "ExtraDamageInFollowUp",
         "Healing",
+        "CounterAttackDenial",
+        "DenialOfCounterAttackDenial",
         "HealingAfterCombat"
     };
     

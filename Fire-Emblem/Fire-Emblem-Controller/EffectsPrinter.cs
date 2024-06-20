@@ -24,6 +24,9 @@ public static class EffectsPrinter
         PrintPercentageDamageReductionMessages(view, unit, 
             "PercentageDamageReductionInFollowUp", "del Follow-Up");
         PrintAbsolutDamageReductionMessages(view, unit);
+        PrintHealingMessages(view, unit);
+        PrintCounterAttackDenialMessages(view, unit);
+        PrintDenialOfCounterAttackDenialMessages(view, unit);
     }
 
     private static void PrintAlterStatMessages(View view, Unit unit, string effect, string sign, string extraMessage = "")
@@ -64,6 +67,28 @@ public static class EffectsPrinter
             view.WriteLine($"{unit.Name} recibirá {value} daño en cada ataque");
     }
 
+    private static void PrintHealingMessages(View view, Unit unit)
+    {
+        foreach (var (stat, statInfo) in unit.StatsManager.StatsDictionary["Healing"])
+        {
+            var value = (int)statInfo[0];
+            if (value != 0)
+                view.WriteLine($"{unit.Name} recuperará HP igual al {value}% del daño realizado en cada ataque");
+        }
+    }
+
+    private static void PrintCounterAttackDenialMessages(View view, Unit unit)
+    {
+        if (unit.CounterAttackDenial)
+            view.WriteLine($"{unit.Name} no podrá contraatacar");
+    }
+    
+    private static void PrintDenialOfCounterAttackDenialMessages(View view, Unit unit)
+    {
+        if (unit.DenialOfCounterAttackDenial)
+            view.WriteLine($"{unit.Name} neutraliza los efectos que previenen sus contraataques");
+    }
+
     public static void PrintAfterCombatMessages(View view, Unit unit)
     {
         foreach (var (stat, statInfo) in unit.StatsManager.StatsDictionary["HealingAfterCombat"])
@@ -78,5 +103,13 @@ public static class EffectsPrinter
                     view.WriteLine($"{unit.Name} recibe {-value} de daño despues del combate");
             }
         }
+    }
+
+    public static void PrintHpHealingMessages(View view, Unit unit)
+    {
+        var percentage = (int)unit.StatsManager.StatsDictionary["Healing"][Stats.Hp][0];
+        var value = AttackUtils.Attack(unit, unit.Rival) * percentage / 100;
+        if (value > 0)
+            view.WriteLine($"{unit.Name} recupera {value} HP luego de atacar y queda con {unit.Hp} HP.");
     }
 }

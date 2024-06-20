@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj": {}
+    "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj": {}
   },
   "projects": {
-    "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj": {
+    "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj",
+        "projectUniqueName": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj",
         "projectName": "Fire-Emblem-Controller",
-        "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj",
-        "packagesPath": "C:\\Users\\amenabar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\obj\\",
+        "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\Fire-Emblem-Controller.csproj",
+        "packagesPath": "C:\\Users\\aamen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-Controller\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\amenabar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\aamen\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -26,11 +26,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
-                "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj"
+              "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
+                "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj"
               },
-              "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj": {
-                "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj"
+              "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj": {
+                "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj"
               }
             }
           }
@@ -60,21 +60,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\amenabar\\.dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
+    "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj",
+        "projectUniqueName": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj",
         "projectName": "Fire-Emblem-View",
-        "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj",
-        "packagesPath": "C:\\Users\\amenabar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\obj\\",
+        "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\Fire-Emblem-View.csproj",
+        "packagesPath": "C:\\Users\\aamen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem-View\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\amenabar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\aamen\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -113,21 +113,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\amenabar\\.dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj": {
+    "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj",
+        "projectUniqueName": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj",
         "projectName": "Fire-Emblem",
-        "projectPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj",
-        "packagesPath": "C:\\Users\\amenabar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\amenabar\\Desktop\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\obj\\",
+        "projectPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\Fire-Emblem.csproj",
+        "packagesPath": "C:\\Users\\aamen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aamen\\OneDrive\\Escritorio\\iic2113\\proyecto-detallado\\Fire-Emblem\\Fire-Emblem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\amenabar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\aamen\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -166,7 +166,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\amenabar\\.dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

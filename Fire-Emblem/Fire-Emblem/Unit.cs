@@ -20,6 +20,7 @@ public class Unit
     public bool InFirstAttack = true;
     public bool InFollowUp = false;
     public bool CounterAttackDenial = false;
+    public bool DenialOfCounterAttackDenial = false;
     public bool HasAttacked = false;
     public int FirstAttackerCombat = 0;
     public int FirstDefenderCombat = 0;

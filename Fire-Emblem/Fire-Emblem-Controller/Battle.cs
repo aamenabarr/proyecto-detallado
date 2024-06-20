@@ -86,6 +86,10 @@ public class Battle
         _rival.IsAttacker = false;
         _unit.HasAttacked = false;
         _rival.HasAttacked = false;
+        _unit.CounterAttackDenial = false;
+        _rival.CounterAttackDenial = false;
+        _unit.DenialOfCounterAttackDenial = false;
+        _rival.DenialOfCounterAttackDenial = false;
         _unit.SetFirstCombatInfo();
         _rival.SetFirstCombatInfo();
         _unit.Rival = _rival;
@@ -199,6 +203,11 @@ public class Battle
         }
         SwitchUnits();
     }
+
+    private void PrintHpHealing()
+    {
+        EffectsPrinter.PrintHpHealingMessages(_view, _unit);
+    }
     
     private void SwitchUnits()
     {
@@ -210,15 +219,22 @@ public class Battle
         SetFollowUpInfo();
         AlterStats();
         AlterDamage();
-        if (AttackUtils.CanDoFollowUp(_unit, _rival))
+        if (AttackUtils.CanDoFollowUp(_unit, _rival) && !_unit.CounterAttackDenial)
             Attack(_currentDefender);
-        else if (AttackUtils.CanDoFollowUp(_rival, _unit))
+        else if (AttackUtils.CanDoFollowUp(_rival, _unit) && !_rival.CounterAttackDenial)
         {
             SwitchUnits();
             Attack(_currentAttacker);
         }
         else
-            _view.WriteLine("Ninguna unidad puede hacer un follow up");
+        {
+            if (_unit.CounterAttackDenial && !_rival.CounterAttackDenial)
+                _view.WriteLine($"{_rival.Name} no puede hacer un follow up");
+            else if (!_unit.CounterAttackDenial && _rival.CounterAttackDenial)
+                _view.WriteLine($"{_unit.Name} no puede hacer un follow up");
+            else
+                _view.WriteLine("Ninguna unidad puede hacer un follow up");
+        }
         ResetStats();
     }
 

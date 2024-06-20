@@ -12,6 +12,9 @@ public static class SkillFactory
         SetExtraDamage(skill);
         SetPercentageDamageReduction(skill);
         SetAbsolutDamageReduction(skill);
+        SetHealing(skill);
+        SetCounterAttackDenial(skill);
+        SetDenialOfCounterAttackDenial(skill);
         SetHybrid(skill);
     }
 
@@ -354,15 +357,15 @@ public static class SkillFactory
         switch (skill.Name)
         {
             case "Sol":
-                skill.Effects.Add(new Healing(skill.Unit, 25, "%"));
+                skill.Effects.Add(new Healing(skill.Unit, 25));
                 break;
             case "Nosferatu":
                 skill.Conditions.Add(new TypeOfAttack(skill.Unit, Weapons.Magic));
-                skill.Effects.Add(new Healing(skill.Unit, 50, "%"));
+                skill.Effects.Add(new Healing(skill.Unit, 50));
                 break;
             case "Solar Brace":
                 skill.Conditions.Add(new StartsAttack(skill.Unit));
-                skill.Effects.Add(new Healing(skill.Unit, 50, "%"));
+                skill.Effects.Add(new Healing(skill.Unit, 50));
                 break;
         }
     }
@@ -783,7 +786,7 @@ public static class SkillFactory
             case "Eclipse Brace":
                 skill.Conditions.Add(new StartsAttack(skill.Unit));
                 skill.Effects.Add(new ExtraDamage(skill.Unit, Stats.Def, 30));
-                skill.Effects.Add(new Healing(skill.Unit, 50, "%"));
+                skill.Effects.Add(new Healing(skill.Unit, 50));
                 break;
             case "Resonance":
                 skill.Conditions.Add(new TypeOfAttack(skill.Unit, Weapons.Magic));
@@ -794,7 +797,7 @@ public static class SkillFactory
             case "Flare":
                 skill.Conditions.Add(new TypeOfAttack(skill.Unit, Weapons.Magic));
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Res, -skill.Unit.Rival.Res * 2 / 10));
-                skill.Effects.Add(new Healing(skill.Unit, 50, "%"));
+                skill.Effects.Add(new Healing(skill.Unit, 50));
                 break;
             case "Fury":
                 skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, 4));
@@ -858,7 +861,7 @@ public static class SkillFactory
                     new List<Effect> { new Healing(skill.Unit, 7) }));
                 break;
             case "Scendscale":
-                skill.Effects.Add(new ExtraDamage(skill.Unit, skill.Unit.Atk * 25 / 100));
+                skill.Effects.Add(new ExtraDamage(skill.Unit, Stats.Atk, 25, true));
                 skill.Effects.Add(new HealingAfterCombat(skill.Unit, -7, true));
                 break;
             case "Mastermind":

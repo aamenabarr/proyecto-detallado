@@ -6,6 +6,7 @@ public class CounterAttackDenial : Effect
     
     public override void Apply()
     {
-        Unit.CounterAttackDenial = true;
+        if (!Unit.IsAttacker)
+            Unit.CounterAttackDenial = true;
     }
 }
