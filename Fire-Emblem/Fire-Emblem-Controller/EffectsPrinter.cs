@@ -67,6 +67,17 @@ public static class EffectsPrinter
             view.WriteLine($"{unit.Name} recibirá {value} daño en cada ataque");
     }
 
+    public static void PrintHealingBeforeCombatMessages(View view, Unit unit)
+    {
+        var value = (int)unit.StatsManager.StatsDictionary["HealingBeforeCombat"][Stats.Hp][0];
+        if (value != 0)
+        {
+            unit.Hp = Math.Max(1, unit.Hp + value);
+            view.WriteLine(
+                $"{unit.Name} recibe {-value} de daño antes de iniciar el combate y queda con {unit.Hp} HP");
+        }
+    }
+
     private static void PrintHealingMessages(View view, Unit unit)
     {
         foreach (var (stat, statInfo) in unit.StatsManager.StatsDictionary["Healing"])
@@ -108,8 +119,11 @@ public static class EffectsPrinter
     public static void PrintHpHealingMessages(View view, Unit unit)
     {
         var percentage = (int)unit.StatsManager.StatsDictionary["Healing"][Stats.Hp][0];
-        var value = AttackUtils.Attack(unit, unit.Rival) * percentage / 100;
+        var value = unit.Damage * percentage / 100;
         if (value > 0)
+        {
+            unit.Hp = Math.Min(unit.InitialStats[Stats.Hp], unit.Hp + value);
             view.WriteLine($"{unit.Name} recupera {value} HP luego de atacar y queda con {unit.Hp} HP.");
+        }
     }
 }

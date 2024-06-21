@@ -346,7 +346,7 @@ public static class SkillFactory
                 break;
             case "Sympathetic":
                 skill.Conditions.Add(new StartsAttack(skill.Unit.Rival));
-                skill.Conditions.Add(new HpRange(skill.Unit, "<=", 50, "%"));
+                skill.Conditions.Add(new HpRange(skill.Unit, "<=", 50, "%", true));
                 skill.Effects.Add(new AbsolutDamageReduction(skill.Unit, -5));
                 break;
         }
@@ -775,23 +775,25 @@ public static class SkillFactory
                     {
                         new HybridOrCondition(new List<Condition>()
                         { 
-                            new UseWeapon(skill.Unit.Rival, Weapons.Sword), 
+                            new UseWeapon(skill.Unit.Rival, Weapons.Sword),
                             new UseWeapon(skill.Unit.Rival, Weapons.Lance), 
                             new UseWeapon(skill.Unit.Rival, Weapons.Axe)
                         }),
-                        new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd + 5)
+                        new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, 5)
                     }),
                     new List<Effect>{ new CounterAttackDenial(skill.Unit.Rival) }));
                 break;
             case "Eclipse Brace":
                 skill.Conditions.Add(new StartsAttack(skill.Unit));
-                skill.Effects.Add(new ExtraDamage(skill.Unit, Stats.Def, 30));
+                skill.Effects.Add(new ConditionalEffect(
+                    new TypeOfAttack(skill.Unit, Weapons.Physical),
+                    new List<Effect> { new ExtraDamage(skill.Unit, Stats.Def, 30) }));
                 skill.Effects.Add(new Healing(skill.Unit, 50));
                 break;
             case "Resonance":
                 skill.Conditions.Add(new TypeOfAttack(skill.Unit, Weapons.Magic));
                 skill.Conditions.Add(new HpRange(skill.Unit, ">=", 2));
-                skill.Effects.Add(new Healing(skill.Unit, -1));
+                skill.Effects.Add(new HealingBeforeCombat(skill.Unit, -1));
                 skill.Effects.Add(new ExtraDamage(skill.Unit, 3));
                 break;
             case "Flare":
@@ -847,18 +849,14 @@ public static class SkillFactory
                 skill.Effects.Add(new HealingAfterCombat(skill.Unit, -5, true));
                 break;
             case "True Dragon Wall":
-                var maxReductionInFirstAttack = 60;
-                var maxReductionInFollowUp = 40;
                 skill.Effects.Add(new ConditionalEffect(
                     new StatsComparison(skill.Unit, Stats.Res, ">", skill.Unit.Rival, Stats.Res),
-                    new List<Effect> { new PercentageDamageReductionInFirstAttack(skill.Unit, 
-                        Math.Min(maxReductionInFirstAttack, 6 * (skill.Unit.Res - skill.Unit.Rival.Res))),
-                        new PercentageDamageReductionInFollowUp(skill.Unit, 
-                            Math.Min(maxReductionInFollowUp, 4 * (skill.Unit.Res - skill.Unit.Rival.Res)))
+                    new List<Effect> { new PercentageDamageReductionInFirstAttack(skill.Unit, 6, true),
+                        new PercentageDamageReductionInFollowUp(skill.Unit, 4, true)
                     }));
                 skill.Effects.Add(new ConditionalEffect(
                     new AlliesCondition(skill.Unit, new TypeOfAttack(skill.Unit, Weapons.Magic)),
-                    new List<Effect> { new Healing(skill.Unit, 7) }));
+                    new List<Effect> { new HealingAfterCombat(skill.Unit, 7) }));
                 break;
             case "Scendscale":
                 skill.Effects.Add(new ExtraDamage(skill.Unit, Stats.Atk, 25, true));
@@ -867,17 +865,41 @@ public static class SkillFactory
             case "Mastermind":
                 skill.Effects.Add(new ConditionalEffect(
                     new HpRange(skill.Unit, ">=", 2),
-                    new List<Effect> { new Healing(skill.Unit, -1) }));
+                    new List<Effect> { new HealingBeforeCombat(skill.Unit, -1) }));
                 skill.Effects.Add(new ConditionalEffect(
                     new StartsAttack(skill.Unit),
                     new List<Effect>
                     {
                         new Bonus(skill.Unit, Stats.Atk, 9),
                         new Bonus(skill.Unit, Stats.Spd, 9),
-                        new ExtraDamage(skill.Unit, 80)
-                    }));
+                        new ExtraDamage(skill.Unit, Stats.Hp, 100, mastermind: true)
+                    }, true));
                 break;
             case "Bewitching Tome":
+                skill.Conditions.Add(new HybridOrCondition(new List<Condition>()
+                {
+                    new StartsAttack(skill.Unit),
+                    new UseWeapon(skill.Unit.Rival, Weapons.Bow),
+                    new TypeOfAttack(skill.Unit.Rival, Weapons.Magic),
+                }));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, 5));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, 5));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Def, 5));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Res, 5));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, skill.Unit.InitialStats[Stats.Spd] * 20 / 100));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, skill.Unit.InitialStats[Stats.Spd] * 20 / 100));
+                skill.Effects.Add(new PercentageDamageReductionInFirstAttack(skill.Unit, 30));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, 7));
+                Console.WriteLine(skill.Unit.Rival.Atk);
+                skill.Effects.Add(new ConditionalElseEffect(
+                    new HybridOrCondition(new List<Condition>
+                    {
+                        new HasWeaponAdvantage(skill.Unit),
+                        new StatsComparison(skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd)
+                    }),
+                    new List<Effect>{ new HealingBeforeCombat(skill.Unit.Rival, 40, true) },
+                    new List<Effect>{ new HealingBeforeCombat(skill.Unit.Rival, 20, true) }
+                ));
                 break;
         }
     }

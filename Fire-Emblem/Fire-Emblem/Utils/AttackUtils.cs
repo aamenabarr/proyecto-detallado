@@ -6,6 +6,7 @@ public static class AttackUtils
     {
         var damage = Math.Max(0, Math.Max(0, Damage(unit, rival)) + (int)Math.Floor(unit.Dmg));
         ReduceHp(rival, damage);
+        unit.Damage = damage;
         return damage;
     }
 

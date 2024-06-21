@@ -36,6 +36,7 @@ public class SkillsManager
         "AbsolutDamageReduction",
         "ExtraDamageInFirstAttack",
         "ExtraDamageInFollowUp",
+        "HealingBeforeCombat",
         "Healing",
         "CounterAttackDenial",
         "DenialOfCounterAttackDenial",

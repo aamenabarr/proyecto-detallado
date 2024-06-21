@@ -152,6 +152,8 @@ public class Battle
     {
         EffectsPrinter.PrintMessages(_view, _unit);
         EffectsPrinter.PrintMessages(_view, _rival);
+        EffectsPrinter.PrintHealingBeforeCombatMessages(_view, _unit);
+        EffectsPrinter.PrintHealingBeforeCombatMessages(_view, _rival);
     }
     
     private void StartAttacks()
@@ -200,13 +202,15 @@ public class Battle
             var damage = AttackUtils.Attack(_unit, _rival);
             _view.WriteLine($"{_unit.Name} ataca a {_rival.Name} con {damage} de daño");
             defender.UpdateTeam();
+            PrintHpHealing();
         }
         SwitchUnits();
     }
 
-    private void PrintHpHealing()
+    private void PrintHpHealing(bool endOfRound = false)
     {
-        EffectsPrinter.PrintHpHealingMessages(_view, _unit);
+        if ((endOfRound && _rival.Hp == 0) || !endOfRound)
+            EffectsPrinter.PrintHpHealingMessages(_view, _unit);
     }
     
     private void SwitchUnits()
@@ -247,8 +251,8 @@ public class Battle
 
     private void PrintAfterCombatMessages()
     {
-        EffectsPrinter.PrintAfterCombatMessages(_view, _unit);
-        EffectsPrinter.PrintAfterCombatMessages(_view, _rival);
+        EffectsPrinter.PrintAfterCombatMessages(_view, _currentAttacker.Unit);
+        EffectsPrinter.PrintAfterCombatMessages(_view, _currentDefender.Unit);
     }
 
     private void SetFollowUpInfo()
@@ -261,6 +265,7 @@ public class Battle
     
     private void HandleEndOfRound()
     {
+        PrintHpHealing(true);
         ApplyAfterCombatEffects();
         PrintEndOfRoundInfo();
         SaveRoundInfo();
@@ -295,6 +300,7 @@ public class Battle
     
     private void HandleEndOfGame(Exception exception)
     {
+        PrintHpHealing(true);
         ApplyAfterCombatEffects();
         PrintEndOfRoundInfo();
         _view.WriteLine(exception.Message == "Player 1 sin unidades" ? "Player 2 ganó" : "Player 1 ganó");

@@ -13,6 +13,7 @@ public class Unit
     public int Res;
     public double Dmg = 0;
     public double Wtb;
+    public int Damage = 0;
     public string[] Skills;
     public bool HasWeaponAdvantage = false;
     public bool IsAttacker = false;

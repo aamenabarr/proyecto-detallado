@@ -12,6 +12,7 @@ public class StatsManager
         "Penalty", 
         "PenaltyInFirstAttack", 
         "PenaltyInFollowUp",
+        "HealingBeforeCombat",
         "Healing",
         "HealingAfterCombat"
     };
@@ -117,5 +118,16 @@ public class StatsManager
         var penalty = penaltyIsNeutralized ? 0 : (int)StatsDictionary["Penalty"][stat][0];
         
         return bonus + penalty;
+    }
+
+    public int GetEffectValue(string effect)
+    {
+        var value = 0;
+        foreach (var stat in Stats.AllStats)
+        {
+            var neutralized = (bool)StatsDictionary[effect][stat][1];
+            if (!neutralized) value += (int)StatsDictionary[effect][stat][0];
+        }
+        return value;
     }
 }

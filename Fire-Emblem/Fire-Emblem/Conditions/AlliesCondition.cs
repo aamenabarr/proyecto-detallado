@@ -11,10 +11,10 @@ public class AlliesCondition : Condition
     
     public override bool IsMet()
     {
-        for (int i = 1; i <= Unit.Team.Length(); i++)
+        for (int i = 0; i < Unit.Team.Length(); i++)
         {
             _condition.Unit = Unit.Team.GetUnit(i);
-            if (_condition.IsMet())
+            if (_condition.IsMet() && _condition.Unit != Unit && _condition.Unit.Hp > 0)
                 return true;
         }
         return false;
