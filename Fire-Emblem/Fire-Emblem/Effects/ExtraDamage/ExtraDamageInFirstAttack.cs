@@ -5,6 +5,7 @@ public class ExtraDamageInFirstAttack : Effect
     private string _stat1 = "";
     private string _stat2 = "";
     private int _percentage = 0;
+    private int _percentage2 = 0;
     
     public ExtraDamageInFirstAttack(Unit unit, string stat1, string stat2, int percentage) : base(unit)
     {
@@ -12,8 +13,11 @@ public class ExtraDamageInFirstAttack : Effect
         _stat2 = stat2;
         _percentage = percentage;
     }
-    
-    public ExtraDamageInFirstAttack(Unit unit, string stat) : base(unit, stat) {}
+
+    public ExtraDamageInFirstAttack(Unit unit, string stat, int percentage = 0) : base(unit, stat)
+    {
+        _percentage2 = percentage;
+    }
     
     public override void Apply()
     {
@@ -24,6 +28,8 @@ public class ExtraDamageInFirstAttack : Effect
     {
         if (_percentage != 0)
             return (Utils.GetUnitStat(Unit, _stat1) - Utils.GetUnitStat(Unit.Rival, _stat2)) * _percentage / 100;
-        return Utils.GetUnitStat(Unit, Stat);
+        if (_percentage2 == 0)
+            return Utils.GetUnitStat(Unit, Stat);
+        return Utils.GetUnitStat(Unit, Stat) * _percentage2 / 100;
     }
 }

@@ -90,6 +90,14 @@ public class Battle
         _rival.CounterAttackDenial = false;
         _unit.DenialOfCounterAttackDenial = false;
         _rival.DenialOfCounterAttackDenial = false;
+        _unit.FollowUpGuarantee = false;
+        _rival.FollowUpGuarantee = false;
+        _unit.DenialOfFollowUp = false;
+        _rival.DenialOfFollowUp = false;
+        _unit.DenialOfFollowUpGuarantee = false;
+        _rival.DenialOfFollowUpGuarantee = false;
+        _unit.DenialOfFollowUpDenial = false;
+        _rival.DenialOfFollowUpDenial = false;
         _unit.SetFirstCombatInfo();
         _rival.SetFirstCombatInfo();
         _unit.Rival = _rival;
@@ -223,14 +231,20 @@ public class Battle
         SetFollowUpInfo();
         AlterStats();
         AlterDamage();
-        if (AttackUtils.CanDoFollowUp(_unit, _rival) && !_unit.CounterAttackDenial)
+        bool didAttack = false;
+        if (AttackUtils.CanDoFollowUp(_unit, _rival) && !_unit.CounterAttackDenial && !_unit.DenialOfFollowUp || _unit.FollowUpGuarantee )
+        {
             Attack(_currentDefender);
-        else if (AttackUtils.CanDoFollowUp(_rival, _unit) && !_rival.CounterAttackDenial)
+            SwitchUnits();
+            didAttack = true;
+        }
+        if (AttackUtils.CanDoFollowUp(_rival, _unit) && !_rival.CounterAttackDenial && !_unit.DenialOfFollowUp || _rival.FollowUpGuarantee)
         {
             SwitchUnits();
             Attack(_currentAttacker);
+            didAttack = true;
         }
-        else
+        if (!didAttack)
         {
             if (_unit.CounterAttackDenial && !_rival.CounterAttackDenial)
                 _view.WriteLine($"{_rival.Name} no puede hacer un follow up");
@@ -241,6 +255,7 @@ public class Battle
         }
         ResetStats();
     }
+
 
     private void ApplyAfterCombatEffects()
     {

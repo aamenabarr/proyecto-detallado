@@ -27,6 +27,10 @@ public static class EffectsPrinter
         PrintHealingMessages(view, unit);
         PrintCounterAttackDenialMessages(view, unit);
         PrintDenialOfCounterAttackDenialMessages(view, unit);
+        PrintFollowUpGuaranteeMessages(view, unit);
+        PrintDenialOfFollowUpMessages(view, unit);
+        PrintDenialOfFollowUpGuaranteeMessages(view, unit);
+        PrintDenialOfFollowUpDenialMessages(view, unit);
     }
 
     private static void PrintAlterStatMessages(View view, Unit unit, string effect, string sign, string extraMessage = "")
@@ -98,6 +102,32 @@ public static class EffectsPrinter
     {
         if (unit.DenialOfCounterAttackDenial)
             view.WriteLine($"{unit.Name} neutraliza los efectos que previenen sus contraataques");
+    }
+
+    private static void PrintFollowUpGuaranteeMessages(View view, Unit unit)
+    {
+        var value = (int)unit.StatsManager.StatsDictionary["FollowUpGuarantee"][Stats.Hp][0];   
+        if (unit.FollowUpGuarantee)
+            view.WriteLine($"{unit.Name} tiene {value} efecto(s) que garantiza(n) su follow up activo(s)");
+    }
+
+    private static void PrintDenialOfFollowUpMessages(View view, Unit unit)
+    {
+        var value = (int)unit.StatsManager.StatsDictionary["DenialOfFollowUp"][Stats.Hp][0];
+        if (unit.DenialOfFollowUp)
+            view.WriteLine($"{unit.Name} tiene {value} efecto(s) que neutraliza(n) su follow up activo(s)");
+    }
+
+    private static void PrintDenialOfFollowUpGuaranteeMessages(View view, Unit unit)
+    {
+        if (unit.DenialOfFollowUpGuarantee)
+            view.WriteLine($"{unit.Name} es inmune a los efectos que garantizan su follow up"); 
+    }
+    
+    private static void PrintDenialOfFollowUpDenialMessages(View view, Unit unit)
+    {
+        if (unit.DenialOfFollowUpDenial)
+            view.WriteLine($"{unit.Name} es inmune a los efectos que neutralizan su follow up"); 
     }
 
     public static void PrintAfterCombatMessages(View view, Unit unit)

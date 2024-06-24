@@ -2,7 +2,12 @@ namespace Fire_Emblem;
 
 public class ExtraDamageInFollowUp : Effect
 {
-    public ExtraDamageInFollowUp(Unit unit, string stat) : base(unit, stat) {}
+    private int _percentage = 0;
+
+    public ExtraDamageInFollowUp(Unit unit, string stat, int percentage = 0) : base(unit, stat)
+    {
+        _percentage = percentage;
+    }
     
     public override void Apply()
     {
@@ -11,6 +16,7 @@ public class ExtraDamageInFollowUp : Effect
 
     private int GetExtraDamage()
     {
-        return Utils.GetUnitStat(Unit, Stat);
+        if (_percentage != 0) return Utils.GetUnitStat(Unit, Stat);
+        return Utils.GetUnitStat(Unit, Stat) * _percentage / 100;
     }
 }

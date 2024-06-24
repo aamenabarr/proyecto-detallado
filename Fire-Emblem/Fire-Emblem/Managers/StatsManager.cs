@@ -14,6 +14,8 @@ public class StatsManager
         "PenaltyInFollowUp",
         "HealingBeforeCombat",
         "Healing",
+        "FollowUpGuarantee",
+        "DenialOfFollowUp",
         "HealingAfterCombat"
     };
     private Unit _unit;

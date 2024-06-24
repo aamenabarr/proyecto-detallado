@@ -40,6 +40,10 @@ public class SkillsManager
         "Healing",
         "CounterAttackDenial",
         "DenialOfCounterAttackDenial",
+        "FollowUpGuarantee",
+        "DenialOfFollowUp",
+        "DenialOfFollowUpGuarantee",
+        "DenialOfFollowUpDenial",
         "HealingAfterCombat"
     };
     

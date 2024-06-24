@@ -15,6 +15,10 @@ public static class SkillFactory
         SetHealing(skill);
         SetCounterAttackDenial(skill);
         SetDenialOfCounterAttackDenial(skill);
+        SetFollowUpGuarantee(skill);
+        SetDenialOfFollowUp(skill);
+        SetDenialOfFollowUpGuarantee(skill);
+        SetDenialOfFollowUpDenial(skill);
         SetHybrid(skill);
     }
 
@@ -401,6 +405,54 @@ public static class SkillFactory
         {
             case "Null C-Disrupt":
                 skill.Effects.Add(new DenialOfCounterAttackDenial(skill.Unit));
+                break;
+        }
+    }
+
+    private static void SetFollowUpGuarantee(Skill skill)
+    {
+        switch (skill.Name)
+        {
+            case "Quick Riposte":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 60, "%"));
+                skill.Conditions.Add(new StartsAttack(skill.Unit.Rival));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                break;
+            case "Follow-Up Ring":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 50, "%"));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                break;
+        }
+    }
+    
+    private static void SetDenialOfFollowUp(Skill skill)
+    {
+        switch (skill.Name)
+        {
+            case "Wary Fighter":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 50, "%"));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
+                break;
+        }
+    }
+
+    private static void SetDenialOfFollowUpGuarantee(Skill skill)
+    {
+        switch (skill.Name)
+        {
+            case "Piercing Tribute":
+                skill.Effects.Add(new DenialOfFollowUpGuarantee(skill.Unit.Rival));
+                break;
+        }
+    }
+    
+    private static void SetDenialOfFollowUpDenial(Skill skill)
+    {
+        switch (skill.Name)
+        {
+            case "Mjölnir":
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
                 break;
         }
     }
@@ -900,6 +952,31 @@ public static class SkillFactory
                     new List<Effect>{ new HealingBeforeCombat(skill.Unit.Rival, 40, true) },
                     new List<Effect>{ new HealingBeforeCombat(skill.Unit.Rival, 20, true) }
                 ));
+                break;
+            case "Brash Assault":
+                skill.Conditions.Add(new HybridOrCondition(
+                    new List<Condition>
+                    {
+                        new HybridAndCondition(
+                            new List<Condition>
+                            {
+                                new HpRange(skill.Unit, "<=", 99, "%"),
+                                new StartsAttack(skill.Unit)
+                            }),
+                        new HybridAndCondition(
+                            new List<Condition>
+                            {
+                                new HpRange(skill.Unit.Rival, ">=", 100, "%"),
+                                new StartsAttack(skill.Unit)
+                            })
+                    }));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Def, -4));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Res, -4));
+                skill.Effects.Add(new PercentageDamageReductionInFirstAttack(skill.Unit.Rival, 30));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                skill.Effects.Add(skill.Unit.IsAttacker ? 
+                        new ExtraDamageInFollowUp(skill.Unit, "Dmg", 30)
+                        : new ExtraDamageInFirstAttack(skill.Unit, "Dmg", 30));
                 break;
         }
     }
