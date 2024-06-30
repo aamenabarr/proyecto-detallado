@@ -4,10 +4,9 @@ public class PercentageDamageReductionInFollowUp : Effect
 {
     private bool _trueDragonWall;
 
-    public PercentageDamageReductionInFollowUp(Unit unit, int value, bool trueDragonWall = false) : base(unit, value)
-    {
-        _trueDragonWall = trueDragonWall;
-    }
+    public PercentageDamageReductionInFollowUp(
+        Unit unit, int value, bool trueDragonWall = false) : base(unit, value)
+        => _trueDragonWall = trueDragonWall;
     
     public override void Apply()
     {

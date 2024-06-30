@@ -7,9 +7,7 @@ public class AbsolutDamageReduction : Effect
     public AbsolutDamageReduction(Unit unit, string stat) : base(unit, stat){}
     
     public override void Apply()
-    {
-        AlterDamage(Value == 0 ? GetExtraDamage() : Value);
-    }
+        => AlterDamage(Value == 0 ? GetExtraDamage() : Value);
 
     private int GetExtraDamage()
     {

@@ -18,10 +18,15 @@ public class HpRange : Condition
     public override bool IsMet()
     {
         var comparisonValue = _mode == "%" ? 
-            !_sympathetic ?
-                Math.Round((double)Unit.InitialStats["Hp"] * _value / 100, MidpointRounding.AwayFromZero)
-                : Math.Round((double)Unit.InitialStats["Hp"] * _value / 100, MidpointRounding.ToZero)
+            _sympathetic ?
+                GetPercentageValue(MidpointRounding.ToZero)
+                : GetPercentageValue(MidpointRounding.AwayFromZero)
             : _value;
         return _symbol == ">=" ? Unit.Hp >= comparisonValue : Unit.Hp <= comparisonValue;
+    }
+
+    private double GetPercentageValue(MidpointRounding roundOptions)
+    {
+        return Math.Round((double)Unit.InitialStats[Stats.Hp] * _value / 100, roundOptions);
     }
 }

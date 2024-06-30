@@ -5,15 +5,19 @@ public class Unit
     public string Name;
     public string Weapon;
     public string Gender;
-    public string DeathQuote;
     public int Hp;
     public int Atk;
     public int Spd;
     public int Def;
     public int Res;
+    public int Damage = 0;
+    public int FirstAttackerCombat = 0;
+    public int FirstDefenderCombat = 0;
+    public int FollowUpGuarantee = 0;
+    public int DenialOfFollowUp = 0;
+    public int ReductionOfPercentageDamage = 1;
     public double Dmg = 0;
     public double Wtb;
-    public int Damage = 0;
     public string[] Skills;
     public bool HasWeaponAdvantage = false;
     public bool IsAttacker = false;
@@ -23,13 +27,8 @@ public class Unit
     public bool CounterAttackDenial = false;
     public bool DenialOfCounterAttackDenial = false;
     public bool HasAttacked = false;
-    public int FollowUpGuarantee = 0;
-    public int DenialOfFollowUp = 0;
     public bool DenialOfFollowUpGuarantee = false;
     public bool DenialOfFollowUpDenial = false;
-    public int FirstAttackerCombat = 0;
-    public int FirstDefenderCombat = 0;
-    public int ReductionOfPercentageDamage = 1;
     public Team Team;
     public Unit Rival;
     public Unit LastRival;
@@ -42,7 +41,6 @@ public class Unit
         Name = unit.Name;
         Weapon = unit.Weapon;
         Gender = unit.Gender;
-        DeathQuote = unit.DeathQuote;
         Hp = Utils.Int(unit.HP);
         Atk = Utils.Int(unit.Atk);
         Spd = Utils.Int(unit.Spd);
@@ -53,7 +51,7 @@ public class Unit
         DamageManager = new DamageManager(this);
         InitialStats = new()
         {
-            {"Hp", Hp}, {"Atk", Atk}, {"Spd", Spd}, {"Def", Def}, {"Res", Res}
+            {Stats.Hp, Hp}, {Stats.Atk, Atk}, {Stats.Spd, Spd}, {Stats.Def, Def}, {Stats.Res, Res}
         };
     }
 
@@ -76,9 +74,7 @@ public class Unit
     }
 
     public void SetTeam(Team team)
-    {
-        Team = team;
-    }
+        => Team = team;
 
     private string SetState()
     {
@@ -109,10 +105,10 @@ public class Unit
     
     public void ResetStats()
     {
-        Atk = InitialStats["Atk"];
-        Spd = InitialStats["Spd"];
-        Def = InitialStats["Def"];
-        Res = InitialStats["Res"];
+        Atk = InitialStats[Stats.Atk];
+        Spd = InitialStats[Stats.Spd];
+        Def = InitialStats[Stats.Def];
+        Res = InitialStats[Stats.Res];
         Dmg = 0;
     }
 
@@ -128,5 +124,17 @@ public class Unit
         else FirstAttackerCombat = 2;
         if (FirstDefenderCombat == 0) FirstDefenderCombat = IsAttacker ? 0 : 1;
         else FirstDefenderCombat = 2;
+    }
+
+    public void ResetInfo()
+    {
+        HasAttacked = false;
+        CounterAttackDenial = false;
+        DenialOfCounterAttackDenial = false;
+        FollowUpGuarantee = 0;
+        DenialOfFollowUp = 0;
+        DenialOfFollowUpGuarantee = false;
+        DenialOfFollowUpDenial = false;
+        ReductionOfPercentageDamage = 1;
     }
 }

@@ -5,11 +5,9 @@ public abstract class Condition
     public Unit Unit;
 
     protected Condition(Unit unit)
-    {
-        Unit = unit;
-    }
+        => Unit = unit;
 
-    protected Condition() : this(null) {}
+    protected Condition(){}
     
     public abstract bool IsMet();
 }

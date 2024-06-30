@@ -21,6 +21,9 @@
         }
       },
       "Fire-Emblem-View/1.0.0": {
+        "dependencies": {
+          "Fire-Emblem": "1.0.0"
+        },
         "runtime": {
           "Fire-Emblem-View.dll": {}
         }

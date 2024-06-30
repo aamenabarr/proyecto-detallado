@@ -307,11 +307,13 @@ public static class SkillFactory
         switch (skill.Name)
         {
             case "Dragon Wall":
-                skill.Conditions.Add(new StatsComparison(skill.Unit, Stats.Res, ">", skill.Unit.Rival, Stats.Res));
+                skill.Conditions.Add(new StatsComparison(
+                    skill.Unit, Stats.Res, ">", skill.Unit.Rival, Stats.Res));
                 skill.Effects.Add(new PercentageDamageReduction(skill.Unit, Stats.Res));
                 break;
             case "Dodge":
-                skill.Conditions.Add(new StatsComparison(skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd));
+                skill.Conditions.Add(new StatsComparison(
+                    skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd));
                 skill.Effects.Add(new PercentageDamageReduction(skill.Unit, Stats.Spd));
                 break;
             case "Golden Lotus":
@@ -620,7 +622,8 @@ public static class SkillFactory
             case "Bushido":
                 skill.Effects.Add(new ExtraDamage(skill.Unit, 7));
                 skill.Effects.Add(new ConditionalEffect(
-                    new StatsComparison(skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd), 
+                    new StatsComparison(
+                        skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd), 
                     new List<Effect>{ new PercentageDamageReduction(skill.Unit, Stats.Spd) }));
                 break;
             case "Moon-Twin Wing":
@@ -635,7 +638,8 @@ public static class SkillFactory
                     new HybridAndCondition(new List<Condition>()
                     {
                         new HpRange(skill.Unit, ">=", 25, "%"),
-                        new StatsComparison(skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd)
+                        new StatsComparison(
+                            skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd)
                     }),
                     new List<Effect>{ new PercentageDamageReduction(skill.Unit, Stats.Spd) }));
                 break;
@@ -742,8 +746,12 @@ public static class SkillFactory
             case "Dragon's Wrath":
                 skill.Effects.Add(new PercentageDamageReductionInFirstAttack(skill.Unit, 25));
                 skill.Effects.Add(new ConditionalEffect(
-                    new StatsComparison(skill.Unit, Stats.Atk, ">", skill.Unit.Rival, Stats.Res), 
-                    new List<Effect>{ new ExtraDamageInFirstAttack(skill.Unit, Stats.Atk, Stats.Res, 25) }));
+                    new StatsComparison(
+                        skill.Unit, Stats.Atk, ">", skill.Unit.Rival, Stats.Res), 
+                    new List<Effect>
+                    {
+                        new ExtraDamageInFirstAttack(skill.Unit, Stats.Atk, Stats.Res, 25)
+                    }));
                 break;
             case "Prescience":
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -5));
@@ -831,7 +839,9 @@ public static class SkillFactory
                             new UseWeapon(skill.Unit.Rival, Weapons.Lance), 
                             new UseWeapon(skill.Unit.Rival, Weapons.Axe)
                         }),
-                        new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, 5)
+                        new StatsComparison(
+                            skill.Unit, Stats.Spd, ">=", 
+                            skill.Unit.Rival, Stats.Spd, 5)
                     }),
                     new List<Effect>{ new CounterAttackDenial(skill.Unit.Rival) }));
                 break;
@@ -902,8 +912,10 @@ public static class SkillFactory
                 break;
             case "True Dragon Wall":
                 skill.Effects.Add(new ConditionalEffect(
-                    new StatsComparison(skill.Unit, Stats.Res, ">", skill.Unit.Rival, Stats.Res),
-                    new List<Effect> { new PercentageDamageReductionInFirstAttack(skill.Unit, 6, true),
+                    new StatsComparison(
+                        skill.Unit, Stats.Res, ">", skill.Unit.Rival, Stats.Res),
+                    new List<Effect> {
+                        new PercentageDamageReductionInFirstAttack(skill.Unit, 6, true),
                         new PercentageDamageReductionInFollowUp(skill.Unit, 4, true)
                     }));
                 skill.Effects.Add(new ConditionalEffect(
@@ -938,8 +950,10 @@ public static class SkillFactory
                 skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, 5));
                 skill.Effects.Add(new Bonus(skill.Unit, Stats.Def, 5));
                 skill.Effects.Add(new Bonus(skill.Unit, Stats.Res, 5));
-                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, skill.Unit.InitialStats[Stats.Spd] * 20 / 100));
-                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, skill.Unit.InitialStats[Stats.Spd] * 20 / 100));
+                skill.Effects.Add(new Bonus(
+                    skill.Unit, Stats.Atk, skill.Unit.InitialStats[Stats.Spd] * 20 / 100));
+                skill.Effects.Add(new Bonus(
+                    skill.Unit, Stats.Spd, skill.Unit.InitialStats[Stats.Spd] * 20 / 100));
                 skill.Effects.Add(new PercentageDamageReductionInFirstAttack(skill.Unit, 30));
                 skill.Effects.Add(new HealingAfterCombat(skill.Unit, 7));
                 Console.WriteLine(skill.Unit.Rival.Atk);
@@ -947,7 +961,8 @@ public static class SkillFactory
                     new HybridOrCondition(new List<Condition>
                     {
                         new HasWeaponAdvantage(skill.Unit),
-                        new StatsComparison(skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd)
+                        new StatsComparison(
+                            skill.Unit, Stats.Spd, ">", skill.Unit.Rival, Stats.Spd)
                     }),
                     new List<Effect>{ new HealingBeforeCombat(skill.Unit.Rival, 40, true) },
                     new List<Effect>{ new HealingBeforeCombat(skill.Unit.Rival, 20, true) }
@@ -1001,11 +1016,14 @@ public static class SkillFactory
                 break;
             case "Pegasus Flight":
                 var penaltyValue = -Math.Min(
-                    8, Math.Max(0, skill.Unit.InitialStats[Stats.Res] - skill.Unit.Rival.InitialStats[Stats.Res]) * 80 / 100);
+                    8, Math.Max(0, skill.Unit.InitialStats[Stats.Res] - 
+                                   skill.Unit.Rival.InitialStats[Stats.Res]) * 80 / 100);
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -4));
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Def, -4));
                 skill.Effects.Add(new ConditionalEffect(
-                    new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10, true),
+                    new StatsComparison(
+                        skill.Unit, Stats.Spd, ">=", 
+                        skill.Unit.Rival, Stats.Spd, -10, true),
                     new List<Effect> {
                         new Penalty(skill.Unit.Rival, Stats.Atk, penaltyValue),
                         new Penalty(skill.Unit.Rival, Stats.Def, penaltyValue)
@@ -1014,17 +1032,22 @@ public static class SkillFactory
                     new HybridAndCondition(new List<Condition>
                     {
                         new StatsComparison(skill.Unit, Stats.Res),
-                        new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10, true)
+                        new StatsComparison(
+                            skill.Unit, Stats.Spd, ">=", 
+                            skill.Unit.Rival, Stats.Spd, -10, true)
                     }),
                     new List<Effect> { new DenialOfFollowUp(skill.Unit.Rival) }));
                 break;
             case "Wyvern Flight":
                 penaltyValue = -Math.Min(
-                    8, Math.Max(0, skill.Unit.InitialStats[Stats.Def] - skill.Unit.Rival.InitialStats[Stats.Def]) * 80 / 100);
+                    8, Math.Max(0, skill.Unit.InitialStats[Stats.Def] - 
+                                   skill.Unit.Rival.InitialStats[Stats.Def]) * 80 / 100);
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -4));
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Def, -4));
                 skill.Effects.Add(new ConditionalEffect(
-                    new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10, true),
+                    new StatsComparison(
+                        skill.Unit, Stats.Spd, ">=", 
+                        skill.Unit.Rival, Stats.Spd, -10, true),
                     new List<Effect> {
                         new Penalty(skill.Unit.Rival, Stats.Atk, penaltyValue),
                         new Penalty(skill.Unit.Rival, Stats.Def, penaltyValue)
@@ -1033,7 +1056,9 @@ public static class SkillFactory
                         new HybridAndCondition(new List<Condition>
                         {
                             new StatsComparison(skill.Unit, Stats.Def),
-                            new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10, true)
+                            new StatsComparison(
+                                skill.Unit, Stats.Spd, ">=", 
+                                skill.Unit.Rival, Stats.Spd, -10, true)
                         }),
                     new List<Effect> { new DenialOfFollowUp(skill.Unit.Rival) }));
                 break;
@@ -1082,7 +1107,9 @@ public static class SkillFactory
                 skill.Effects.Add(new DenialOfFollowUpGuarantee(skill.Unit.Rival));
                 skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
                 skill.Effects.Add(new ConditionalEffect(
-                    new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -4),
+                    new StatsComparison(
+                        skill.Unit, Stats.Spd, ">=", 
+                        skill.Unit.Rival, Stats.Spd, -4),
                     new List<Effect> { new PercentageDamageReductionInFirstAttack(skill.Unit , 30) }));
                 break;
             case "Flow Force":
@@ -1101,7 +1128,8 @@ public static class SkillFactory
                 skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
                 skill.Effects.Add(new ConditionalEffect(
                     new StatsComparison(
-                        skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10),
+                        skill.Unit, Stats.Spd, ">=", 
+                        skill.Unit.Rival, Stats.Spd, -10),
                     new List<Effect>
                     {
                         new ExtraDamage(skill.Unit, Stats.Res, 70, flow: true),
@@ -1113,7 +1141,8 @@ public static class SkillFactory
                 skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
                 skill.Effects.Add(new ConditionalEffect(
                     new StatsComparison(
-                        skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10),
+                        skill.Unit, Stats.Spd, ">=", 
+                        skill.Unit.Rival, Stats.Spd, -10),
                     new List<Effect>
                     {
                         new ExtraDamage(skill.Unit, Stats.Def, 70, flow: true),
@@ -1122,7 +1151,8 @@ public static class SkillFactory
                 break;
             case "Binding Shield":
                 skill.Conditions.Add(new StatsComparison(
-                    skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, 5));
+                    skill.Unit, Stats.Spd, ">=", 
+                    skill.Unit.Rival, Stats.Spd, 5));
                 skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
                 skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
                 skill.Effects.Add(new ConditionalEffect(
@@ -1154,7 +1184,9 @@ public static class SkillFactory
                 break;
             case "Blue Lion Rule":
                 skill.Effects.Add(new ConditionalEffect(
-                    new StatsComparison(skill.Unit, Stats.Def, ">", skill.Unit.Rival, Stats.Def),
+                    new StatsComparison(
+                        skill.Unit, Stats.Def, ">", 
+                        skill.Unit.Rival, Stats.Def),
                     new List<Effect> { new PercentageDamageReduction(skill.Unit, Stats.Def)}));
                 skill.Effects.Add(new ConditionalEffect(
                     new StartsAttack(skill.Unit.Rival),
@@ -1165,7 +1197,9 @@ public static class SkillFactory
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -5));
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Res, -5));
                 skill.Effects.Add(new ConditionalEffect(
-                    new StatsComparison(skill.Unit, Stats.Res, ">", skill.Unit.Rival, Stats.Res),
+                    new StatsComparison(
+                        skill.Unit, Stats.Res, ">", 
+                        skill.Unit.Rival, Stats.Res),
                     new List<Effect> { new PercentageDamageReduction(skill.Unit, Stats.Res) }));
                 skill.Effects.Add(new ConditionalEffect(
                     new HpRange(skill.Unit, ">=", 40, "%"),

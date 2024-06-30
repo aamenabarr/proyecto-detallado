@@ -5,16 +5,15 @@ public class ExtraDamageInFollowUp : Effect
     private int _percentage = 0;
     private bool _brash;
 
-    public ExtraDamageInFollowUp(Unit unit, string stat, int percentage = 0, bool brash = false) : base(unit, stat)
+    public ExtraDamageInFollowUp(
+        Unit unit, string stat, int percentage = 0, bool brash = false) : base(unit, stat)
     {
         _percentage = percentage;
         _brash = brash;
     }
     
     public override void Apply()
-    {
-        AlterDamage(GetExtraDamage());
-    }
+        => AlterDamage(GetExtraDamage());
 
     private int GetExtraDamage()
     {

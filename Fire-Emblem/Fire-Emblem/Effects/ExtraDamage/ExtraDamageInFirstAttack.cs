@@ -8,23 +8,23 @@ public class ExtraDamageInFirstAttack : Effect
     private int _percentage2 = 0;
     private bool _brash = false;
     
-    public ExtraDamageInFirstAttack(Unit unit, string stat1, string stat2, int percentage) : base(unit)
+    public ExtraDamageInFirstAttack(
+        Unit unit, string stat1, string stat2, int percentage) : base(unit)
     {
         _stat1 = stat1;
         _stat2 = stat2;
         _percentage = percentage;
     }
 
-    public ExtraDamageInFirstAttack(Unit unit, string stat, int percentage = 0, bool brash = false) : base(unit, stat)
+    public ExtraDamageInFirstAttack(
+        Unit unit, string stat, int percentage = 0, bool brash = false) : base(unit, stat)
     {
         _percentage2 = percentage;
         _brash = brash;
     }
     
     public override void Apply()
-    {
-        AlterDamage(GetExtraDamage());
-    }
+        => AlterDamage(GetExtraDamage());
 
     private int GetExtraDamage()
     {

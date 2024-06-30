@@ -4,10 +4,9 @@ public class PercentageDamageReductionInFirstAttack : Effect
 {
     private bool _trueDragonWall;
 
-    public PercentageDamageReductionInFirstAttack(Unit unit, int value, bool trueDragonWall = false) : base(unit, value)
-    {
-        _trueDragonWall = trueDragonWall;
-    }
+    public PercentageDamageReductionInFirstAttack(
+        Unit unit, int value, bool trueDragonWall = false) : base(unit, value)
+        => _trueDragonWall = trueDragonWall;
     
     public override void Apply()
     {

@@ -22,19 +22,13 @@ public class Effect
     public virtual void Apply() {}
 
     protected void AlterStat()
-    {
-        Unit.StatsManager.AlterStatsDictionary(GetType().Name, Stat, Value);
-    }
+        => Unit.StatsManager.AlterStatsDictionary(GetType().Name, Stat, Value);
 
     protected void NeutralizeEffect(string type)
-    {
-        Unit.StatsManager.NeutralizeEffect(type, Stat);
-    }
+        => Unit.StatsManager.NeutralizeEffect(type, Stat);
 
     protected void AlterDamage(int value)
-    {
-        Unit.DamageManager.AlterDamageDictionary(GetType().Name, value);
-    }
+        => Unit.DamageManager.AlterDamageDictionary(GetType().Name, value);
 
     public virtual string GetTypeName()
     {

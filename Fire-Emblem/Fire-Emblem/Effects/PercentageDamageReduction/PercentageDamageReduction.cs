@@ -7,9 +7,7 @@ public class PercentageDamageReduction : Effect
     public PercentageDamageReduction(Unit unit, string stat) : base(unit, stat) {}
     
     public override void Apply()
-    {
-        AlterDamage(Value == 0 ? GetReductionPercentage() : Value);
-    }
+        => AlterDamage(Value == 0 ? GetReductionPercentage() : Value);
 
     private int GetReductionPercentage()
     {

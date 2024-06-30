@@ -5,9 +5,7 @@ public class UseWeapon : Condition
     private string _weapon;
 
     public UseWeapon(Unit unit, string weapon) : base(unit)
-    {
-        _weapon = weapon;
-    }
+        => _weapon = weapon;
     
     public override bool IsMet()
     {

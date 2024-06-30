@@ -67,3 +67,7 @@ C:\Users\aamen\OneDrive\Escritorio\iic2113\proyecto-detallado\Fire-Emblem\Fire-E
 C:\Users\aamen\OneDrive\Escritorio\iic2113\proyecto-detallado\Fire-Emblem\Fire-Emblem-View\obj\Debug\net8.0\refint\Fire-Emblem-View.dll
 C:\Users\aamen\OneDrive\Escritorio\iic2113\proyecto-detallado\Fire-Emblem\Fire-Emblem-View\obj\Debug\net8.0\Fire-Emblem-View.pdb
 C:\Users\aamen\OneDrive\Escritorio\iic2113\proyecto-detallado\Fire-Emblem\Fire-Emblem-View\obj\Debug\net8.0\ref\Fire-Emblem-View.dll
+C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem-View\bin\Debug\net8.0\Fire-Emblem.dll
+C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem-View\bin\Debug\net8.0\Fire-Emblem.pdb
+C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem-View\obj\Debug\net8.0\Fire-Emblem-View.csproj.AssemblyReference.cache
+C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem-View\obj\Debug\net8.0\Fire-Emb.867EB350.Up2Date

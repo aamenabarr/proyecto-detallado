@@ -6,18 +6,18 @@ namespace Fire_Emblem_Controller;
 public class Battle
 {
     private int _round;
-    private View _view;
+    private Printer _printer;
     private Player _currentAttacker;
     private Player _currentDefender;
     private Unit _unit;
     private Unit _rival;
     private SkillsManager _skillsManager = new();
 
-    public Battle(Player player1, Player player2, View view)
+    public Battle(Player player1, Player player2, Printer printer)
     {
         _currentAttacker = player1;
         _currentDefender = player2;
-        _view = view;
+        _printer = printer;
     }
 
     public void Start()
@@ -62,16 +62,16 @@ public class Battle
     
     private void ChooseUnit(Player player)
     {
-        _view.WriteLine($"Player {player.Id} selecciona una opción");
+        _printer.PrintChoiceUnitMessage(player);
         PrintUnitOptions(player);
-        var input = Utils.Int(_view.ReadLine());
+        var input = _printer.Read();
         player.Unit = player.Team.GetUnit(input);
     }
 
     private void PrintUnitOptions(Player player)
     {
         for (var i = 0; i < player.Team.Length(); i++)
-            _view.WriteLine($"{i}: {player.Team.GetUnit(i).Name}");
+            _printer.PrintUnitOption(player, i);
     }
     
     private void SetUnits()
@@ -82,54 +82,45 @@ public class Battle
     
     private void SetRoundInfo()
     {
+        SetRivalsInfo();
+        ResetUnitInfo(_unit);
+        ResetUnitInfo(_rival);
+    }
+    
+    private void SetRivalsInfo()
+    {
         _unit.IsAttacker = true;
         _rival.IsAttacker = false;
-        _unit.HasAttacked = false;
-        _rival.HasAttacked = false;
-        _unit.CounterAttackDenial = false;
-        _rival.CounterAttackDenial = false;
-        _unit.DenialOfCounterAttackDenial = false;
-        _rival.DenialOfCounterAttackDenial = false;
-        _unit.FollowUpGuarantee = 0;
-        _rival.FollowUpGuarantee = 0;
-        _unit.DenialOfFollowUp = 0;
-        _rival.DenialOfFollowUp = 0;
-        _unit.DenialOfFollowUpGuarantee = false;
-        _rival.DenialOfFollowUpGuarantee = false;
-        _unit.DenialOfFollowUpDenial = false;
-        _rival.DenialOfFollowUpDenial = false;
-        _unit.ReductionOfPercentageDamage = 1;
-        _rival.ReductionOfPercentageDamage = 1;
-        _unit.SetFirstCombatInfo();
-        _rival.SetFirstCombatInfo();
         _unit.Rival = _rival;
         _rival.Rival = _unit;
     }
+    
+    private void ResetUnitInfo(Unit unit)
+    {
+        unit.ResetInfo();
+        unit.SetFirstCombatInfo();
+    }
 
     private void PrintStartOfRound()
-    {
-        _view.WriteLine($"Round {_round}: {_unit.Name} (Player {_currentAttacker.Id}) comienza");
-    }
+        => _printer.PrintStartOfRound(_round, _unit, _currentAttacker);
     
     private void WeaponsTriangle()
     {
         if (AttackUtils.HasAdvantage(_unit, _rival))
         {
-            _view.WriteLine($"{_unit.Name} ({_unit.Weapon}) tiene ventaja " +
-                           $"con respecto a {_rival.Name} ({_rival.Weapon})");
+            _printer.PrintAdvantageMessage(_unit);
             _unit.Wtb = 1.2;
             _rival.Wtb = 0.8;
         }
         else if (AttackUtils.HasAdvantage(_rival, _unit))
         {
-            _view.WriteLine($"{_rival.Name} ({_rival.Weapon}) tiene ventaja " +
-                            $"con respecto a {_unit.Name} ({_unit.Weapon})");
+            _printer.PrintAdvantageMessage(_rival);
             _unit.Wtb = 0.8;
             _rival.Wtb = 1.2;
         }
         else
         {
-            _view.WriteLine("Ninguna unidad tiene ventaja con respecto a la otra");
+            _printer.PrintNoAdvantageMessage();
             _unit.Wtb = 1;
             _rival.Wtb = 1;
         }
@@ -160,10 +151,10 @@ public class Battle
 
     private void PrintEffectsMessages()
     {
-        EffectsPrinter.PrintMessages(_view, _unit);
-        EffectsPrinter.PrintMessages(_view, _rival);
-        EffectsPrinter.PrintHealingBeforeCombatMessages(_view, _unit);
-        EffectsPrinter.PrintHealingBeforeCombatMessages(_view, _rival);
+        _printer.PrintMessages(_unit);
+        _printer.PrintMessages(_rival);
+        _printer.PrintHealingBeforeCombatMessages(_unit);
+        _printer.PrintHealingBeforeCombatMessages(_rival);
     }
     
     private void StartAttacks()
@@ -210,7 +201,7 @@ public class Battle
         {
             _unit.HasAttacked = true;
             var damage = AttackUtils.Attack(_unit, _rival);
-            _view.WriteLine($"{_unit.Name} ataca a {_rival.Name} con {damage} de daño");
+            _printer.PrintAttackMessage(_unit, damage);
             defender.UpdateTeam();
             PrintHpHealing();
         }
@@ -220,13 +211,11 @@ public class Battle
     private void PrintHpHealing(bool endOfRound = false)
     {
         if ((endOfRound && _rival.Hp == 0) || !endOfRound)
-            EffectsPrinter.PrintHpHealingMessages(_view, _unit);
+            _printer.PrintHpHealingMessages(_unit);
     }
     
     private void SwitchUnits()
-    {
-        (_unit, _rival) = (_rival, _unit);
-    }
+        => (_unit, _rival) = (_rival, _unit);
     
     private void FollowUp()
     {
@@ -234,31 +223,13 @@ public class Battle
         AlterStats();
         AlterDamage();
         bool didAttack = false;
-        if (AttackUtils.CanDoFollowUp(_unit, _rival) && !_unit.CounterAttackDenial && 
-            (_unit.DenialOfFollowUp == 0 && _unit.FollowUpGuarantee == 0 || 
-             (_unit.DenialOfFollowUp == _unit.FollowUpGuarantee && _unit.DenialOfFollowUp > 0 
-                                                               && _unit.FollowUpGuarantee > 0 
-                                                               && !_unit.DenialOfFollowUpGuarantee) || 
-            (_unit.DenialOfFollowUp > _unit.FollowUpGuarantee && _unit.DenialOfFollowUpDenial && _unit.FollowUpGuarantee == 0) ||
-            (_unit.FollowUpGuarantee > _unit.DenialOfFollowUp && _unit.DenialOfFollowUpGuarantee && _unit.DenialOfFollowUp == 0))
-            || (_unit.FollowUpGuarantee > _unit.DenialOfFollowUp && !_unit.DenialOfFollowUpGuarantee) ||
-            (_unit.FollowUpGuarantee <= _unit.DenialOfFollowUp && !_unit.DenialOfFollowUpGuarantee && _unit.DenialOfFollowUpDenial && 
-             _unit.FollowUpGuarantee > 0))
+        if (AttackUtils.CanDoFollowUp(_unit, _rival))
         {
             Attack(_currentDefender);
             SwitchUnits();
             didAttack = true;
         }
-        if (AttackUtils.CanDoFollowUp(_rival, _unit) && !_rival.CounterAttackDenial && 
-            (_rival.DenialOfFollowUp == 0 && _rival.FollowUpGuarantee == 0 || 
-             (_rival.DenialOfFollowUp == _rival.FollowUpGuarantee && _rival.DenialOfFollowUp > 0 
-                                                                && _rival.FollowUpGuarantee > 0 
-                                                                && !_rival.DenialOfFollowUpGuarantee) || 
-             (_rival.DenialOfFollowUp > _rival.FollowUpGuarantee && _rival.DenialOfFollowUpDenial && _rival.FollowUpGuarantee == 0) ||
-             (_rival.FollowUpGuarantee > _rival.DenialOfFollowUp && _rival.DenialOfFollowUpGuarantee && _rival.DenialOfFollowUp == 0))
-            || (_rival.FollowUpGuarantee > _rival.DenialOfFollowUp && !_rival.DenialOfFollowUpGuarantee) ||
-            (_rival.FollowUpGuarantee <= _rival.DenialOfFollowUp && !_rival.DenialOfFollowUpGuarantee && _rival.DenialOfFollowUpDenial && 
-             _rival.FollowUpGuarantee > 0))
+        if (AttackUtils.CanDoFollowUp(_rival, _unit))
         {
             SwitchUnits();
             Attack(_currentAttacker);
@@ -267,11 +238,11 @@ public class Battle
         if (!didAttack)
         {
             if (_unit.CounterAttackDenial && !_rival.CounterAttackDenial)
-                _view.WriteLine($"{_rival.Name} no puede hacer un follow up");
+                _printer.PrintNoFollowUpWithCounterDenialMessage(_rival);
             else if (!_unit.CounterAttackDenial && _rival.CounterAttackDenial)
-                _view.WriteLine($"{_unit.Name} no puede hacer un follow up");
+                _printer.PrintNoFollowUpWithCounterDenialMessage(_unit);
             else
-                _view.WriteLine("Ninguna unidad puede hacer un follow up");
+                _printer.PrintNoFollowUpMessage();
         }
         ResetStats();
     }
@@ -286,8 +257,8 @@ public class Battle
 
     private void PrintAfterCombatMessages()
     {
-        EffectsPrinter.PrintAfterCombatMessages(_view, _currentAttacker.Unit);
-        EffectsPrinter.PrintAfterCombatMessages(_view, _currentDefender.Unit);
+        _printer.PrintAfterCombatMessages(_currentAttacker.Unit);
+        _printer.PrintAfterCombatMessages(_currentDefender.Unit);
     }
 
     private void SetFollowUpInfo()
@@ -310,10 +281,7 @@ public class Battle
     }
     
     private void PrintEndOfRoundInfo()
-    {
-        _view.WriteLine($"{_currentAttacker.Unit.Name} ({_currentAttacker.Unit.Hp}) :" +
-                        $" {_currentDefender.Unit.Name} ({_currentDefender.Unit.Hp})");
-    }
+        => _printer.PrintEndOfRoundInfo(_currentAttacker, _currentDefender);
     
     private void SaveRoundInfo()
     {
@@ -329,15 +297,13 @@ public class Battle
     }
 
     private void SwitchPlayers()
-    {
-        (_currentAttacker, _currentDefender) = (_currentDefender, _currentAttacker);
-    }
+        => (_currentAttacker, _currentDefender) = (_currentDefender, _currentAttacker);
     
-    private void HandleEndOfGame(Exception exception)
+    private void HandleEndOfGame(FireEmblemException exception)
     {
         PrintHpHealing(true);
         ApplyAfterCombatEffects();
         PrintEndOfRoundInfo();
-        _view.WriteLine(exception.Message == "Player 1 sin unidades" ? "Player 2 ganó" : "Player 1 ganó");
+        _printer.PrintEndOfGameMessage(exception);
     }
 }

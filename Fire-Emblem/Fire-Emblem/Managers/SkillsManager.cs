@@ -3,23 +3,6 @@ namespace Fire_Emblem;
 public class SkillsManager
 {
     private List<Tuple<List<Condition>, Effect>> _skills = new();
-
-    public void Add(List<Condition> conditions , Effect effect)
-    {
-        _skills.Add(new Tuple<List<Condition>, Effect>(conditions, effect));
-    }
-
-    public void ApplySkills()
-    {
-        SortSkills();
-        ApplyEffects();
-    }
-
-    private void SortSkills()
-    {
-        _skills = _skills.OrderBy(skill => Array.IndexOf(_effectOrder, skill.Item2.GetTypeName())).ToList();
-    }
-    
     private string[] _effectOrder = 
     {
         "AlterBaseStats",
@@ -47,6 +30,19 @@ public class SkillsManager
         "DenialOfFollowUpDenial",
         "HealingAfterCombat"
     };
+
+    public void Add(List<Condition> conditions , Effect effect)
+        => _skills.Add(new Tuple<List<Condition>, Effect>(conditions, effect));
+
+    public void ApplySkills()
+    {
+        SortSkills();
+        ApplyEffects();
+    }
+
+    private void SortSkills()
+        => _skills = _skills.OrderBy(skill => Array.IndexOf(
+            _effectOrder, skill.Item2.GetTypeName())).ToList();
     
     private void ApplyEffects()
     {
@@ -64,7 +60,5 @@ public class SkillsManager
     }
 
     public void Reset()
-    {
-        _skills.Clear();
-    }
+        => _skills.Clear();
 }

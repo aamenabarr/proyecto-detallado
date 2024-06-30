@@ -5,9 +5,7 @@ public class Units
     private List<AuxUnit> _units;
     
     public Units()
-    {
-        _units = Utils.LoadFromJsonFile<AuxUnit>("characters.json");
-    }
+        => _units = Utils.LoadFromJsonFile<AuxUnit>("characters.json");
 
     public AuxUnit GetUnit(string name)
     {

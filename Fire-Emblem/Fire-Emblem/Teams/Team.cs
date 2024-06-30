@@ -48,12 +48,8 @@ public class Team
     }
 
     public void RemoveUnit(Unit unit)
-    {
-        _units.Remove(unit);
-    }
+        => _units.Remove(unit);
 
     public void AddUnit(Unit unit)
-    {
-        _units.Add(unit);
-    }
+        => _units.Add(unit);
 }

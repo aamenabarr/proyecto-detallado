@@ -5,7 +5,5 @@ public class ReductionOfPercentageDamage : Effect
     public ReductionOfPercentageDamage(Unit unit) : base(unit) {}
     
     public override void Apply()
-    {
-        Unit.ReductionOfPercentageDamage *= 2;
-    }
+        => Unit.ReductionOfPercentageDamage *= 2;
 }

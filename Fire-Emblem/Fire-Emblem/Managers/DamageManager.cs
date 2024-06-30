@@ -27,6 +27,12 @@ public class DamageManager
             DamageDictionary.Add(effect, 0);
     }
     
+    public void ResetDamageDictionary()
+    {
+        foreach (var effect in _effects)
+            DamageDictionary[effect] = 0;
+    }
+    
     public void AlterDamageDictionary(string effect, int value)
     {
         if (effect.Contains("PercentageDamageReduction")) 
@@ -72,12 +78,6 @@ public class DamageManager
         else extraDamage += _unit.Rival.DamageManager.DamageDictionary["ExtraDamageInFollowUp"];
         return extraDamage;
     }
-    
-    public void ResetDamageDictionary()
-    {
-        foreach (var effect in _effects)
-            DamageDictionary[effect] = 0;
-    }
 
     public int GetDamageReduction()
     {
@@ -95,10 +95,9 @@ public class DamageManager
     
     public int GetDamage()
     {
-        var damage = 0;
         _unit.AlterStats();
         _unit.Rival.AlterStats();
-        damage = AttackUtils.Damage(_unit, _unit.Rival);
+        var damage = AttackUtils.Damage(_unit, _unit.Rival);
         damage += DamageDictionary["ExtraDamage"];
         _unit.ResetStats();
         _unit.Rival.ResetStats();

@@ -7,7 +7,5 @@ public class NeutralizeBonus : Effect
     public NeutralizeBonus(Unit unit) : this(unit, "") {}
 
     public override void Apply()
-    {
-        NeutralizeEffect("Bonus");
-    }
+        => NeutralizeEffect("Bonus");
 }

@@ -6,7 +6,8 @@ public class ConditionalEffect : Effect
     private List<Effect> _effects;
     private bool _mastermind;
     
-    public ConditionalEffect(Condition condition, List<Effect> effects, bool mastermind = false) : base(effects[0].Unit)
+    public ConditionalEffect(
+        Condition condition, List<Effect> effects, bool mastermind = false) : base(effects[0].Unit)
     {
         _condition = condition;
         _effects = effects;

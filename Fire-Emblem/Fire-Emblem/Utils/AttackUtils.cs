@@ -22,14 +22,33 @@ public static class AttackUtils
     }
 
     private static void ReduceHp(Unit unit, int damage)
-    {
-        unit.Hp = Math.Max(0, unit.Hp - damage);
-    }
+        => unit.Hp = Math.Max(0, unit.Hp - damage);
     
     public static bool CanDoFollowUp(Unit unit, Unit rival)
     {
         var rivalSpeed = (rival.Spd);
-        return (unit.Spd - rivalSpeed) >= 5;
+        return unit.Spd - rivalSpeed >= 5 && FollowUpExtraConditions(unit) || GuaranteeFollowUp(unit);
+    }
+
+    private static bool FollowUpExtraConditions(Unit unit)
+    {
+        return !unit.CounterAttackDenial &&
+               (unit.DenialOfFollowUp == 0 && unit.FollowUpGuarantee == 0 ||
+                (unit.DenialOfFollowUp == unit.FollowUpGuarantee && unit.DenialOfFollowUp > 0
+                                                                   && unit.FollowUpGuarantee > 0
+                                                                   && !unit.DenialOfFollowUpGuarantee) ||
+                (unit.DenialOfFollowUp > unit.FollowUpGuarantee && unit.DenialOfFollowUpDenial &&
+                 unit.FollowUpGuarantee == 0) ||
+                (unit.FollowUpGuarantee > unit.DenialOfFollowUp && unit.DenialOfFollowUpGuarantee &&
+                 unit.DenialOfFollowUp == 0));
+    }
+
+    private static bool GuaranteeFollowUp(Unit unit)
+    {
+        return (unit.FollowUpGuarantee > unit.DenialOfFollowUp && !unit.DenialOfFollowUpGuarantee) ||
+               (unit.FollowUpGuarantee <= unit.DenialOfFollowUp && !unit.DenialOfFollowUpGuarantee &&
+                unit.DenialOfFollowUpDenial &&
+                unit.FollowUpGuarantee > 0);
     }
 
     public static bool HasAdvantage(Unit unit, Unit rival)

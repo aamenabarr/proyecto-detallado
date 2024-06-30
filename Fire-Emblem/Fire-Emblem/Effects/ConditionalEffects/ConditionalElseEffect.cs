@@ -6,7 +6,8 @@ public class ConditionalElseEffect : Effect
     private List<Effect> _ifEffects;
     private List<Effect> _elseEffects;
     
-    public ConditionalElseEffect(Condition condition, List<Effect> ifEffects, List<Effect> elseEffects) : base(ifEffects[0].Unit)
+    public ConditionalElseEffect(
+        Condition condition, List<Effect> ifEffects, List<Effect> elseEffects) : base(ifEffects[0].Unit)
     {
         _condition = condition;
         _ifEffects = ifEffects;

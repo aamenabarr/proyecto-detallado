@@ -30,17 +30,23 @@ public class StatsManager
     private void InitializeStatsDictionary()
     {
         foreach (var effect in _effects)
-        {
-            var dictionary = new Dictionary<string, ArrayList>();
-            foreach (var stat in Stats.AllStats)
-            {
-                var statInfo = new ArrayList();
-                statInfo.Add(0);
-                statInfo.Add(false);
-                dictionary.Add(stat, statInfo);
-            }
-            StatsDictionary.Add(effect, dictionary);
-        }
+            InitializeEffect(effect);
+    }
+
+    private void InitializeEffect(string effect)
+    {
+        var dictionary = new Dictionary<string, ArrayList>();
+        foreach (var stat in Stats.AllStats)
+            dictionary.Add(stat, SetStatInfo());
+        StatsDictionary.Add(effect, dictionary);
+    }
+
+    private ArrayList SetStatInfo()
+    {
+        var statInfo = new ArrayList();
+        statInfo.Add(0);
+        statInfo.Add(false);
+        return statInfo;
     }
 
     public void AlterStatsDictionary(string effect, string stat, int value)
@@ -53,13 +59,16 @@ public class StatsManager
     {
         foreach (var effect in _effects)
             if (effect.Contains(type))
-            {
-                if (stat == "")
-                    foreach (var statName in Stats.AllStats)
-                        StatsDictionary[effect][statName][1] = true;
-                else
-                    StatsDictionary[effect][stat][1] = true;
-            }
+                ChangeNeutralizeStatus(effect, stat);
+    }
+
+    private void ChangeNeutralizeStatus(string effect, string stat)
+    {
+        if (stat == "")
+            foreach (var statName in Stats.AllStats)
+                StatsDictionary[effect][statName][1] = true;
+        else
+            StatsDictionary[effect][stat][1] = true;
     }
     
     public void AlterUnitStats(string effect, bool afterCombat = false)
@@ -78,13 +87,7 @@ public class StatsManager
         switch (stat)
         {
             case "Hp":
-                if (afterCombat)
-                {
-                    if (_unit.Hp > 0 && value != 0)
-                        _unit.Hp = Math.Max(1, Math.Min(_unit.InitialStats[Stats.Hp], _unit.Hp + value));
-                }
-                else
-                    _unit.Hp += value;
+                AlterUnitHp(value, afterCombat);
                 break;
             case "Atk":
                 _unit.Atk += value;
@@ -99,6 +102,17 @@ public class StatsManager
                 _unit.Res += value;
                 break;
         }
+    }
+
+    private void AlterUnitHp(int value, bool afterCombat)
+    {
+        if (afterCombat)
+        {
+            if (_unit.Hp > 0 && value != 0)
+                _unit.Hp = Math.Max(1, Math.Min(_unit.InitialStats[Stats.Hp], _unit.Hp + value));
+        }
+        else
+            _unit.Hp += value;
     }
     
     public void ResetStatsDictionary()
