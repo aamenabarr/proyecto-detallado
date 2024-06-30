@@ -7,6 +7,6 @@ public class FollowUpGuarantee : Effect
     public override void Apply()
     {
         AlterStat();
-        Unit.FollowUpGuarantee = true;
+        Unit.FollowUpGuarantee += 1;
     }
 }

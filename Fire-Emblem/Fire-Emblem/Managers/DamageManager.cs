@@ -29,7 +29,8 @@ public class DamageManager
     
     public void AlterDamageDictionary(string effect, int value)
     {
-        if (effect.Contains("PercentageDamageReduction")) AlterPercentageDamageReduction(effect, value);
+        if (effect.Contains("PercentageDamageReduction")) 
+            AlterPercentageDamageReduction(effect, value / _unit.ReductionOfPercentageDamage);
         else DamageDictionary[effect] += value;
     }
 
@@ -89,6 +90,18 @@ public class DamageManager
         _unit.ResetStats();
         _unit.Rival.ResetStats();
         damage += -DamageDictionary["AbsolutDamageReduction"];
+        return damage;
+    }
+    
+    public int GetDamage()
+    {
+        var damage = 0;
+        _unit.AlterStats();
+        _unit.Rival.AlterStats();
+        damage = AttackUtils.Damage(_unit, _unit.Rival);
+        damage += DamageDictionary["ExtraDamage"];
+        _unit.ResetStats();
+        _unit.Rival.ResetStats();
         return damage;
     }
 }

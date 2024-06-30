@@ -924,7 +924,7 @@ public static class SkillFactory
                     {
                         new Bonus(skill.Unit, Stats.Atk, 9),
                         new Bonus(skill.Unit, Stats.Spd, 9),
-                        new ExtraDamage(skill.Unit, Stats.Hp, 100, mastermind: true)
+                        new ExtraDamage(skill.Unit, Stats.Hp, 80, mastermind: true)
                     }, true));
                 break;
             case "Bewitching Tome":
@@ -972,11 +972,218 @@ public static class SkillFactory
                     }));
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Def, -4));
                 skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Res, -4));
-                skill.Effects.Add(new PercentageDamageReductionInFirstAttack(skill.Unit.Rival, 30));
+                skill.Effects.Add(new PercentageDamageReductionInFirstAttack(skill.Unit, 30));
                 skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
                 skill.Effects.Add(skill.Unit.IsAttacker ? 
-                        new ExtraDamageInFollowUp(skill.Unit, "Dmg", 30)
-                        : new ExtraDamageInFirstAttack(skill.Unit, "Dmg", 30));
+                        new ExtraDamageInFollowUp(skill.Unit, "Dmg", 30, true)
+                        : new ExtraDamageInFirstAttack(skill.Unit, "Dmg", 30, true));
+                break;
+            case "Melee Breaker":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 50, "%"));
+                skill.Conditions.Add(new HybridOrCondition(new List<Condition>()
+                {
+                    new UseWeapon(skill.Unit.Rival, Weapons.Sword),
+                    new UseWeapon(skill.Unit.Rival, Weapons.Lance),
+                    new UseWeapon(skill.Unit.Rival, Weapons.Axe)
+                }));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
+                break;
+            case "Range Breaker":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 50, "%"));
+                skill.Conditions.Add(new HybridOrCondition(new List<Condition>()
+                {
+                    new UseWeapon(skill.Unit.Rival, Weapons.Bow),
+                    new TypeOfAttack(skill.Unit.Rival, Weapons.Magic)
+                }));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
+                break;
+            case "Pegasus Flight":
+                var penaltyValue = -Math.Min(
+                    8, Math.Max(0, skill.Unit.InitialStats[Stats.Res] - skill.Unit.Rival.InitialStats[Stats.Res]) * 80 / 100);
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -4));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Def, -4));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10, true),
+                    new List<Effect> {
+                        new Penalty(skill.Unit.Rival, Stats.Atk, penaltyValue),
+                        new Penalty(skill.Unit.Rival, Stats.Def, penaltyValue)
+                    }));
+                skill.Effects.Add(new ConditionalEffect(
+                    new HybridAndCondition(new List<Condition>
+                    {
+                        new StatsComparison(skill.Unit, Stats.Res),
+                        new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10, true)
+                    }),
+                    new List<Effect> { new DenialOfFollowUp(skill.Unit.Rival) }));
+                break;
+            case "Wyvern Flight":
+                penaltyValue = -Math.Min(
+                    8, Math.Max(0, skill.Unit.InitialStats[Stats.Def] - skill.Unit.Rival.InitialStats[Stats.Def]) * 80 / 100);
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -4));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Def, -4));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10, true),
+                    new List<Effect> {
+                        new Penalty(skill.Unit.Rival, Stats.Atk, penaltyValue),
+                        new Penalty(skill.Unit.Rival, Stats.Def, penaltyValue)
+                    }));
+                skill.Effects.Add(new ConditionalEffect(
+                        new HybridAndCondition(new List<Condition>
+                        {
+                            new StatsComparison(skill.Unit, Stats.Def),
+                            new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10, true)
+                        }),
+                    new List<Effect> { new DenialOfFollowUp(skill.Unit.Rival) }));
+                break;
+            case "Null Follow-Up":
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUpGuarantee(skill.Unit.Rival));
+                break;
+            case "Sturdy Impact":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, 6));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Def, 10));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
+                break;
+            case "Mirror Impact":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Atk, 6));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Res, 10));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
+                break;
+            case "Swift Impact":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, 6));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Res, 10));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
+                break;
+            case "Steady Impact":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Spd, 6));
+                skill.Effects.Add(new Bonus(skill.Unit, Stats.Def, 10));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
+                break;
+            case "Slick Fighter":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Conditions.Add(new StartsAttack(skill.Unit.Rival));
+                skill.Effects.Add(new NeutralizePenalty(skill.Unit));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                break;
+            case "Wily Fighter":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Conditions.Add(new StartsAttack(skill.Unit.Rival));
+                skill.Effects.Add(new NeutralizeBonus(skill.Unit.Rival));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                break;
+            case "Savvy Fighter":
+                skill.Conditions.Add(new StartsAttack(skill.Unit.Rival));
+                skill.Effects.Add(new DenialOfFollowUpGuarantee(skill.Unit.Rival));
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StatsComparison(skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -4),
+                    new List<Effect> { new PercentageDamageReductionInFirstAttack(skill.Unit , 30) }));
+                break;
+            case "Flow Force":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                skill.Effects.Add(new NeutralizePenalty(skill.Unit, Stats.Atk));
+                skill.Effects.Add(new NeutralizePenalty(skill.Unit, Stats.Spd));
+                break;
+            case "Flow Refresh":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                skill.Effects.Add(new HealingAfterCombat(skill.Unit, 10));
+                break;
+            case "Flow Feather":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StatsComparison(
+                        skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10),
+                    new List<Effect>
+                    {
+                        new ExtraDamage(skill.Unit, Stats.Res, 70, flow: true),
+                        new AbsolutDamageReduction(skill.Unit, Stats.Res)
+                    }));
+                break;
+            case "Flow Flight":
+                skill.Conditions.Add(new StartsAttack(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StatsComparison(
+                        skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, -10),
+                    new List<Effect>
+                    {
+                        new ExtraDamage(skill.Unit, Stats.Def, 70, flow: true),
+                        new AbsolutDamageReduction(skill.Unit, Stats.Def)
+                    }));
+                break;
+            case "Binding Shield":
+                skill.Conditions.Add(new StatsComparison(
+                    skill.Unit, Stats.Spd, ">=", skill.Unit.Rival, Stats.Spd, 5));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUp(skill.Unit.Rival));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StartsAttack(skill.Unit),
+                    new List<Effect> { new CounterAttackDenial(skill.Unit.Rival) }));
+                break;
+            case "Sun-Twin Wing":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Spd, -5));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Def, -5));
+                skill.Effects.Add(new DenialOfFollowUpGuarantee(skill.Unit.Rival));
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                break;
+            case "Dragon's Ire":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -4));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Res, -4));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StartsAttack(skill.Unit.Rival),
+                    new List<Effect> { new DenialOfFollowUpDenial(skill.Unit) }));
+                break;
+            case "Black Eagle Rule":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new FollowUpGuarantee(skill.Unit));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StartsAttack(skill.Unit.Rival),
+                    new List<Effect> { new PercentageDamageReductionInFollowUp(skill.Unit, 80) }));
+                break;
+            case "Blue Lion Rule":
+                skill.Effects.Add(new ConditionalEffect(
+                    new StatsComparison(skill.Unit, Stats.Def, ">", skill.Unit.Rival, Stats.Def),
+                    new List<Effect> { new PercentageDamageReduction(skill.Unit, Stats.Def)}));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StartsAttack(skill.Unit.Rival),
+                    new List<Effect> { new FollowUpGuarantee(skill.Unit) }));
+                break;
+            case "New Divinity":
+                skill.Conditions.Add(new HpRange(skill.Unit, ">=", 25, "%"));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Atk, -5));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Res, -5));
+                skill.Effects.Add(new ConditionalEffect(
+                    new StatsComparison(skill.Unit, Stats.Res, ">", skill.Unit.Rival, Stats.Res),
+                    new List<Effect> { new PercentageDamageReduction(skill.Unit, Stats.Res) }));
+                skill.Effects.Add(new ConditionalEffect(
+                    new HpRange(skill.Unit, ">=", 40, "%"),
+                    new List<Effect> {new DenialOfFollowUp(skill.Unit.Rival) }));
+                break;
+            case "Phys. Null Follow":
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Spd, -4));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Def, -4));
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUpGuarantee(skill.Unit.Rival));
+                skill.Effects.Add(new ReductionOfPercentageDamage(skill.Unit.Rival));
+                break;
+            case "Mag. Null Follow":
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Spd, -4));
+                skill.Effects.Add(new Penalty(skill.Unit.Rival, Stats.Res, -4));
+                skill.Effects.Add(new DenialOfFollowUpDenial(skill.Unit));
+                skill.Effects.Add(new DenialOfFollowUpGuarantee(skill.Unit.Rival));
+                skill.Effects.Add(new ReductionOfPercentageDamage(skill.Unit.Rival));
                 break;
         }
     }

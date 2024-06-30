@@ -23,12 +23,13 @@ public class Unit
     public bool CounterAttackDenial = false;
     public bool DenialOfCounterAttackDenial = false;
     public bool HasAttacked = false;
-    public bool FollowUpGuarantee = false;
-    public bool DenialOfFollowUp = false;
+    public int FollowUpGuarantee = 0;
+    public int DenialOfFollowUp = 0;
     public bool DenialOfFollowUpGuarantee = false;
     public bool DenialOfFollowUpDenial = false;
     public int FirstAttackerCombat = 0;
     public int FirstDefenderCombat = 0;
+    public int ReductionOfPercentageDamage = 1;
     public Team Team;
     public Unit Rival;
     public Unit LastRival;

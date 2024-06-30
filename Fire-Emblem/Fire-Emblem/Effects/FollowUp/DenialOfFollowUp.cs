@@ -7,6 +7,6 @@ public class DenialOfFollowUp : Effect
     public override void Apply()
     {
         AlterStat();
-        Unit.DenialOfFollowUp = true;
+        Unit.DenialOfFollowUp += 1;
     }
 }

@@ -29,12 +29,17 @@ public static class Utils
     {
         switch (stat)
         {
-            case "Atk": return unit.Atk + unit.StatsManager.Get("Atk");
-            case "Spd": return unit.Spd + unit.StatsManager.Get("Spd");
-            case "Def": return unit.Def + unit.StatsManager.Get("Def");
-            case "Res": return unit.Res + unit.StatsManager.Get("Res");
+            case "Atk": return unit.Atk + unit.StatsManager.Get(Stats.Atk);
+            case "Spd": return unit.Spd + unit.StatsManager.Get(Stats.Spd);
+            case "Def": return unit.Def + unit.StatsManager.Get(Stats.Def);
+            case "Res": return unit.Res + unit.StatsManager.Get(Stats.Res);
             case "Dmg": return unit.DamageManager.GetDamageReduction();
         }
         return 0;
+    }
+    
+    public static int GetDamage(Unit unit)
+    {
+        return unit.DamageManager.GetDamage();
     }
 }

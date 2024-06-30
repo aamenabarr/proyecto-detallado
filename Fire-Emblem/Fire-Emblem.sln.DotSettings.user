@@ -1,6 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8d444c8a_002D2646_002D4fb4_002D9f91_002De70ade306168/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Fire-Emblem.Tests&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\aamen\OneDrive\Escritorio\iic2113\proyecto-detallado\Fire-Emblem\Fire-Emblem.Tests" Presentation="&amp;lt;Fire-Emblem.Tests&amp;gt;" /&gt;&#xD;
+  &lt;Project Location="C:\Users\amenabar\Desktop\proyecto-detallado\Fire-Emblem\Fire-Emblem.Tests" Presentation="&amp;lt;Fire-Emblem.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
 	

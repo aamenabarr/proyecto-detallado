@@ -30,6 +30,7 @@ public class SkillsManager
         "PenaltyInFirstAttack",
         "PenaltyInFollowUp",
         "ExtraDamage", 
+        "ReductionOfPercentageDamage",
         "PercentageDamageReduction", 
         "PercentageDamageReductionInFirstAttack", 
         "PercentageDamageReductionInFollowUp",

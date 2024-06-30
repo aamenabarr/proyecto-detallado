@@ -90,14 +90,16 @@ public class Battle
         _rival.CounterAttackDenial = false;
         _unit.DenialOfCounterAttackDenial = false;
         _rival.DenialOfCounterAttackDenial = false;
-        _unit.FollowUpGuarantee = false;
-        _rival.FollowUpGuarantee = false;
-        _unit.DenialOfFollowUp = false;
-        _rival.DenialOfFollowUp = false;
+        _unit.FollowUpGuarantee = 0;
+        _rival.FollowUpGuarantee = 0;
+        _unit.DenialOfFollowUp = 0;
+        _rival.DenialOfFollowUp = 0;
         _unit.DenialOfFollowUpGuarantee = false;
         _rival.DenialOfFollowUpGuarantee = false;
         _unit.DenialOfFollowUpDenial = false;
         _rival.DenialOfFollowUpDenial = false;
+        _unit.ReductionOfPercentageDamage = 1;
+        _rival.ReductionOfPercentageDamage = 1;
         _unit.SetFirstCombatInfo();
         _rival.SetFirstCombatInfo();
         _unit.Rival = _rival;
@@ -232,13 +234,31 @@ public class Battle
         AlterStats();
         AlterDamage();
         bool didAttack = false;
-        if (AttackUtils.CanDoFollowUp(_unit, _rival) && !_unit.CounterAttackDenial && !_unit.DenialOfFollowUp || _unit.FollowUpGuarantee )
+        if (AttackUtils.CanDoFollowUp(_unit, _rival) && !_unit.CounterAttackDenial && 
+            (_unit.DenialOfFollowUp == 0 && _unit.FollowUpGuarantee == 0 || 
+             (_unit.DenialOfFollowUp == _unit.FollowUpGuarantee && _unit.DenialOfFollowUp > 0 
+                                                               && _unit.FollowUpGuarantee > 0 
+                                                               && !_unit.DenialOfFollowUpGuarantee) || 
+            (_unit.DenialOfFollowUp > _unit.FollowUpGuarantee && _unit.DenialOfFollowUpDenial && _unit.FollowUpGuarantee == 0) ||
+            (_unit.FollowUpGuarantee > _unit.DenialOfFollowUp && _unit.DenialOfFollowUpGuarantee && _unit.DenialOfFollowUp == 0))
+            || (_unit.FollowUpGuarantee > _unit.DenialOfFollowUp && !_unit.DenialOfFollowUpGuarantee) ||
+            (_unit.FollowUpGuarantee <= _unit.DenialOfFollowUp && !_unit.DenialOfFollowUpGuarantee && _unit.DenialOfFollowUpDenial && 
+             _unit.FollowUpGuarantee > 0))
         {
             Attack(_currentDefender);
             SwitchUnits();
             didAttack = true;
         }
-        if (AttackUtils.CanDoFollowUp(_rival, _unit) && !_rival.CounterAttackDenial && !_unit.DenialOfFollowUp || _rival.FollowUpGuarantee)
+        if (AttackUtils.CanDoFollowUp(_rival, _unit) && !_rival.CounterAttackDenial && 
+            (_rival.DenialOfFollowUp == 0 && _rival.FollowUpGuarantee == 0 || 
+             (_rival.DenialOfFollowUp == _rival.FollowUpGuarantee && _rival.DenialOfFollowUp > 0 
+                                                                && _rival.FollowUpGuarantee > 0 
+                                                                && !_rival.DenialOfFollowUpGuarantee) || 
+             (_rival.DenialOfFollowUp > _rival.FollowUpGuarantee && _rival.DenialOfFollowUpDenial && _rival.FollowUpGuarantee == 0) ||
+             (_rival.FollowUpGuarantee > _rival.DenialOfFollowUp && _rival.DenialOfFollowUpGuarantee && _rival.DenialOfFollowUp == 0))
+            || (_rival.FollowUpGuarantee > _rival.DenialOfFollowUp && !_rival.DenialOfFollowUpGuarantee) ||
+            (_rival.FollowUpGuarantee <= _rival.DenialOfFollowUp && !_rival.DenialOfFollowUpGuarantee && _rival.DenialOfFollowUpDenial && 
+             _rival.FollowUpGuarantee > 0))
         {
             SwitchUnits();
             Attack(_currentAttacker);
