@@ -27,28 +27,25 @@ public static class AttackUtils
     public static bool CanDoFollowUp(Unit unit, Unit rival)
     {
         var rivalSpeed = (rival.Spd);
-        return unit.Spd - rivalSpeed >= 5 && FollowUpExtraConditions(unit) || GuaranteeFollowUp(unit);
+        return unit.Spd - rivalSpeed >= 5 && MetFollowUpExtraConditions(unit) || HasFollowUpGuarantee(unit);
     }
 
-    private static bool FollowUpExtraConditions(Unit unit)
+    private static bool MetFollowUpExtraConditions(Unit unit)
     {
-        return !unit.CounterAttackDenial &&
-               (unit.DenialOfFollowUp == 0 && unit.FollowUpGuarantee == 0 ||
-                (unit.DenialOfFollowUp == unit.FollowUpGuarantee && unit.DenialOfFollowUp > 0
-                                                                   && unit.FollowUpGuarantee > 0
-                                                                   && !unit.DenialOfFollowUpGuarantee) ||
-                (unit.DenialOfFollowUp > unit.FollowUpGuarantee && unit.DenialOfFollowUpDenial &&
-                 unit.FollowUpGuarantee == 0) ||
-                (unit.FollowUpGuarantee > unit.DenialOfFollowUp && unit.DenialOfFollowUpGuarantee &&
-                 unit.DenialOfFollowUp == 0));
+        return !unit.CounterAttackDenial && MetDenialAndGuaranteeConditions(unit);
     }
 
-    private static bool GuaranteeFollowUp(Unit unit)
+    private static bool MetDenialAndGuaranteeConditions(Unit unit)
     {
-        return (unit.FollowUpGuarantee > unit.DenialOfFollowUp && !unit.DenialOfFollowUpGuarantee) ||
-               (unit.FollowUpGuarantee <= unit.DenialOfFollowUp && !unit.DenialOfFollowUpGuarantee &&
-                unit.DenialOfFollowUpDenial &&
-                unit.FollowUpGuarantee > 0);
+        return unit.DenialOfFollowUp == unit.FollowUpGuarantee && !unit.DenialOfFollowUpGuarantee ||
+               unit.DenialOfFollowUp >= 0 && unit.DenialOfFollowUpDenial ||
+               unit.FollowUpGuarantee >= 0 && unit.DenialOfFollowUpGuarantee && unit.DenialOfFollowUp == 0;
+    }
+
+    private static bool HasFollowUpGuarantee(Unit unit)
+    {
+        return unit.FollowUpGuarantee > unit.DenialOfFollowUp && !unit.DenialOfFollowUpGuarantee ||
+               unit.FollowUpGuarantee > 0 && !unit.DenialOfFollowUpGuarantee && unit.DenialOfFollowUpDenial;
     }
 
     public static bool HasAdvantage(Unit unit, Unit rival)
